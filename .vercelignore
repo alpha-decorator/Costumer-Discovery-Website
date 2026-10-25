@@ -1,0 +1,5 @@
+# The Python speech engine runs on the local machine only. Vercel would otherwise look for a Python entry point in it and fail the build.
+engine/
+data/
+*.csv
+customer-discovery-report-*.md
