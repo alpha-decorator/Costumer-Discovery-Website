@@ -21,6 +21,11 @@ function secret() {
   return DEV_SECRET;
 }
 
+/** Throws when production has no usable AUTH_SECRET. Sign-up calls it before it creates an account. */
+export function assertSessionSecret() {
+  secret();
+}
+
 function toBase64Url(bytes: Uint8Array) {
   let binary = "";
   for (const byte of bytes) binary += String.fromCharCode(byte);

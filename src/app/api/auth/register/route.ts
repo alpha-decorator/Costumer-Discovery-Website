@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { claimOrphanInterviews } from "@/lib/interviews";
 import { hashPassword } from "@/lib/auth/password";
 import { attachSession, isSameOrigin } from "@/lib/auth/server";
+import { assertSessionSecret } from "@/lib/auth/session";
 import { clientKey, recordCodeGuess, tooManyCodeGuesses } from "@/lib/auth/ratelimit";
 import { CodeTakenError, createOrg, defaultOrgName, findOrgByCode, generateCode, joinOrg, normalizeCode, validateOrgName } from "@/lib/orgs";
 import { validateRegistration } from "@/lib/auth/validate";
@@ -29,6 +30,8 @@ export async function POST(request: Request) {
   const orgName = makeBusiness ? (blankBusinessName ? defaultOrgName(name) : validateOrgName(businessName)) : null;
   if (makeBusiness && !orgName) return NextResponse.json({ error: "invalid_name" }, { status: 400 });
   try {
+    // Checked before anything is written, so a server misconfiguration never leaves an account that cannot sign in.
+    assertSessionSecret();
     let orgId: string | null = null;
     if (code) {
       const key = clientKey(request);
