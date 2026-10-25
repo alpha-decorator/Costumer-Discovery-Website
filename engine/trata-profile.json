@@ -1,0 +1,16 @@
+{
+  "_help": "EDIT THIS FILE. Put Trata's real description and features here; the analysis only judges opinions about Trata, and it names features using the words below. 'aka' lists other names customers or the speech recogniser might use, in English or Hindi. The text below was written from your first customer-discovery call; please correct anything that is wrong (prices, sensors, names).",
+  "name": "Trata",
+  "pitch": "Trata is a road-safety startup. Its solution automatically detects a vehicle crash, estimates how severe it is, and then, without anyone having to do anything, calls the nearest ambulance and nearby cab drivers, alerts the family with a live location, and shares the hospital details. It uses sensors fitted in the vehicle (for example near the airbag and tyres) that send the signal to the person's phone app. The team is still talking to potential customers: is it useful, how would it work, which vehicles and which people would pay, and what should it cost (idea: a one-time sensor/installation fee when a car is bought, plus a small yearly subscription).",
+  "features": [
+    {"name": "Automatic crash detection", "description": "Sensors detect that a crash has happened without the person doing anything.", "aka": ["crash detect", "accident detection", "क्रैश डिटेक्ट", "एक्सीडेंट डिटेक्शन", "पता लगाना"]},
+    {"name": "Severity estimate", "description": "Tells how serious the accident is.", "aka": ["severity", "how serious", "कितना सीरियस", "सीवियर"]},
+    {"name": "Automatic ambulance call", "description": "Contacts the nearest ambulance on its own.", "aka": ["ambulance", "एम्बुलेंस", "इंबुलेंस"]},
+    {"name": "Nearby cab drivers alerted", "description": "Calls nearby cab drivers to reach the spot and take the person to hospital.", "aka": ["nearby drivers", "cab driver", "नियरबाई कैब ड्राइवर", "कैब ड्राइवर"]},
+    {"name": "Family alert and live location", "description": "Alerts the family directly and keeps sharing the live location.", "aka": ["live location", "family alert", "लाइव लोकेशन", "फैमिली को अलर्ट"]},
+    {"name": "Hospital details", "description": "Tells the family which hospital the person was taken to.", "aka": ["hospital", "हॉस्पिटल डीटेल"]},
+    {"name": "Vehicle sensors", "description": "Sensors fitted at several points of the car or bike (airbag, tyres) that send data to the phone.", "aka": ["sensor", "सेंसर"]},
+    {"name": "Mobile app and website", "description": "App for the user and a website to track the ambulance.", "aka": ["app", "application", "एप", "अप्लिकेशन", "website", "वेबसाइट"]},
+    {"name": "Pricing model", "description": "One-time installation or sensor fee at purchase plus a yearly subscription.", "aka": ["subscription", "installation fee", "सब्सक्रिप्शन", "इंस्टॉलेशन", "yearly fee", "कॉस्ट"]}
+  ]
+}

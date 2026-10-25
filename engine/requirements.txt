@@ -1,0 +1,9 @@
+# Speech-to-text and analysis engine. Installed automatically by start-engine.bat / start-engine.sh.
+numpy>=1.26
+av>=12                 # reads mp3 / wav / m4a / ogg without installing ffmpeg
+faster-whisper>=1.1.0  # Whisper large-v3-turbo: English, language detection, fallback
+torch>=2.2             # IndicConformer (best free Hindi speech recognition)
+torchaudio>=2.2
+transformers>=4.44
+onnxruntime>=1.18
+huggingface_hub>=0.24

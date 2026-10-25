@@ -1,0 +1,26 @@
+node_modules/
+.next/
+out/
+dist/
+*.tsbuildinfo
+.env*
+!.env.example
+data/*.sqlite
+data/*.sqlite-*
+data/*.db
+data/*.db-*
+data/*.csv
+
+# Trata engine
+engine/.venv/
+engine/data/
+engine/hf_token.txt
+__pycache__/
+*.pyc
+
+engine/sarvam_api_key.txt
+engine/sarvam_api_key*
+
+# Exported customer data (never commit)
+/interviews.csv
+/customer-discovery-*.md

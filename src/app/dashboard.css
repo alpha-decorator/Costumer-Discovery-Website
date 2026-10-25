@@ -1,0 +1,271 @@
+/* ---------- Fieldnotes dashboard: shell, pages and charts. Chart colours are the validated categorical slots (see the dataviz palette). ---------- */
+
+/* Shell. The old .app-shell class stays on the root so the existing dark-mode rules for the report and modals still apply. */
+.fn-app{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--mid:#b7b5ad;display:flex;min-height:100vh;background:var(--canvas);color:var(--ink)}
+.fn-app[data-theme="dark"]{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--mid:#5d5c57}
+
+.fn-sidebar{width:232px;min-width:232px;border-right:1px solid var(--line);background:var(--canvas);display:flex;flex-direction:column;padding:26px 16px 16px;position:sticky;top:0;height:100vh;overflow:hidden}
+.fn-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);padding:0 8px 30px}
+.fn-brand-name{font-family:Manrope,'Noto Sans Devanagari',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.7px}
+.fn-brand-mobile{display:none;padding:0;gap:8px}
+.fn-brand-mobile .fn-brand-name{font-size:16px}
+.fn-nav{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.fn-nav-item{display:flex;align-items:center;gap:12px;padding:10px 11px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:13px;white-space:nowrap}
+.fn-nav-item:hover{background:var(--green-pale);color:var(--green)}
+.fn-nav-item.active{background:var(--green-pale);color:var(--green-dark);font-weight:600}
+.fn-sidebar-bottom{margin-top:auto;display:flex;flex-direction:column;gap:14px}
+.fn-workspace{display:flex;align-items:center;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;color:var(--ink);text-decoration:none;font-size:12px;min-width:0}
+.fn-workspace-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.fn-sidebar-bottom .profile{margin-top:0;padding-top:12px}
+
+.fn-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.fn-topbar{height:62px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 36px;position:sticky;top:0;z-index:4;background:var(--canvas)}
+.fn-topbar .breadcrumb{min-width:0;white-space:nowrap}
+.fn-topbar .breadcrumb strong{overflow:hidden;text-overflow:ellipsis}
+.fn-topbar .top-actions{flex-shrink:0}
+.fn-content{width:100%;max-width:1280px;margin:0 auto;padding:28px 36px 120px;display:flex;flex-direction:column;gap:18px}
+.fn-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.fn-head h1{font-family:Manrope,'Noto Sans Devanagari',sans-serif;font-size:26px;letter-spacing:-.8px;line-height:1.2;margin:6px 0 4px;font-weight:700}
+.fn-head .eyebrow{margin:0}
+.fn-head .intro{margin:0;max-width:62ch}
+.fn-head-actions{display:flex;gap:8px;flex-wrap:wrap}
+.fn-head-actions a.button-secondary{text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+
+/* Cards and grids: columns fill the width they are given, so PC, laptop, tablet and phone share the same rules. */
+.fn-card{border:1px solid var(--line);border-radius:12px;background:var(--canvas);padding:18px;min-width:0}
+.fn-card h2{font-family:Manrope,'Noto Sans Devanagari',sans-serif;font-size:14px;letter-spacing:-.2px;margin:0 0 4px}
+.fn-card-sub{font-size:11.5px;color:var(--muted);margin:0 0 12px;line-height:1.5}
+.fn-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.fn-grid .fn-wide{grid-column:1/-1}
+.fn-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:14px}
+.fn-kpi{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--canvas);min-width:0;display:flex;flex-direction:column;gap:6px}
+.fn-kpi>span{font-size:11.5px;color:var(--muted)}
+.fn-kpi strong{font-family:Manrope,sans-serif;font-size:30px;letter-spacing:-1px;line-height:1.1;font-variant-numeric:tabular-nums}
+.fn-kpi small{font-size:11px;color:var(--muted);line-height:1.45}
+.fn-kpi sub{font-size:.65em}
+.tone-pos{color:var(--s1)}
+.tone-neg{color:var(--s2)}
+.tone-neu{color:var(--muted)}
+.fn-verdict{margin-top:14px;border-radius:10px;padding:12px 14px;border:1px solid var(--line)}
+.fn-verdict strong{font-size:13px}
+.fn-verdict p{margin:4px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+.fn-row-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px}
+.fn-row-head .fn-card-sub{margin:0}
+
+/* Chips: the tier switch (Global view, Newbie, Public, Expert). */
+.fn-chips{display:flex;gap:8px;flex-wrap:wrap}
+.fn-chips button{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:var(--canvas);color:var(--ink);font-size:12px}
+.fn-chips button:hover{background:var(--green-pale)}
+.fn-chips button b{font-weight:600;color:var(--muted)}
+.fn-chips button.on{background:var(--green);border-color:var(--green);color:#fff}
+.fn-chips button.on b{color:#fff;opacity:.85}
+.app-shell[data-theme="dark"] .fn-chips button.on{color:#10201a}
+.app-shell[data-theme="dark"] .fn-chips button.on b{color:#10201a}
+
+/* Legends: always shown when there are two or more series. */
+.fn-legend{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11.5px;color:var(--muted)}
+.fn-legend li{display:flex;align-items:center;gap:6px}
+.fn-legend i{width:10px;height:10px;border-radius:3px;flex:none}
+.fn-legend i.dash{width:16px;height:0;border-radius:0;background:none!important;border-top:2px dashed var(--muted)}
+.fn-legend b{color:var(--ink);font-weight:600}
+.fn-legend small{color:var(--muted)}
+.fn-legend-col{flex-direction:column;margin:0}
+
+/* Radar. */
+.fn-radar svg{display:block;width:100%;max-width:340px;height:auto;margin:0 auto}
+.fn-ring{fill:none;stroke:var(--line);stroke-width:1}
+.fn-ring-zero{stroke:var(--mid);stroke-width:1.2}
+.fn-axis{stroke:var(--line);stroke-width:1}
+.fn-axis-label{font-size:12px;fill:var(--ink);font-weight:600}
+.fn-table-list{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column}
+.fn-table-list li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:14px;align-items:center;padding:8px 2px;border-top:1px solid #f2f3f0;font-size:12px}
+.fn-table-list li span{color:var(--ink)}
+.fn-table-list b{font-variant-numeric:tabular-nums}
+.fn-table-list small{color:var(--muted);font-variant-numeric:tabular-nums;min-width:48px;text-align:right}
+
+/* Area line (sentiment over time). */
+.fn-area{position:relative}
+.fn-area svg{display:block;width:100%;height:auto;overflow:visible;touch-action:none}
+.fn-grid-line{stroke:var(--line);stroke-width:1}
+.fn-grid-zero{stroke:var(--mid)}
+.fn-axis-text{font-size:10px;fill:var(--muted)}
+.fn-area-fill{fill:var(--s1);fill-opacity:.14}
+.fn-area-line{stroke:var(--s1);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.fn-area-dot{fill:var(--s1);stroke:var(--canvas);stroke-width:2}
+.fn-tip{position:absolute;top:0;transform:translateX(-50%);background:var(--ink);color:var(--canvas);border-radius:6px;padding:5px 9px;font-size:11px;display:flex;flex-direction:column;gap:2px;pointer-events:none;white-space:nowrap}
+
+/* Donut. */
+.fn-donut{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.fn-donut svg{width:150px;height:150px;flex:none}
+.fn-donut-total{font-family:Manrope,sans-serif;font-size:22px;font-weight:700;fill:var(--ink)}
+
+/* Scale (-1 to +1 gradient with a marker). */
+.fn-scale{margin:14px 0 6px}
+.fn-scale-track{position:relative;height:10px;border-radius:6px;background:linear-gradient(90deg,var(--s2),var(--mid) 50%,var(--s1))}
+.fn-scale-track i{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:var(--canvas);border:3px solid var(--ink);transform:translate(-50%,-50%);box-shadow:0 1px 4px #0003}
+.fn-scale-ticks{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px}
+
+/* Horizontal bars. */
+.fn-hbars{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.fn-hbars li{display:grid;grid-template-columns:minmax(70px,110px) minmax(0,1fr) 36px;align-items:center;gap:10px;font-size:12px}
+.fn-hbar-track{height:8px;border-radius:6px;background:var(--line);overflow:hidden;display:block}
+.fn-hbar-track i{display:block;height:100%;border-radius:6px}
+.fn-hbars b{text-align:right;font-variant-numeric:tabular-nums}
+
+/* Customers page. */
+.fn-toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:12px 14px}
+.fn-search{width:min(100%,320px);height:38px}
+.fn-table-card{padding:0;overflow:hidden}
+.fn-table-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.fn-table-meta{display:flex;align-items:center;gap:12px}
+.fn-table-wrap{overflow-x:auto}
+.fn-table-wrap table{min-width:640px}
+.fn-table-wrap td,.fn-table-wrap th{padding-left:14px;padding-right:14px}
+.fn-table-wrap thead th:first-child,.fn-table-wrap tbody td:first-child{padding-left:14px}
+.fn-table-wrap tbody td{height:60px}
+.fn-table-wrap tbody td:last-child{padding-right:14px;text-align:right}
+.fn-table-wrap tbody td:last-child .row-action{margin-left:auto}
+.fn-keyword{display:block;max-width:34ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
+.fn-table-wrap .tier-pill i{background:currentColor}
+
+/* Detail dialog (from the customer reference). */
+.detail-modal.fn-detail{width:min(100%,800px);max-height:92vh;overflow:auto;padding:24px}
+.fn-detail-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;padding-right:34px}
+.fn-detail-top .modal-person{align-items:center}
+.fn-pills{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fn-pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:4px 11px;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.fn-detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;margin-top:16px}
+.fn-detail-col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.fn-detail-col .eyebrow{display:block}
+.fn-detail-col .customer-detail-points{margin:0}
+.fn-detail-col .transcript-box{margin:0}
+.fn-detail-actions{flex-wrap:wrap;justify-content:flex-end}
+.fn-detail-actions a.button-secondary{text-decoration:none;display:inline-flex;align-items:center}
+
+/* Upload page. */
+.fn-upload{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px;align-items:start}
+.fn-upload .fn-card{display:flex;flex-direction:column;gap:12px}
+.fn-upload .fn-card h3{font-size:13px;margin:0}
+.fn-upload .upload-actions{margin-top:auto}
+.fn-complete{max-width:560px;margin:0 auto;width:100%}
+.fn-upload .upload-form-grid{margin-top:0}
+
+/* Reports and settings. */
+.fn-scope{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.fn-scope h2{margin:4px 0 0;font-size:18px}
+.fn-scope .text-link{margin-left:auto}
+.settings-list{padding:6px 18px}
+.settings-list .settings-row:first-child{border-top:0}
+
+/* Floating upload button: bottom-right on every page. */
+.fn-fab{position:fixed;right:24px;bottom:24px;z-index:12;display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;background:var(--green);color:#fff;text-decoration:none;font-size:13px;font-weight:600;box-shadow:0 8px 24px #0b201a40}
+.fn-fab:hover{background:var(--green-dark)}
+.app-shell[data-theme="dark"] .fn-fab{color:#10201a}
+
+/* Phone bottom bar (hidden on PC and tablet). */
+.fn-tabbar{display:none}
+
+/* Tablet: icon rail instead of the full side menu. */
+@media (max-width:1100px){
+  .fn-sidebar{width:76px;min-width:76px;padding:22px 10px 14px;align-items:center}
+  .fn-brand{padding:0 0 26px;justify-content:center}
+  .fn-brand-name,.fn-nav-item span,.fn-workspace-name,.fn-sidebar .workspace-label,.fn-sidebar .profile-copy{display:none}
+  .fn-nav-item{justify-content:center;padding:11px 0}
+  .fn-workspace{justify-content:center;padding:8px 0;border:0;width:100%}
+  .fn-sidebar-bottom{width:100%;align-items:center}
+  .fn-sidebar-bottom .profile{justify-content:center;border-top:0}
+  .fn-content{padding:24px 26px 120px}
+  .fn-topbar{padding:0 26px}
+}
+
+/* Phone: bottom tab bar, compact top bar, single-column cards. */
+@media (max-width:760px){
+  .fn-sidebar{display:none}
+  .fn-main{width:100%}
+  .fn-brand-mobile{display:flex}
+  .fn-topbar{height:56px;padding:0 14px}
+  .fn-topbar .breadcrumb{display:none}
+  .fn-topbar .top-actions{margin-left:auto;gap:8px}
+  .fn-topbar .language-toggle span{display:none}
+  .fn-topbar .signout-button{display:none}
+  .fn-content{padding:18px 14px 124px;gap:14px}
+  .fn-head h1{font-size:22px}
+  .fn-card{padding:14px}
+  .fn-kpi{padding:13px}
+  .fn-kpi strong{font-size:24px}
+  .fn-grid{grid-template-columns:1fr}
+  .fn-hide-sm{display:none}
+  .fn-table-list li{grid-template-columns:minmax(0,1fr) auto auto}
+  .fn-tabbar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:11;background:var(--canvas);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+  .fn-tab{display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;color:var(--muted);text-decoration:none;font-size:10px;border-radius:8px;min-width:0}
+  .fn-tab span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .fn-tab.active{color:var(--green);font-weight:600}
+  .fn-fab{right:14px;bottom:78px;padding:11px 15px;box-shadow:0 6px 18px #0b201a50}
+  .fn-detail-top{padding-right:28px}
+  .detail-modal.fn-detail{padding:18px}
+  .fn-detail-actions .button-secondary,.fn-detail-actions .button-primary{font-size:11px}
+  .fn-donut svg{width:130px;height:130px}
+  .fn-hbars li{grid-template-columns:minmax(60px,84px) minmax(0,1fr) 30px}
+}
+
+/* ---------- Detailed reports (on screen and as printed PDF) ---------- */
+.fn-small{padding:6px 11px;font-size:11.5px}
+.report-overlay{position:fixed;inset:0;z-index:40;background:#0f1914b3;overflow:auto;padding:20px 12px 40px}
+.report-toolbar{position:sticky;top:0;z-index:1;max-width:860px;margin:0 auto 12px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--canvas);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.report-toolbar strong{display:block;font-size:14px}
+.report-toolbar span{font-size:11.5px;color:var(--muted)}
+.report-toolbar-actions{display:flex;gap:8px;flex-wrap:wrap}
+.report-toolbar-actions button{display:inline-flex;align-items:center;gap:7px}
+.report-print,.report-print *{color:#17211c!important}
+.report-print{--ink:#17211c;--muted:#5d6861;--line:#dfe5df;--canvas:#fff;--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--mid:#b7b5ad;background:#fff!important;width:min(100%,860px);margin:0 auto;padding:30px 34px;border-radius:12px;font-size:12.5px;line-height:1.55;box-shadow:0 18px 50px #0a140e40}
+.report-print .report-muted{color:#5d6861!important}
+.report-print h1{font-family:Manrope,'Noto Sans Devanagari',sans-serif;font-size:24px;letter-spacing:-.5px;margin:4px 0 6px}
+.report-print h2{font-family:Manrope,'Noto Sans Devanagari',sans-serif;font-size:15px;margin:0 0 10px;padding-bottom:6px;border-bottom:1px solid #dfe5df}
+.report-print h3{font-size:13px;margin:14px 0 6px}
+.report-brand{font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;color:#5d6861!important}
+.report-head{border-bottom:2px solid #17211c;padding-bottom:12px;margin-bottom:6px}
+.report-head p{margin:0}
+.report-section{margin-top:20px;break-inside:avoid}
+.report-table{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+.report-table th,.report-table td{border-bottom:1px solid #e6ebe5;padding:6px 8px;text-align:left;vertical-align:top}
+.report-table thead th{background:#f5f7f3;font-weight:600}
+.report-table tbody th{font-weight:600;background:#fafbf9;width:22%}
+.report-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px;vertical-align:middle}
+.report-note{font-size:11px;color:#5d6861!important;margin:6px 0 0}
+.report-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px;align-items:start}
+.report-chart{margin-top:12px}
+.report-chart .fn-area svg{overflow:visible}
+.report-list{margin:6px 0 0;padding-left:18px}
+.report-list li{margin-bottom:4px}
+.report-quote{margin:6px 0;padding:10px 12px;border-left:3px solid #2a78d6;background:#f7f9f6;border-radius:0 6px 6px 0;white-space:pre-wrap}
+.report-customer{border:1px solid #dfe5df;border-radius:8px;padding:10px 12px;margin-bottom:8px;break-inside:avoid}
+.report-empty{padding:18px;border:1px dashed #dfe5df;border-radius:8px}
+.report-method{font-size:11.5px}
+.report-print .fn-axis-label{fill:#17211c}
+.report-print .fn-axis-text{fill:#5d6861}
+.report-print .fn-legend,.report-print .fn-legend b{color:#17211c!important}
+
+/* Reports page cards. */
+.fn-report-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:14px}
+.fn-report-card{display:flex;flex-direction:column;gap:14px}
+.fn-report-card-head{display:flex;align-items:center;gap:8px}
+.fn-report-card-head h2{margin:0;font-size:14px}
+.fn-report-card-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fn-report-card-stats div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fn-report-card-stats span{font-size:10.5px;color:var(--muted)}
+.fn-report-card-stats strong{font-family:Manrope,sans-serif;font-size:18px;font-variant-numeric:tabular-nums}
+.fn-report-card .button-primary{justify-content:center;margin-top:auto}
+.fn-report-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:10px 2px;border-top:1px solid #f2f3f0}
+.fn-report-row-actions{display:flex;gap:12px;align-items:center}
+@media (max-width:760px){.fn-report-row{grid-template-columns:minmax(0,1fr) auto}.fn-report-row-actions{grid-column:1/-1}.report-print{padding:20px 16px}.report-toolbar{position:static}}
+
+/* Printing: only the report is printed, on white, without the app around it. */
+@page{margin:14mm}
+@media print{
+  body *{visibility:hidden}
+  .report-print,.report-print *{visibility:visible}
+  .report-overlay{position:absolute;inset:auto;top:0;left:0;right:0;background:none;padding:0;overflow:visible;z-index:auto}
+  .report-print{box-shadow:none;border-radius:0;padding:0;width:100%;max-width:none;margin:0}
+  .no-print{display:none!important}
+  .report-print .fn-area,.report-print .fn-radar,.report-print .fn-donut{break-inside:avoid}
+}
