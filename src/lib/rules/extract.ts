@@ -49,7 +49,7 @@ const TRANSPORT_Q = re("कैसे\\s+(?:आते|जाते|ट्रे�
 
 /** "How are you? – Fine." and "Can you hear me? – Yes, the weather is nice": remarks that are not about Trata. */
 /** "Would you have any problem / concern with it?": a "no" to this is a yes to the product, and a "yes" is a worry. */
-const PROBLEM_Q = re("कोई\\s+(?:भी\\s+)?(?:परेशानी|दिक्कत|दिकत|समस्या|प्रॉब्लम|problem|चिंता|आपत्ति|डर|इश्यू|issue)|(?:परेशानी|दिक्कत|समस्या|आपत्ति)\\s+(?:होगी|है|हो\\s+सकती)|any\\s+(?:problem|problems|issue|issues|concern|concerns|objection|objections|worry|worries|hesitation)|(?:does|do|would)\\s+(?:this|that|it|these)\\s+(?:worry|concern|bother|diminish)|would\\s+you\\s+mind|koi\\s+(?:dikkat|problem|pareshani|tension)");
+const PROBLEM_Q = re("कोई\\s+(?:भी\\s+)?(?:परेशानी|दिक्कत|दिकत|समस्या|प्रॉब्लम|problem|चिंता|आपत्ति|डर|इश्यू|issue|कंसर्न|concern|concerns|worry|टेंशन|tension)|(?:परेशानी|दिक्कत|समस्या|आपत्ति)\\s+(?:होगी|है|हो\\s+सकती)|any\\s+(?:problem|problems|issue|issues|concern|concerns|objection|objections|worry|worries|hesitation)|(?:does|do|would)\\s+(?:this|that|it|these)\\s+(?:worry|concern|bother|diminish)|would\\s+you\\s+mind|koi\\s+(?:bhi\\s+)?(?:dikkat|problem|pareshani|tension|concern|concerns|issue|issues|chinta|dar|worry|objection|samasya)");
 const HELLO_Q = re("कैसे\\s+(?:हो|हैं)|कैसी\\s+हैं|कैसे\\s+है\\s+आप|how\\s+are\\s+you|क्या\\s+हाल|बिजी|busy|टाइम\\s+है|time\\s+है|available|फ्री\\s+हैं|आवाज|सुनाई|सुन\\s+पा|can\\s+you\\s+hear|हेलो|hello|अभी\\s+बात|बात\\s+कर\\s+सकते");
 const SMALL_TALK = re("मौसम|weather|आवाज़|आवाज|सुनाई|नेटवर्क|कनेक्शन|connection|हेलो|hello|नमस्ते|नमस्कार|धन्यवाद|शुक्रिया|thank\\s+you|thanks|गुड\\s+मॉर्निंग|good\\s+morning|good\\s+evening|गुड\\s+ईवनिंग");
 /** After an opinion word: "…तो बहुत हो सकता है लेकिन…", the shape of a reply, not of a question. */
@@ -419,8 +419,12 @@ export function extractFeatures(doc: Doc): FeatureRow[] {
     if (kind.use || kind.pay || kind.accident || kind.transport) continue;
     const question = qNorm(doc, exchange);
     const first = doc.units[exchange.a[0]];
-    const affirm = L.AFFIRM_START.test(first.n);
-    const deny = !affirm && L.NEGATE_START.test(first.n);
+    // "Any concern with the sensors?" – "No": a no to a problem question is a yes to the feature, as in the intent votes.
+    const problem = once(PROBLEM_Q).test(question);
+    const yes = L.AFFIRM_START.test(first.n);
+    const no = !yes && L.NEGATE_START.test(first.n);
+    const affirm = problem ? no : yes;
+    const deny = problem ? yes : no;
     for (const feature of L.FEATURES) {
       if (feature.name === "Pricing model" || !feature.re.test(question)) continue;
       const index = exchange.a.find((k) => !handled.has(`${feature.name}:${k}`));

@@ -1,0 +1,39 @@
+Interviewer: Namaste sir, main Trata team se baat kar raha hoon. Hum customer discovery kar rahe hain, kya aapke paas das minute hain? Kuch questions poochne hain.
+Customer: Haan haan, bilkul. Boliye, mujhe khushi hogi.
+Interviewer: Aap daily travel kaise karte hain?
+Customer: Main roz apni car se office jaata hoon, highway pe lagbhag pachaas kilometre. Weekend pe family ke saath bhi car se hi nikalte hain.
+Interviewer: Kya aapne kabhi kisi accident ko dekha hai ya aapke kisi jaanne wale ke saath hua hai?
+Customer: Haan, mere cousin ka accident hua tha raat mein, aur family ko do ghante baad pata chala. Woh bahut mushkil waqt tha.
+Interviewer: Main aapko apna idea batata hoon. Trata ek road-safety startup hai. Hamara solution automatically crash detect karta hai, severity estimate karta hai, aur bina kisi ke kuch kiye nearest ambulance aur nearby cab drivers ko call karta hai. Family ko live location ke saath alert jaata hai aur hospital details bhi share hoti hain. Car mein sensors lagte hain, airbag aur tyres ke paas, jo phone app ko signal bhejte hain.
+Interviewer: Aapko yeh idea kaisa laga?
+Customer: Wow, yeh toh kamaal ka idea hai! Honestly, I love it. Yeh bahut zabardast aur bahut useful hai. Mujhe lagta hai yeh har car mein hona chahiye.
+Interviewer: Automatic crash detection ke baare mein aap kya sochte hain?
+Customer: Automatic crash detection is brilliant. Accident ke baad insaan kuch kar hi nahi paata, toh yeh feature life saver hai. Bahut badhiya socha hai aapne.
+Interviewer: Aur ambulance ko automatically call karna?
+Customer: Ambulance wala feature toh best hai. Help turant pahunchegi, yeh sabse accha hai. I really like this, it is excellent.
+Interviewer: Family ko live location ke saath alert jaana, yeh aapko kaisa lagta hai?
+Customer: Yeh mera favourite feature hai. Meri wife aur parents ko turant pata chal jaayega ki main kahaan hoon aur kaun se hospital mein hoon. Mujhe bahut sukoon milega. Perfect hai yeh.
+Interviewer: Nearby cab drivers ko alert karna, yeh kitna kaam ka lagta hai?
+Customer: Yeh bahut smart idea hai. Cab driver paas mein hota hai, toh help aur jaldi pahunchegi. Great thinking, mujhe yeh bahut pasand aaya.
+Interviewer: Kya aap Trata use karenge?
+Customer: Haan, definitely use karunga. Main toh pehla customer banna chahunga. Jaise hi launch ho, mujhe batana, main turant lagwa lunga.
+Interviewer: Aap iske liye pay karenge? Hum soch rahe hain ek one-time installation fee aur chhota yearly subscription.
+Customer: Bilkul pay karunga. Price is totally worth it, apni family ki safety ke liye yeh bahut sasta hai. Installation fee aur yearly subscription dono theek hain, main khushi se dunga.
+Interviewer: Kitna price aapko sahi lagega?
+Customer: Do-teen hazaar installation aur paanch sau ya hazaar saal ka bhi ho toh main khushi se le lunga. Yeh paisa vasool hai, value for money hai.
+Interviewer: Aap kya kisi aur ko recommend karenge?
+Customer: Zaroor recommend karunga. Mere saare dost, office ke colleagues, mere bhai, sabko bataunga. Main toh apne WhatsApp groups mein share karunga. Har parent ko yeh chahiye.
+Interviewer: Sensors aur app ke baare mein koi concern?
+Customer: Sensors aur app dono mujhe bahut acche lage. App ka idea great hai, aur mujhe pura bharosa hai aap log accha banayenge. Sensors wala concept bahut solid hai.
+Interviewer: Hospital details share karna kaisa lagta hai?
+Customer: Excellent. Family ko hospital dhoondhna nahi padega, seedha wahaan pahunch jaayenge. Bahut thoughtful feature hai.
+Interviewer: Aapko kya lagta hai, yeh market mein chalega?
+Customer: Hundred percent chalega. India mein iski bahut zaroorat hai. Mujhe lagta hai Trata bahut bada banega. Yeh genuinely lives bachayega. I am really impressed.
+Interviewer: Kya aap hamara beta test join karna chahenge?
+Customer: Haan, zaroor! Mujhe beta mein add kar dijiye, main feedback bhi dunga. Main bahut excited hoon.
+Interviewer: Bike riders ke liye bhi yeh hona chahiye kya?
+Customer: Haan, bike ke liye bhi amazing rahega. Mere chhote bhai ke paas bike hai, uske liye main khud kharid ke dunga.
+Interviewer: Aakhir mein, Trata ke baare mein ek line mein kya kahenge?
+Customer: Trata is amazing, it is the best road-safety idea I have heard. Bahut accha, bahut useful, aur main ise zaroor use karunga aur pay karunga. All the best, aap log bahut accha kaam kar rahe ho!
+Interviewer: Bahut bahut dhanyavaad aapke time ke liye.
+Customer: Thank you aapko! Launch ka wait rahega, mujhe zaroor batana.
