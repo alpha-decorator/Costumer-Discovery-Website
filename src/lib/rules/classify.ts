@@ -41,6 +41,8 @@ export function isQuestion(unit: Unit) {
 
 // ---- the interviewer explaining the idea -------------------------------------------------------------------------
 const TRATA_NAME = "तराता|ट्राटा|ट्रेटा|तरता|त्राता|ट्राइटा|तराटा|trataboo|trata|ट्रैटा|तारता|त्रेटा|त्रता";
+/** The product named in any common spelling (Latin or Devanagari). */
+export const TRATA_RE = re(TRATA_NAME);
 const PITCH_SIGNALS: Array<{ re: RegExp; weight: number }> = [
   { re: rx(`${W}(?:हम|हमारा|हमारी|हमारे|हमने|हमें|our|we)${E}[^.?!।\\n]{0,50}${W}(?:बना[\\p{L}\\p{M}]*|डिजाइन[\\p{L}\\p{M}]*|डिज़ाइन[\\p{L}\\p{M}]*|लॉन्च[\\p{L}\\p{M}]*|लाउंच[\\p{L}\\p{M}]*|कर रहे|कर रही|करेंगे|सोच रहे|build[\\p{L}\\p{M}]*|design[\\p{L}\\p{M}]*|launch[\\p{L}\\p{M}]*|working on|developing|creating|आइडिया|आईडिया|idea|सोल्यूशन|सॉल्यूशन|solution|प्रोडक्ट|product|startup|स्टार्टअप|ला रहे|लाएंगे|लायेंगे)`, "u"), weight: 1.2 },
   { re: re(`${TRATA_NAME}`), weight: 0.6 },
