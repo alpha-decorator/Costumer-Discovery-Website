@@ -34,6 +34,8 @@ type WorkspaceValue = {
   saveEdit: (draft: Customer) => Promise<Customer>;
   /** Deletes a saved interview, or hides an example one on this computer. Throws if the server refuses. */
   removeCustomer: (customer: Customer) => Promise<void>;
+  /** Deletes several at once. Returns the ones that could not be deleted (the rest are removed either way). */
+  removeCustomers: (customers: Customer[]) => Promise<Customer[]>;
 };
 
 const WorkspaceContext = createContext<WorkspaceValue | null>(null);
@@ -138,19 +140,35 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     return saved;
   }, []);
 
-  const removeCustomer = useCallback(async (target: Customer) => {
-    if (!uploaded.some((record) => record.id === target.id)) {
-      const next = [...new Set([...hiddenSamples, target.id])];
+  const deleteSaved = useCallback(async (id: string) => {
+    const response = await fetch(`/api/interviews/${encodeURIComponent(id)}`, { method: "DELETE" });
+    if (response.status === 401) { window.location.assign("/login"); throw new Error("signed out"); }
+    if (!response.ok && response.status !== 404) throw new Error("delete failed");
+  }, []);
+
+  const removeCustomers = useCallback(async (targets: Customer[]) => {
+    const savedIds = new Set(uploaded.map((record) => record.id));
+    const samples = targets.filter((target) => !savedIds.has(target.id)).map((target) => target.id);
+    if (samples.length) {
+      const next = [...new Set([...hiddenSamples, ...samples])];
       setHiddenSamples(next);
       try { window.localStorage.setItem(HIDDEN_SAMPLES_KEY, JSON.stringify(next)); } catch { /* hidden until reload only */ }
-      forget(target.id);
-      return;
+      samples.forEach(forget);
     }
-    const response = await fetch(`/api/interviews/${encodeURIComponent(target.id)}`, { method: "DELETE" });
-    if (response.status === 401) { window.location.assign("/login"); return; }
-    if (!response.ok && response.status !== 404) throw new Error("delete failed");
-    forget(target.id);
-  }, [uploaded, hiddenSamples, forget]);
+    const saved = targets.filter((target) => savedIds.has(target.id));
+    const failed: Customer[] = [];
+    // A few at a time, so a large selection does not flood the server.
+    for (let start = 0; start < saved.length; start += 5) {
+      const batch = saved.slice(start, start + 5);
+      const results = await Promise.allSettled(batch.map(async (target) => { await deleteSaved(target.id); forget(target.id); }));
+      results.forEach((result, index) => { if (result.status === "rejected") failed.push(batch[index]); });
+    }
+    return failed;
+  }, [uploaded, hiddenSamples, forget, deleteSaved]);
+
+  const removeCustomer = useCallback(async (target: Customer) => {
+    if ((await removeCustomers([target])).length) throw new Error("delete failed");
+  }, [removeCustomers]);
 
   const toggleSelected = useCallback((id: string) => {
     setSelectedIds((current) => current.includes(id) ? current.filter((selected) => selected !== id) : [...current, id]);
@@ -160,8 +178,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<WorkspaceValue>(() => ({
     loaded, recordsError, uploaded, customers, tierFilter, setTierFilter, selectedIds, setSelectedIds, toggleSelected,
-    theme, setTheme, palette, setPalette, workspaceInfo, applyOrgView, isSaved, upsertRecord, saveEdit, removeCustomer,
-  }), [loaded, recordsError, uploaded, customers, tierFilter, selectedIds, toggleSelected, theme, palette, setPalette, workspaceInfo, applyOrgView, isSaved, upsertRecord, saveEdit, removeCustomer]);
+    theme, setTheme, palette, setPalette, workspaceInfo, applyOrgView, isSaved, upsertRecord, saveEdit, removeCustomer, removeCustomers,
+  }), [loaded, recordsError, uploaded, customers, tierFilter, selectedIds, toggleSelected, theme, palette, setPalette, workspaceInfo, applyOrgView, isSaved, upsertRecord, saveEdit, removeCustomer, removeCustomers]);
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>;
 }

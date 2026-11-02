@@ -14,14 +14,14 @@ import { format } from "@/lib/i18n";
 
 export default function CustomersPage() {
   const { lang, t } = useI18n();
-  const { loaded, recordsError, customers, uploaded, tierFilter, setTierFilter, selectedIds, setSelectedIds, toggleSelected, removeCustomer, isSaved } = useWorkspace();
+  const { loaded, recordsError, customers, uploaded, tierFilter, setTierFilter, selectedIds, setSelectedIds, toggleSelected, removeCustomers, isSaved } = useWorkspace();
   const L = (en: string, hi: string) => lang === "hi" ? hi : en;
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [reportFor, setReportFor] = useState<Customer | null>(null);
   const [pdfScope, setPdfScope] = useState<ReportScope | null>(null);
-  const [deleteTarget, setDeleteTarget] = useState<Customer | null>(null);
+  const [deleteTargets, setDeleteTargets] = useState<Customer[]>([]);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
@@ -39,16 +39,25 @@ export default function CustomersPage() {
   const toggleVisible = () => setSelectedIds(allVisibleSelected ? selectedIds.filter((id) => !visible.some((customer) => customer.id === id)) : [...new Set([...selectedIds, ...visible.map((customer) => customer.id)])]);
   const closeDetail = () => { setOpenId(null); setEditing(false); };
 
+  const askDelete = (targets: Customer[]) => { if (targets.length) { setDeleteError(""); setDeleteTargets(targets); } };
+  const selectedCustomers = customers.filter((customer) => selectedIds.includes(customer.id));
   const confirmDelete = async () => {
-    if (!deleteTarget || deleting) return;
+    if (!deleteTargets.length || deleting) return;
     setDeleting(true); setDeleteError("");
     try {
-      await removeCustomer(deleteTarget);
-      if (openId === deleteTarget.id) setOpenId(null);
-      setDeleteTarget(null);
+      const failed = await removeCustomers(deleteTargets);
+      if (failed.length) {
+        // Keep only the ones that failed, so "Yes, delete" retries just those.
+        setDeleteTargets(failed);
+        setDeleteError(failed.length === 1 && deleteTargets.length === 1 ? t.deleteFailed : format(t.deleteManyFailed, { count: failed.length }));
+        return;
+      }
+      if (openId && deleteTargets.some((target) => target.id === openId)) closeDetail();
+      setDeleteTargets([]);
     } catch { setDeleteError(t.deleteFailed); }
     finally { setDeleting(false); }
   };
+  const single = deleteTargets.length === 1 ? deleteTargets[0] : null;
 
   return <AppShell title={t.customers} intro={L("Everyone you have interviewed. Click a customer to see the details.", "आपके सभी इंटरव्यू किए गए ग्राहक। विवरण देखने के लिए ग्राहक पर क्लिक करें।")}
     actions={<Link className="button-secondary" href="/reports"><Icon name="chart" size={15} />{L("Open report", "रिपोर्ट खोलें")}</Link>}>
@@ -65,8 +74,10 @@ export default function CustomersPage() {
       <div className="fn-table-head">
         <span className="sample-label">{uploaded.length ? `${uploaded.length} ${t.savedWord}` : t.sample}</span>
         <div className="fn-table-meta">
+          {!allVisibleSelected && visible.length > 0 && <button className="button-secondary fn-small" onClick={toggleVisible}>{t.selectAll} ({visible.length})</button>}
           {selectedIds.length > 0 && <span className="selected-count">{selectedIds.length} {t.checked}</span>}
           {selectedIds.length > 0 && <button className="button-secondary fn-small" onClick={() => setPdfScope({ kind: "selection", title: L("Selected customers", "चयनित ग्राहक"), customers: customers.filter((customer) => selectedIds.includes(customer.id)) })}>{L("Report for selected", "चयनित की रिपोर्ट")}</button>}
+          {selectedIds.length > 0 && <button className="button-danger fn-small" onClick={() => askDelete(selectedCustomers)}><Icon name="trash" size={13} />{t.deleteSelected} ({selectedCustomers.length})</button>}
           {selectedIds.length > 0 && <button className="text-link" onClick={() => setSelectedIds([])}>{t.clearSelection}</button>}
         </div>
       </div>
@@ -84,7 +95,7 @@ export default function CustomersPage() {
               <td className="date-cell fn-hide-sm">{customer.date}</td>
               <td><span className={`score ${customer.sentiment >= 0.6 ? "score-positive" : "score-mixed"}`}><i />{signed(customer.sentiment)}</span></td>
               <td className="fn-hide-sm"><span className="fn-keyword">{customer.keyPoints[0]}</span></td>
-              <td><span className="fn-row-actions">{isSaved(customer) && <button className="row-action fn-row-edit" onClick={() => { setEditing(true); setOpenId(customer.id); }} aria-label={`${L("Edit", "बदलें")} ${customer.name}`}><Icon name="pencil" size={14} />{L("Edit", "बदलें")}</button>}<button className="row-action" onClick={() => { setEditing(false); setOpenId(customer.id); }}>{t.view}<Icon name="chevron" size={14} /></button></span></td>
+              <td><span className="fn-row-actions">{isSaved(customer) && <button className="row-action fn-row-edit" onClick={() => { setEditing(true); setOpenId(customer.id); }} aria-label={`${L("Edit", "बदलें")} ${customer.name}`}><Icon name="pencil" size={14} />{L("Edit", "बदलें")}</button>}<button className="row-action" onClick={() => { setEditing(false); setOpenId(customer.id); }}>{t.view}<Icon name="chevron" size={14} /></button><button className="row-action fn-row-delete" onClick={() => askDelete([customer])} aria-label={`${t.deleteCustomer} ${customer.name}`}><Icon name="trash" size={14} />{t.deleteCustomer}</button></span></td>
             </tr>)}
           </tbody>
         </table>
@@ -93,16 +104,16 @@ export default function CustomersPage() {
       </div>
     </section>
 
-    {active && <CustomerDetail key={`${active.id}-${editing}`} startEditing={editing} customer={active} group={customers.filter((customer) => tierFilter === "All" || customer.tier === tierFilter)} onClose={closeDetail} onReport={(customer) => { setReportFor(customer); closeDetail(); }} onPdf={(customer) => setPdfScope({ kind: "customer", title: customer.name, customers, customer })} onAskDelete={(customer) => { setDeleteError(""); setDeleteTarget(customer); }} />}
+    {active && <CustomerDetail key={`${active.id}-${editing}`} startEditing={editing} customer={active} group={customers.filter((customer) => tierFilter === "All" || customer.tier === tierFilter)} onClose={closeDetail} onReport={(customer) => { setReportFor(customer); closeDetail(); }} onPdf={(customer) => setPdfScope({ kind: "customer", title: customer.name, customers, customer })} onAskDelete={(customer) => askDelete([customer])} />}
     {pdfScope && <DetailedReport scope={pdfScope} onClose={() => setPdfScope(null)} />}
     {reportFor && <TrataReport customer={reportFor} onClose={() => setReportFor(null)} onManage={() => { setOpenId(reportFor.id); setReportFor(null); }} />}
 
-    {deleteTarget && <div className="modal-backdrop" role="presentation" onClick={() => { if (!deleting) setDeleteTarget(null); }}>
+    {deleteTargets.length > 0 && <div className="modal-backdrop" role="presentation" onClick={() => { if (!deleting) setDeleteTargets([]); }}>
       <section className="detail-modal delete-modal" role="alertdialog" aria-modal="true" aria-labelledby="delete-title" aria-describedby="delete-body" onClick={(event) => event.stopPropagation()}>
-        <h2 id="delete-title">{format(t.deleteTitle, { name: deleteTarget.name })}</h2>
-        <p id="delete-body">{isSaved(deleteTarget) ? t.deleteBody : t.deleteSampleBody}</p>
+        <h2 id="delete-title">{single ? format(t.deleteTitle, { name: single.name }) : format(t.deleteManyTitle, { count: String(deleteTargets.length) })}</h2>
+        <p id="delete-body">{single ? (isSaved(single) ? t.deleteBody : t.deleteSampleBody) : t.deleteManyBody}</p>
         {deleteError && <p className="upload-error" role="alert">{deleteError}</p>}
-        <div className="upload-actions"><button className="button-secondary" onClick={() => setDeleteTarget(null)} disabled={deleting}>{t.cancel}</button><button className="button-danger" onClick={() => void confirmDelete()} disabled={deleting} autoFocus>{deleting ? t.deleting : t.deleteConfirm}</button></div>
+        <div className="upload-actions"><button className="button-secondary" onClick={() => setDeleteTargets([])} disabled={deleting}>{t.cancel}</button><button className="button-danger" onClick={() => void confirmDelete()} disabled={deleting} autoFocus>{deleting ? t.deleting : t.deleteConfirm}</button></div>
       </section>
     </div>}
   </AppShell>;
