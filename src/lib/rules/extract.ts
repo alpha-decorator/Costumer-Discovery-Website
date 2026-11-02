@@ -8,7 +8,7 @@
  */
 import { findCuesNormalized, phrase, type Cue } from "@/lib/call-sentiment";
 import type { AccidentExperience, Evidence, FeatureOpinion, Importance, Intent, Level, Mention, MentionType, Role, Stance, Tone, Transport, Understanding } from "@/lib/trata";
-import { classify, pitchScore, QUESTION_ANYWHERE, TRATA_RE, YOU, type Classified, type SpeakerMode } from "./classify";
+import { classify, pitchScore, QUESTION_ANYWHERE, YOU, type Classified, type SpeakerMode } from "./classify";
 import * as L from "./lexicon";
 import { clip, normalizeMapped, once, segment, unitAt } from "./text";
 
@@ -24,9 +24,6 @@ export type Doc = {
   exchanges: Exchange[];
   /** The piece where the interviewer first introduces the product (the pitch, or else the first mention); -1 when there is none. */
   introAt: number;
-  /** Written notes about the customer, not a call: no interviewer side at all, and the text names Trata. Every remark is then
-   * about Trata, and "he would use it" is the customer's own view reported by the note-taker, not someone else's. */
-  notes: boolean;
 };
 
 const re = L.re;
@@ -102,11 +99,10 @@ export const PRODUCT_CTX = re("trata|सिस्टम|तकनीक|टे�
  * using, paying or liking the product, or when it follows the interviewer's pitch. A remark about the accident, the road or the
  * vehicle is problem talk even when it says "बढ़िया" or "परेशान": it is recorded as a concern, never as a score for Trata.
  */
-function aboutTrata(doc: Pick<Doc, "units" | "exchanges" | "notes">, answerOf: Map<number, Exchange>, index: number) {
+function aboutTrata(doc: Pick<Doc, "units" | "exchanges">, answerOf: Map<number, Exchange>, index: number) {
   const unit = doc.units[index];
   if (PRODUCT_CTX.test(unit.n)) return true;
   if (L.ACCIDENT_NOUN_RE.test(unit.n) || L.TRANSPORT_WORDS.some((item) => item.re.test(unit.n))) return false;
-  if (doc.notes) return true;
   const exchange = answerOf.get(index);
   if (exchange) {
     const kind = questionKind(doc, exchange);
@@ -119,14 +115,10 @@ function aboutTrata(doc: Pick<Doc, "units" | "exchanges" | "notes">, answerOf: M
 }
 
 /**
- * Is this a customer call (or notes of one) about Trata at all? Text that names Trata is always read: a short labelled call
- * often names the product, the accident and the ambulance in one sentence, and written notes ("He liked Trata, would pay 99")
- * have no interviewer side at all; refusing those gave real customers a score of 0.00. Text that does not name Trata needs the
- * interviewer's side (questions or the pitch) and two remarks about the product idea, an accident or the way they travel. An
- * article, a story or a lecture has neither, so it gets no score.
+ * Is this a customer call about Trata at all? It needs the interviewer's side (questions or the pitch) and something to talk
+ * about (the product, an accident, the way they travel). An article, a story or a lecture has neither, so it gets no score.
  */
 export function isCustomerCall(doc: Pick<Doc, "units">) {
-  if (doc.units.some((unit) => TRATA_RE.test(unit.n))) return true;
   const interviewer = doc.units.filter((unit) => unit.kind !== "C").length;
   const topics = doc.units.filter((unit) => PRODUCT_CTX.test(unit.n) || L.ACCIDENT_NOUN_RE.test(unit.n) || L.TRANSPORT_WORDS.some((item) => item.re.test(unit.n))).length;
   return interviewer >= 1 && topics >= 2;
@@ -136,8 +128,7 @@ export function buildDoc(raw: string): Doc {
   const mapped = normalizeMapped(raw);
   const { units, mode } = classify(segment(raw, mapped));
   const exchanges = buildExchanges(units);
-  const notes = !units.some((unit) => unit.kind !== "C") && units.some((unit) => TRATA_RE.test(unit.n));
-  const base = { raw, norm: mapped.norm, map: mapped.map, units, mode, exchanges, notes };
+  const base = { raw, norm: mapped.norm, map: mapped.map, units, mode, exchanges };
   const cues: UCue[] = [];
   const hasCue = new Set<number>();
   // Everything said before the product was first explained is small talk, and so are the answers to "how are you?".
@@ -228,7 +219,7 @@ function collectVotes(doc: Doc, rules: L.IntentRule[] | readonly L.IntentRule[],
   for (const { unit, index } of customerUnits(doc)) {
     if (doc.introAt >= 0 && index < doc.introAt) continue; // said before the product was introduced
     const own = once(L.FIRST_PERSON).test(unit.n);
-    const third = !doc.notes && once(L.THIRD_PERSON).test(unit.n) && !own;
+    const third = once(L.THIRD_PERSON).test(unit.n) && !own;
     const factor = third ? 0.25 : own ? 1 : 0.8;
     const found = { yes: 0, no: 0, maybe: 0 };
     for (const rule of rules) {
