@@ -5,6 +5,8 @@ import { AreaLine, HBars, Radar, ScaleBar } from "@/components/Charts";
 import { Icon } from "@/components/Icon";
 import { useI18n } from "@/components/I18nProvider";
 import type { DictKey } from "@/lib/i18n";
+import { CustomerInsightsView } from "@/components/CustomerInsights";
+import { groupInsightsOf, periodLabel, priceHeadline, priceStanceLabel, rangeText, rupees } from "@/lib/insights";
 import { TIERS, TOPICS, dateValue, signed, summarize, tierColor, type Customer, type Tier } from "@/lib/customers";
 
 /** A report covers the overall set, one tier, a hand-picked selection, or a single customer (with the group as the comparison). */
@@ -25,6 +27,12 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
   const negative = customers.filter((item) => item.sentiment < -0.15);
   const neutral = customers.filter((item) => item.sentiment >= -0.15 && item.sentiment <= 0.15);
   const followUps = customers.filter((item) => item.sentiment <= 0.15);
+  const group = useMemo(() => groupInsightsOf(customers), [customers]);
+  const language = lang === "hi" ? "hi" : "en";
+  const INTENT_ORDER = ["yes", "maybe", "no", "unclear"] as const;
+  // Sections are numbered in the order they render, so a section that is left out never leaves a gap.
+  let section = 0;
+  const heading = (en: string, hi: string) => `${++section}. ${L(en, hi)}`;
   const generated = new Date().toLocaleString(lang === "hi" ? "hi-IN" : "en-IN", { dateStyle: "medium", timeStyle: "short" });
 
   const tierName = (tier: Tier) => tier === "Expert" ? t.tierExpert : tier === "Public" ? t.tierPublic : t.tierNewbie;
@@ -78,7 +86,7 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
       {customers.length === 0 ? <p className="report-empty">{L("There are no interviews in this group yet. Add customer notes on the Upload page to build the report.", "इस समूह में अभी कोई इंटरव्यू नहीं है। रिपोर्ट बनाने के लिए अपलोड पेज पर ग्राहक नोट्स जोड़ें।")}</p> : <>
 
         <section className="report-section">
-          <h2>{L("1. Summary", "1. सारांश")}</h2>
+          <h2>{heading("Summary", "सारांश")}</h2>
           <p>{summaryText}</p>
           <table className="report-table">
             <tbody>
@@ -91,7 +99,7 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
         </section>
 
         {scope.kind === "overall" && <section className="report-section">
-          <h2>{L("2. Tier breakdown", "2. स्तर के अनुसार विश्लेषण")}</h2>
+          <h2>{heading("Tier breakdown", "स्तर के अनुसार विश्लेषण")}</h2>
           <table className="report-table">
             <thead><tr><th>{L("Tier", "स्तर")}</th><th>{L("Customers", "ग्राहक")}</th><th>{t.simple}</th><th>{t.weighted}</th><th>{L("Positive share", "सकारात्मक हिस्सा")}</th></tr></thead>
             <tbody>{TIERS.map((tier) => {
@@ -105,7 +113,7 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
         </section>}
 
         <section className="report-section">
-          <h2>{scope.kind === "overall" ? L("3. Topics", "3. विषय") : L("2. Topics", "2. विषय")}</h2>
+          <h2>{heading("Topics", "विषय")}</h2>
           <div className="report-two">
             <Radar labels={TOPICS.map(topicName)} series={[{ name: t.weighted, values: stats.topics.map((topic) => topic.weighted) }, { name: t.simple, values: stats.topics.map((topic) => topic.simple), dashed: true }]} />
             <table className="report-table">
@@ -116,13 +124,13 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
         </section>
 
         <section className="report-section">
-          <h2>{scope.kind === "overall" ? L("4. Sentiment", "4. भावना") : L("3. Sentiment", "3. भावना")}</h2>
+          <h2>{heading("Sentiment", "भावना")}</h2>
           <HBars rows={[{ label: t.positive, value: positive.length, color: "var(--s1)" }, { label: t.neutral, value: neutral.length, color: "var(--mid)" }, { label: t.negative, value: negative.length, color: "var(--s2)" }]} />
           {timeline.length > 1 && <div className="report-chart"><AreaLine points={timeline.map((item) => ({ label: item.date, value: item.sentiment }))} label={L("Sentiment over time", "समय के साथ भावना")} /></div>}
         </section>
 
         {customer ? <section className="report-section">
-          <h2>{L("4. This customer", "4. यह ग्राहक")}</h2>
+          <h2>{heading("This customer", "यह ग्राहक")}</h2>
           <ScaleBar value={customer.sentiment} />
           <div className="report-two">
             <div>
@@ -134,10 +142,8 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
               <Radar labels={TOPICS.map(topicName)} series={[{ name: customer.name.split(" ")[0], values: TOPICS.map((topic) => customer.topics[topic]), color: tierColor(customer.tier) }, { name: L("Group average", "समूह औसत"), values: stats.topics.map((topic) => topic.simple), dashed: true }]} />
             </div>
           </div>
-          <h3>{L("Transcript or notes", "ट्रांसक्रिप्ट या नोट्स")}</h3>
-          <blockquote className="report-quote" lang={customer.language === "hi" ? "hi" : "en"}>{customer.transcript}</blockquote>
         </section> : <section className="report-section">
-          <h2>{L("5. Customers", "5. ग्राहक")}</h2>
+          <h2>{heading("Customers", "ग्राहक")}</h2>
           <table className="report-table">
             <thead><tr><th>{L("Customer", "ग्राहक")}</th><th>{L("Company", "कंपनी")}</th><th>{L("Tier", "स्तर")}</th><th>{L("Date", "तारीख")}</th><th>{L("Score", "स्कोर")}</th></tr></thead>
             <tbody>{ranked.map((item) => <tr key={item.id}><td>{item.name}</td><td>{item.company}</td><td>{tierName(item.tier)}</td><td>{item.date}</td><td>{signed(item.sentiment)}</td></tr>)}</tbody>
@@ -145,17 +151,53 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
           <h3>{L("What each customer said", "हर ग्राहक ने क्या कहा")}</h3>
           {ranked.map((item) => <div className="report-customer" key={`card-${item.id}`}>
             <strong>{item.name} <span className="report-muted">· {item.company} · {tierName(item.tier)} · {signed(item.sentiment)}</span></strong>
+            {item.analysis && <p className="report-card-meta">{L("Would use", "इस्तेमाल करेंगे")}: <b>{t[`intent_${item.analysis.wouldUse}` as DictKey]}</b> · {L("Would pay", "भुगतान करेंगे")}: <b>{t[`intent_${item.analysis.wouldPay}` as DictKey]}</b>{item.analysis.prices?.length ? <> · {L("Prices", "कीमतें")}: {item.analysis.prices.map((price) => `${priceHeadline(price, language)} (${priceStanceLabel(price.stance, language).toLowerCase()})`).join("; ")}</> : null}</p>}
             <ul className="report-list">{item.keyPoints.map((point, index) => <li key={`${item.id}-${index}`} lang={item.language === "hi" ? "hi" : "en"}>{point}</li>)}</ul>
           </div>)}
         </section>}
 
+        {customer?.analysis && <section className="report-section report-insights">
+          <h2>{heading("What we learned from this call", "इस बातचीत से क्या पता चला")}</h2>
+          <CustomerInsightsView analysis={customer.analysis} variant="print" lang={customer.language === "hi" ? "hi" : "en"} />
+        </section>}
+
+        {!customer && group.analysed > 0 && <section className="report-section report-insights">
+          <h2>{heading("What customers want", "ग्राहक क्या चाहते हैं")}</h2>
+          <h3>{L("Would they use it, would they pay", "क्या वे इस्तेमाल करेंगे, क्या भुगतान करेंगे")}</h3>
+          <table className="report-table">
+            <thead><tr><th />{INTENT_ORDER.map((intent) => <th key={intent}>{t[`intent_${intent}` as DictKey]}</th>)}</tr></thead>
+            <tbody>
+              <tr><th>{L("Would use", "इस्तेमाल करेंगे")}</th>{INTENT_ORDER.map((intent) => <td key={intent}>{group.wouldUse[intent]} <span className="report-muted">({Math.round(group.wouldUse[intent] / group.analysed * 100)}%)</span></td>)}</tr>
+              <tr><th>{L("Would pay", "भुगतान करेंगे")}</th>{INTENT_ORDER.map((intent) => <td key={intent}>{group.wouldPay[intent]} <span className="report-muted">({Math.round(group.wouldPay[intent] / group.analysed * 100)}%)</span></td>)}</tr>
+            </tbody>
+          </table>
+          <p className="report-note">{L(`Out of ${group.analysed} analysed call${group.analysed === 1 ? "" : "s"}.`, `${group.analysed} विश्लेषित बातचीत में से।`)}</p>
+
+          <h3>{L("Prices customers accept", "ग्राहक कितनी कीमत मानते हैं")}</h3>
+          {group.ranges.length ? <table className="report-table">
+            <thead><tr><th>{L("Period", "अवधि")}</th><th>{L("Willing to pay", "देने को तैयार")}</th><th>{L("Called too expensive", "बहुत महंगा कहा")}</th><th>{L("Customers", "ग्राहक")}</th></tr></thead>
+            <tbody>{group.ranges.map((range) => <tr key={range.period}><td>{periodLabel(range.period, language)}</td><td>{rangeText(range.accepted, language)}</td><td>{range.tooHigh.length ? `${L("from", "से")} ${rupees(Math.min(...range.tooHigh))}` : "—"}</td><td>{range.customers}</td></tr>)}</tbody>
+          </table> : <p className="report-muted">{L("No customer named a price.", "किसी ग्राहक ने कीमत नहीं बताई।")}</p>}
+
+          {group.asks.length > 0 && <><h3>{L("Suggestions & feature requests", "सुझाव और फ़ीचर की माँग")}</h3><table className="report-table report-table-tight"><tbody>{group.asks.map((row, index) => <tr key={index}><th>{row.who}</th><td>{row.text}</td></tr>)}</tbody></table></>}
+          {group.worries.length > 0 && <><h3>{L("Concerns & objections", "चिंताएँ और आपत्तियाँ")}</h3><table className="report-table report-table-tight"><tbody>{group.worries.map((row, index) => <tr key={index}><th>{row.who}</th><td>{row.text}</td></tr>)}</tbody></table></>}
+          {group.promises.length > 0 && <><h3>{L("Offers of help", "मदद की पेशकश")}</h3><table className="report-table report-table-tight"><tbody>{group.promises.map((row, index) => <tr key={index}><th>{row.who}</th><td>{row.text}</td></tr>)}</tbody></table></>}
+          {group.alternatives.length > 0 && <><h3>{L("What they use today", "वे अभी क्या इस्तेमाल करते हैं")}</h3>
+            <p>{group.alternatives.map((item) => <span className="report-tag" key={item.name}>{item.name} · {item.count}</span>)}</p></>}
+        </section>}
+
         <section className="report-section">
-          <h2>{customer ? L("5. Concerns and follow-up", "5. चिंताएँ और अनुवर्ती कार्य") : scope.kind === "overall" ? L("6. Concerns and follow-up", "6. चिंताएँ और अनुवर्ती कार्य") : L("4. Concerns and follow-up", "4. चिंताएँ और अनुवर्ती कार्य")}</h2>
+          <h2>{heading("Concerns and follow-up", "चिंताएँ और अनुवर्ती कार्य")}</h2>
           <h3>{L("Negative responses", "नकारात्मक प्रतिक्रियाएँ")}</h3>
           {negative.length ? <ul className="report-list">{negative.map((item) => <li key={item.id}><strong>{item.name}</strong>: {item.keyPoints.join("; ")}</li>)}</ul> : <p className="report-muted">{L("No strongly negative responses.", "कोई मजबूत नकारात्मक प्रतिक्रिया नहीं।")}</p>}
           <h3>{L("Follow-up candidates (not clearly positive)", "अनुवर्ती कार्य के उम्मीदवार (स्पष्ट रूप से सकारात्मक नहीं)")}</h3>
           {followUps.length ? <ul className="report-list">{followUps.map((item) => <li key={`follow-${item.id}`}>{item.name} · {item.company} · {signed(item.sentiment)}</li>)}</ul> : <p className="report-muted">{L("Everyone in this group was clearly positive.", "इस समूह के सभी ग्राहक स्पष्ट रूप से सकारात्मक थे।")}</p>}
         </section>
+
+        {customer && <section className="report-section report-appendix">
+          <h2>{L("Appendix: transcript or notes", "परिशिष्ट: ट्रांसक्रिप्ट या नोट्स")}</h2>
+          <blockquote className="report-quote" lang={customer.language === "hi" ? "hi" : "en"}>{customer.transcript}</blockquote>
+        </section>}
 
         <section className="report-section report-method">
           <h2>{L("Method and accuracy", "पद्धति और सटीकता")}</h2>

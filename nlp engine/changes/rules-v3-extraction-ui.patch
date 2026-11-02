@@ -1,0 +1,1184 @@
+diff --git a/src/app/insights.css b/src/app/insights.css
+index 54d82bf..1fdeacd 100644
+--- a/src/app/insights.css
++++ b/src/app/insights.css
+@@ -71,3 +71,56 @@
+ .fn-row-actions{display:inline-flex;align-items:center;gap:14px}
+ .fn-row-edit{gap:5px}
+ @media (max-width:520px){.fn-edit-grid{grid-template-columns:1fr}.fn-row-edit{font-size:0;gap:0}}
++
++/* What we learned from a call (CustomerInsights.tsx): intent tiles, prices, asks, worries, profile. */
++.fn-detail-insights{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
++.fn-detail-insights>.eyebrow{display:block;margin-bottom:10px}
++.fn-insights{display:grid;gap:14px}
++.fn-ins-intent{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
++.fn-ins-tile{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;min-width:0}
++.fn-ins-tile span{font-size:11px;color:var(--muted)}
++.fn-ins-tile b{font-size:15px}
++.fn-ins-tile.intent-yes{border-color:color-mix(in srgb,var(--s3) 55%,transparent);background:color-mix(in srgb,var(--s3) 9%,transparent)}
++.fn-ins-tile.intent-maybe{border-color:color-mix(in srgb,#d9a227 55%,transparent);background:color-mix(in srgb,#d9a227 9%,transparent)}
++.fn-ins-tile.intent-no{border-color:color-mix(in srgb,var(--s2) 55%,transparent);background:color-mix(in srgb,var(--s2) 9%,transparent)}
++.fn-ins-block{display:grid;gap:8px;min-width:0}
++.fn-ins-block>.eyebrow b{display:inline-grid;place-items:center;min-width:18px;height:18px;margin-left:6px;padding:0 5px;border-radius:9px;background:rgb(127 127 127 / .14);font-size:10px}
++.fn-ins-prices{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}
++.fn-ins-prices li{border:1px solid var(--line);border-left-width:4px;border-radius:10px;padding:10px 12px;display:grid;gap:3px;color:inherit}
++.fn-ins-prices li.tone-pos{border-left-color:var(--s3)}
++.fn-ins-prices li.tone-neg{border-left-color:var(--s2)}
++.fn-ins-prices strong{font-size:16px}
++.fn-ins-prices em{font-style:normal;font-size:11px;font-weight:600;color:var(--muted)}
++.fn-ins-prices q{font-size:12px;color:var(--muted);line-height:1.45}
++.fn-ins-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
++.fn-ins-list li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px;line-height:1.5}
++.fn-ins-list small{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);white-space:nowrap}
++.fn-ins-worries .fn-ins-list li{border-left:3px solid var(--s2)}
++.fn-ins-asks .fn-ins-list li{border-left:3px solid var(--s1)}
++.fn-ins-promises .fn-ins-list li{border-left:3px solid var(--s3)}
++.fn-ins-tags{display:flex;flex-wrap:wrap;gap:6px}
++.fn-ins-tags span{padding:4px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px}
++.fn-ins-profile{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:8px;margin:0}
++.fn-ins-profile div{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
++.fn-ins-profile dt{font-size:11px;color:var(--muted)}
++.fn-ins-profile dd{margin:2px 0 0;font-weight:600;font-size:13px}
++@media (max-width:520px){.fn-ins-list li{grid-template-columns:1fr;gap:2px}}
++
++/* The same insights in the PDF. */
++.report-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:6px 0 4px}
++.report-kpi{border:1px solid #dfe5df;border-radius:8px;padding:8px 10px;break-inside:avoid}
++.report-kpi span{display:block;font-size:10.5px;color:#5d6861!important}
++.report-kpi b{display:block;font-size:14px;margin-top:2px}
++.report-print .report-kpi.intent-yes{background:#e9f7f0;border-color:#9fd8bd}
++.report-print .report-kpi.intent-maybe{background:#fdf5e2;border-color:#ecd18f}
++.report-print .report-kpi.intent-no{background:#fdeee7;border-color:#f1b79c}
++.report-tag{display:inline-block;padding:1px 8px;margin:0 6px 4px 0;border:1px solid #dfe5df;border-radius:999px;font-size:11px;background:#f7f9f6}
++.report-print .report-tag.tone-pos{background:#e9f7f0;border-color:#9fd8bd;color:#14613f!important}
++.report-print .report-tag.tone-neg{background:#fdeee7;border-color:#f1b79c;color:#9a3a12!important}
++.report-table-tight tbody th{width:28%}
++.report-qa td:first-child{color:#5d6861!important;width:38%}
++.report-card-meta{margin:4px 0 0;font-size:11.5px}
++.report-insights h3{margin-top:16px}
++.report-table tr{break-inside:avoid}
++@media (max-width:640px){.report-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
++@media print{.report-overlay,.report-print,.report-print *{animation:none!important;transition:none!important}.report-print *{-webkit-print-color-adjust:exact;print-color-adjust:exact}.report-appendix{break-before:page}.report-insights{break-inside:auto}.report-section{break-inside:auto}.report-print h2,.report-print h3{break-after:avoid}}
+diff --git a/src/components/CustomerDetail.tsx b/src/components/CustomerDetail.tsx
+index 799a702..36bddd6 100644
+--- a/src/components/CustomerDetail.tsx
++++ b/src/components/CustomerDetail.tsx
+@@ -8,6 +8,7 @@ import { Icon } from "@/components/Icon";
+ import { TOPICS, initialsColor, signed, summarize, tierColor, type Customer, type Tier } from "@/lib/customers";
+ import { useWorkspace } from "@/components/WorkspaceProvider";
+ import { DemographicsFields } from "@/components/DemographicsFields";
++import { CustomerInsightsView } from "@/components/CustomerInsights";
+ import { AREAS, EDUCATIONS, GENDERS, INCOMES, OCCUPATIONS, VEHICLES, cleanDemographics, optionLabel, stateLabel } from "@/lib/demographics";
+ 
+ /**
+@@ -119,6 +120,10 @@ export function CustomerDetail({ customer, group, startEditing = false, onClose,
+             ]} />
+           </section>
+         </div>
++        {customer.analysis && <section className="fn-detail-insights">
++          <span className="eyebrow">{L("What we learned from this call", "इस बातचीत से क्या पता चला")}</span>
++          <CustomerInsightsView analysis={customer.analysis} lang={customer.language === "hi" ? "hi" : "en"} />
++        </section>}
+         <div className="upload-actions fn-detail-actions">
+           <button className="button-secondary modal-delete" onClick={() => onAskDelete(customer)}>{t.deleteCustomer}</button>
+           {saved && <>
+diff --git a/src/components/DetailedReport.tsx b/src/components/DetailedReport.tsx
+index c606d94..8301e0e 100644
+--- a/src/components/DetailedReport.tsx
++++ b/src/components/DetailedReport.tsx
+@@ -5,6 +5,8 @@ import { AreaLine, HBars, Radar, ScaleBar } from "@/components/Charts";
+ import { Icon } from "@/components/Icon";
+ import { useI18n } from "@/components/I18nProvider";
+ import type { DictKey } from "@/lib/i18n";
++import { CustomerInsightsView } from "@/components/CustomerInsights";
++import { groupInsightsOf, periodLabel, priceHeadline, priceStanceLabel, rangeText, rupees } from "@/lib/insights";
+ import { TIERS, TOPICS, dateValue, signed, summarize, tierColor, type Customer, type Tier } from "@/lib/customers";
+ 
+ /** A report covers the overall set, one tier, a hand-picked selection, or a single customer (with the group as the comparison). */
+@@ -25,6 +27,12 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
+   const negative = customers.filter((item) => item.sentiment < -0.15);
+   const neutral = customers.filter((item) => item.sentiment >= -0.15 && item.sentiment <= 0.15);
+   const followUps = customers.filter((item) => item.sentiment <= 0.15);
++  const group = useMemo(() => groupInsightsOf(customers), [customers]);
++  const language = lang === "hi" ? "hi" : "en";
++  const INTENT_ORDER = ["yes", "maybe", "no", "unclear"] as const;
++  // Sections are numbered in the order they render, so a section that is left out never leaves a gap.
++  let section = 0;
++  const heading = (en: string, hi: string) => `${++section}. ${L(en, hi)}`;
+   const generated = new Date().toLocaleString(lang === "hi" ? "hi-IN" : "en-IN", { dateStyle: "medium", timeStyle: "short" });
+ 
+   const tierName = (tier: Tier) => tier === "Expert" ? t.tierExpert : tier === "Public" ? t.tierPublic : t.tierNewbie;
+@@ -78,7 +86,7 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
+       {customers.length === 0 ? <p className="report-empty">{L("There are no interviews in this group yet. Add customer notes on the Upload page to build the report.", "इस समूह में अभी कोई इंटरव्यू नहीं है। रिपोर्ट बनाने के लिए अपलोड पेज पर ग्राहक नोट्स जोड़ें।")}</p> : <>
+ 
+         <section className="report-section">
+-          <h2>{L("1. Summary", "1. सारांश")}</h2>
++          <h2>{heading("Summary", "सारांश")}</h2>
+           <p>{summaryText}</p>
+           <table className="report-table">
+             <tbody>
+@@ -91,7 +99,7 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
+         </section>
+ 
+         {scope.kind === "overall" && <section className="report-section">
+-          <h2>{L("2. Tier breakdown", "2. स्तर के अनुसार विश्लेषण")}</h2>
++          <h2>{heading("Tier breakdown", "स्तर के अनुसार विश्लेषण")}</h2>
+           <table className="report-table">
+             <thead><tr><th>{L("Tier", "स्तर")}</th><th>{L("Customers", "ग्राहक")}</th><th>{t.simple}</th><th>{t.weighted}</th><th>{L("Positive share", "सकारात्मक हिस्सा")}</th></tr></thead>
+             <tbody>{TIERS.map((tier) => {
+@@ -105,7 +113,7 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
+         </section>}
+ 
+         <section className="report-section">
+-          <h2>{scope.kind === "overall" ? L("3. Topics", "3. विषय") : L("2. Topics", "2. विषय")}</h2>
++          <h2>{heading("Topics", "विषय")}</h2>
+           <div className="report-two">
+             <Radar labels={TOPICS.map(topicName)} series={[{ name: t.weighted, values: stats.topics.map((topic) => topic.weighted) }, { name: t.simple, values: stats.topics.map((topic) => topic.simple), dashed: true }]} />
+             <table className="report-table">
+@@ -116,13 +124,13 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
+         </section>
+ 
+         <section className="report-section">
+-          <h2>{scope.kind === "overall" ? L("4. Sentiment", "4. भावना") : L("3. Sentiment", "3. भावना")}</h2>
++          <h2>{heading("Sentiment", "भावना")}</h2>
+           <HBars rows={[{ label: t.positive, value: positive.length, color: "var(--s1)" }, { label: t.neutral, value: neutral.length, color: "var(--mid)" }, { label: t.negative, value: negative.length, color: "var(--s2)" }]} />
+           {timeline.length > 1 && <div className="report-chart"><AreaLine points={timeline.map((item) => ({ label: item.date, value: item.sentiment }))} label={L("Sentiment over time", "समय के साथ भावना")} /></div>}
+         </section>
+ 
+         {customer ? <section className="report-section">
+-          <h2>{L("4. This customer", "4. यह ग्राहक")}</h2>
++          <h2>{heading("This customer", "यह ग्राहक")}</h2>
+           <ScaleBar value={customer.sentiment} />
+           <div className="report-two">
+             <div>
+@@ -134,10 +142,8 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
+               <Radar labels={TOPICS.map(topicName)} series={[{ name: customer.name.split(" ")[0], values: TOPICS.map((topic) => customer.topics[topic]), color: tierColor(customer.tier) }, { name: L("Group average", "समूह औसत"), values: stats.topics.map((topic) => topic.simple), dashed: true }]} />
+             </div>
+           </div>
+-          <h3>{L("Transcript or notes", "ट्रांसक्रिप्ट या नोट्स")}</h3>
+-          <blockquote className="report-quote" lang={customer.language === "hi" ? "hi" : "en"}>{customer.transcript}</blockquote>
+         </section> : <section className="report-section">
+-          <h2>{L("5. Customers", "5. ग्राहक")}</h2>
++          <h2>{heading("Customers", "ग्राहक")}</h2>
+           <table className="report-table">
+             <thead><tr><th>{L("Customer", "ग्राहक")}</th><th>{L("Company", "कंपनी")}</th><th>{L("Tier", "स्तर")}</th><th>{L("Date", "तारीख")}</th><th>{L("Score", "स्कोर")}</th></tr></thead>
+             <tbody>{ranked.map((item) => <tr key={item.id}><td>{item.name}</td><td>{item.company}</td><td>{tierName(item.tier)}</td><td>{item.date}</td><td>{signed(item.sentiment)}</td></tr>)}</tbody>
+@@ -145,18 +151,54 @@ export function DetailedReport({ scope, onClose }: { scope: ReportScope; onClose
+           <h3>{L("What each customer said", "हर ग्राहक ने क्या कहा")}</h3>
+           {ranked.map((item) => <div className="report-customer" key={`card-${item.id}`}>
+             <strong>{item.name} <span className="report-muted">· {item.company} · {tierName(item.tier)} · {signed(item.sentiment)}</span></strong>
++            {item.analysis && <p className="report-card-meta">{L("Would use", "इस्तेमाल करेंगे")}: <b>{t[`intent_${item.analysis.wouldUse}` as DictKey]}</b> · {L("Would pay", "भुगतान करेंगे")}: <b>{t[`intent_${item.analysis.wouldPay}` as DictKey]}</b>{item.analysis.prices?.length ? <> · {L("Prices", "कीमतें")}: {item.analysis.prices.map((price) => `${priceHeadline(price, language)} (${priceStanceLabel(price.stance, language).toLowerCase()})`).join("; ")}</> : null}</p>}
+             <ul className="report-list">{item.keyPoints.map((point, index) => <li key={`${item.id}-${index}`} lang={item.language === "hi" ? "hi" : "en"}>{point}</li>)}</ul>
+           </div>)}
+         </section>}
+ 
++        {customer?.analysis && <section className="report-section report-insights">
++          <h2>{heading("What we learned from this call", "इस बातचीत से क्या पता चला")}</h2>
++          <CustomerInsightsView analysis={customer.analysis} variant="print" lang={customer.language === "hi" ? "hi" : "en"} />
++        </section>}
++
++        {!customer && group.analysed > 0 && <section className="report-section report-insights">
++          <h2>{heading("What customers want", "ग्राहक क्या चाहते हैं")}</h2>
++          <h3>{L("Would they use it, would they pay", "क्या वे इस्तेमाल करेंगे, क्या भुगतान करेंगे")}</h3>
++          <table className="report-table">
++            <thead><tr><th />{INTENT_ORDER.map((intent) => <th key={intent}>{t[`intent_${intent}` as DictKey]}</th>)}</tr></thead>
++            <tbody>
++              <tr><th>{L("Would use", "इस्तेमाल करेंगे")}</th>{INTENT_ORDER.map((intent) => <td key={intent}>{group.wouldUse[intent]} <span className="report-muted">({Math.round(group.wouldUse[intent] / group.analysed * 100)}%)</span></td>)}</tr>
++              <tr><th>{L("Would pay", "भुगतान करेंगे")}</th>{INTENT_ORDER.map((intent) => <td key={intent}>{group.wouldPay[intent]} <span className="report-muted">({Math.round(group.wouldPay[intent] / group.analysed * 100)}%)</span></td>)}</tr>
++            </tbody>
++          </table>
++          <p className="report-note">{L(`Out of ${group.analysed} analysed call${group.analysed === 1 ? "" : "s"}.`, `${group.analysed} विश्लेषित बातचीत में से।`)}</p>
++
++          <h3>{L("Prices customers accept", "ग्राहक कितनी कीमत मानते हैं")}</h3>
++          {group.ranges.length ? <table className="report-table">
++            <thead><tr><th>{L("Period", "अवधि")}</th><th>{L("Willing to pay", "देने को तैयार")}</th><th>{L("Called too expensive", "बहुत महंगा कहा")}</th><th>{L("Customers", "ग्राहक")}</th></tr></thead>
++            <tbody>{group.ranges.map((range) => <tr key={range.period}><td>{periodLabel(range.period, language)}</td><td>{rangeText(range.accepted, language)}</td><td>{range.tooHigh.length ? `${L("from", "से")} ${rupees(Math.min(...range.tooHigh))}` : "—"}</td><td>{range.customers}</td></tr>)}</tbody>
++          </table> : <p className="report-muted">{L("No customer named a price.", "किसी ग्राहक ने कीमत नहीं बताई।")}</p>}
++
++          {group.asks.length > 0 && <><h3>{L("Suggestions & feature requests", "सुझाव और फ़ीचर की माँग")}</h3><table className="report-table report-table-tight"><tbody>{group.asks.map((row, index) => <tr key={index}><th>{row.who}</th><td>{row.text}</td></tr>)}</tbody></table></>}
++          {group.worries.length > 0 && <><h3>{L("Concerns & objections", "चिंताएँ और आपत्तियाँ")}</h3><table className="report-table report-table-tight"><tbody>{group.worries.map((row, index) => <tr key={index}><th>{row.who}</th><td>{row.text}</td></tr>)}</tbody></table></>}
++          {group.promises.length > 0 && <><h3>{L("Offers of help", "मदद की पेशकश")}</h3><table className="report-table report-table-tight"><tbody>{group.promises.map((row, index) => <tr key={index}><th>{row.who}</th><td>{row.text}</td></tr>)}</tbody></table></>}
++          {group.alternatives.length > 0 && <><h3>{L("What they use today", "वे अभी क्या इस्तेमाल करते हैं")}</h3>
++            <p>{group.alternatives.map((item) => <span className="report-tag" key={item.name}>{item.name} · {item.count}</span>)}</p></>}
++        </section>}
++
+         <section className="report-section">
+-          <h2>{customer ? L("5. Concerns and follow-up", "5. चिंताएँ और अनुवर्ती कार्य") : scope.kind === "overall" ? L("6. Concerns and follow-up", "6. चिंताएँ और अनुवर्ती कार्य") : L("4. Concerns and follow-up", "4. चिंताएँ और अनुवर्ती कार्य")}</h2>
++          <h2>{heading("Concerns and follow-up", "चिंताएँ और अनुवर्ती कार्य")}</h2>
+           <h3>{L("Negative responses", "नकारात्मक प्रतिक्रियाएँ")}</h3>
+           {negative.length ? <ul className="report-list">{negative.map((item) => <li key={item.id}><strong>{item.name}</strong>: {item.keyPoints.join("; ")}</li>)}</ul> : <p className="report-muted">{L("No strongly negative responses.", "कोई मजबूत नकारात्मक प्रतिक्रिया नहीं।")}</p>}
+           <h3>{L("Follow-up candidates (not clearly positive)", "अनुवर्ती कार्य के उम्मीदवार (स्पष्ट रूप से सकारात्मक नहीं)")}</h3>
+           {followUps.length ? <ul className="report-list">{followUps.map((item) => <li key={`follow-${item.id}`}>{item.name} · {item.company} · {signed(item.sentiment)}</li>)}</ul> : <p className="report-muted">{L("Everyone in this group was clearly positive.", "इस समूह के सभी ग्राहक स्पष्ट रूप से सकारात्मक थे।")}</p>}
+         </section>
+ 
++        {customer && <section className="report-section report-appendix">
++          <h2>{L("Appendix: transcript or notes", "परिशिष्ट: ट्रांसक्रिप्ट या नोट्स")}</h2>
++          <blockquote className="report-quote" lang={customer.language === "hi" ? "hi" : "en"}>{customer.transcript}</blockquote>
++        </section>}
++
+         <section className="report-section report-method">
+           <h2>{L("Method and accuracy", "पद्धति और सटीकता")}</h2>
+           <p>{L("Sentiment is read from each saved transcript or note by Fieldnotes' built-in rules for English, Hindi and Hinglish. The score runs from −1 (very negative) to +1 (very positive). The simple average gives every customer equal weight; the weighted score counts experts more than newcomers. Topic scores come from what customers said about each topic.", "भावना का आकलन हर सेव किए गए ट्रांसक्रिप्ट या नोट से Fieldnotes के अंतर्निहित नियमों द्वारा किया जाता है (अंग्रेज़ी, हिंदी और हिंग्लिश)। स्कोर −1 (बहुत नकारात्मक) से +1 (बहुत सकारात्मक) तक है। सरल औसत हर ग्राहक को समान भार देता है; भारित स्कोर विशेषज्ञों को नए लोगों से अधिक भार देता है।")}</p>
+diff --git a/src/components/TrataReport.tsx b/src/components/TrataReport.tsx
+index 14f78c5..6c834c2 100644
+--- a/src/components/TrataReport.tsx
++++ b/src/components/TrataReport.tsx
+@@ -5,6 +5,7 @@ import { useI18n } from "@/components/I18nProvider";
+ import { format, type DictKey } from "@/lib/i18n";
+ import type { Interview } from "@/lib/interviews";
+ import { MENTION_TYPES, sentimentTone, type Evidence, type MentionType, type TrataAnalysis } from "@/lib/trata";
++import { priceHeadline, priceStanceLabel, priceTone } from "@/lib/insights";
+ 
+ type Topics = { UX: number; Pricing: number; Features: number };
+ type Props = { customer: Interview; reference?: Topics | null; onClose: () => void; onManage?: () => void };
+@@ -226,6 +227,17 @@ export function TrataReport({ customer, reference, onClose, onManage }: Props) {
+           {analysis.summary && <section className="tr-card tr-wide"><h3>{t.trSummary}</h3><p>{analysis.summary}</p>
+             {analysis.keyPoints.length > 0 && <ul className="tr-points">{analysis.keyPoints.map((point, index) => <li key={index}>{point}</li>)}</ul>}</section>}
+ 
++          {analysis.prices && analysis.prices.length > 0 && (
++            <section className="tr-card tr-wide" aria-labelledby="tr-prices-title">
++              <h3 id="tr-prices-title">{lang === "hi" ? "कीमतें जिनकी बात हुई" : "Prices they talked about"}</h3>
++              <ul className="fn-ins-prices">{analysis.prices.map((price, index) => <li key={index} className={`tone-${priceTone(price.stance)}`}>
++                <strong>{priceHeadline(price, lang === "hi" ? "hi" : "en")}</strong>
++                <em>{priceStanceLabel(price.stance, lang === "hi" ? "hi" : "en")}{price.who === "interviewer" ? (lang === "hi" ? " · इंटरव्यूअर ने पूछा" : " · asked by interviewer") : ""}</em>
++                <q lang={quoteLang}>{price.text}</q>
++              </li>)}</ul>
++            </section>
++          )}
++
+           {analysis.profile && (
+             <section className="tr-card tr-wide" aria-labelledby="tr-profile-title">
+               <h3 id="tr-profile-title">{t.trProfileTitle}</h3>
+diff --git a/src/lib/call-sentiment.ts b/src/lib/call-sentiment.ts
+index 6d5e994..70c38ed 100644
+--- a/src/lib/call-sentiment.ts
++++ b/src/lib/call-sentiment.ts
+@@ -36,8 +36,25 @@ const RULES: Rule[] = [
+   // ---- praise and intent to use ------------------------------------------------------------------------------
+   rule("useful", "useful|usefull|यूसफुल|यूजफुल|यूज़फुल|यूसफूल|यूसपुल|यूजपुल|यूज़पुल|यूसफ़ुल|यूजफूल|उपयोगी|helpful|मददगार|काम का|काम की चीज़|काम की चीज|काम आएगा|काम आजाएगा|काम आ जाएगा|काम आयेगा|काम आ सकता है", 0.6, "praise", { topic: "Features" }),
+   rule("strong praise", "excellent|awesome|amazing|brilliant|fantastic|बेहतरीन|शानदार|ज़बरदस्त|जबरदस्त|कमाल|लाजवाब|मस्त|वाह", 0.85, "praise"),
+-  rule("praise", "great|good idea|nice idea|nice|बढ़िया|बढिया|नाइस|अच्छा आइडिया|अच्छा आईडिया|अच्छा लगा|अच्छी लगी|अच्छा लग रहा|बहुत अच्छा|बहुत अच्छी|सही है|सही रहेगा|सही लगता|पसंद आया|पसंद आई|पसंद है|i like it|like it|love it|loved it|love", 0.55, "praise"),
+-  rule("good", "works well|working well|सही चीज़|सही चीज|अच्छा है|अच्छी है", 0.4, "praise"),
++  rule("praise", "great|good idea|nice idea|nice|बढ़िया|बढिया|नाइस|अच्छा आइडिया|अच्छा आईडिया|अच्छा लगा|अच्छी लगी|अच्छा लग रहा|बहुत अच्छा|बहुत अच्छी|सही है|सही रहेगा|सही लगता|पसंद आया|पसंद आई|पसंद है|i like it|like it|liked it|i like this|i like the idea|love", 0.55, "praise"),
++  rule("good", "works well|working well|सही चीज़|सही चीज|अच्छा है|अच्छी है|idea is good|idea is nice|it's good|it is good|looks good|sounds good|seems good|looks helpful|looks useful|sounds useful|accha hai|acha hai|achha hai|achchha hai|अच्छा तो है|आइडिया अच्छा|idea accha|idea acha|idea achha", 0.4, "praise"),
++  // ---- added in the nlp-engine pass: love, life-saving, eager, not bad ------------------------------------------
++  rule("love", "love it|loved it|love this|i love|absolutely love|really like it|really liked it|really like this|बहुत पसंद आया|बहुत पसंद आई|बहुत पसंद है|दिल से पसंद|bahut pasand aaya|bahut pasand aayi|bahut pasand hai|dil se pasand|perfect|परफेक्ट|perfect hai", 0.8, "praise"),
++  rule("life saver", "life saver|lifesaver|life-saver|game changer|game-changer|gamechanger|save lives|saves lives|save a life|save many lives|can save lives|जान बचा सकता|जान बचा सकती|जान बचाएगा|जान बचाएगी|जान बचाने|जान बच सकती|जान बच सकता|जान बच जाएगी|जिंदगी बचा|ज़िंदगी बचा|jaan bacha|jaan bach sakti|jaan bach sakta|jaan bachayega|jaan bachane|zindagi bacha|much needed|बहुत काम की|बहुत काम का|bahut kaam ki|bahut kaam ka|kaam ki cheez hai", 0.8, "praise", { topic: "Features" }),
++  rule("eager", "can't wait|cannot wait|cant wait|बेसब्री|इंतज़ार रहेगा|इंतजार रहेगा|intezaar rahega|when can i get|कब मिलेगा|kab milega|kab launch|कब लॉन्च", 0.7, "praise"),
++  rule("not bad", "not bad|not too bad|not that bad|बुरा नहीं|बुरा नही|bura nahi|bura nahin|खराब नहीं|kharab nahi", 0.35, "praise"),
++  rule("fan", "big fan|huge fan|i'm a fan|i am a fan|fan of this|fan ho gaya|फैन हो गया|first class|फर्स्ट क्लास|उम्दा|umda|क्या बात है|kya baat hai|kya baat|top class|world class|वर्ल्ड क्लास|hats off|हैट्स ऑफ|well done|वेल डन|बहुत खूब|bahut khoob|without a doubt|no doubt about it|बेशक|beshak", 0.75, "praise"),
++  rule("wow", "wow|wah|waah|arre wah|kya cheez|क्या चीज़ बनाई|क्या चीज बनाई|kya cheez banayi|हर गाड़ी में होनी चाहिए|हर गाड़ी में होना चाहिए|har gaadi mein honi chahiye|har gadi me honi chahiye|every car should have|every vehicle should have|should be in every car|everyone should have", 0.75, "praise"),
++  rule("not now", "abhi nahi|abhi zaroorat nahi|abhi jarurat nahi|abhi need nahi|अभी नहीं|अभी जरूरत नहीं|अभी ज़रूरत नहीं|not right now|not now|maybe later|baad mein dekhenge|बाद में देखेंगे|later on maybe", -0.2, "reject"),
++  rule("sarcasm", "yeah right|as if anyone|as if someone|as if people|haan haan zaroor|हां हां ज़रूर|हाँ हाँ ज़रूर|doesn't make sense|does not make sense|makes no sense|no sense|koi sense nahi|कोई सेंस नहीं|समझ से बाहर", -0.55, "reject"),
++  // Strong English praise (mirror of "strong reject (en)").
++  rule("strong praise (en)", "thrilled|ecstatic|overjoyed|delighted|spectacular|groundbreaking|ground-breaking|genius|revolutionary|masterpiece|phenomenal|magnificent|glorious|marvelous|marvellous|fabulous|incredible|breathtaking|flawless|flawlessly|stellar|top-tier|top tier|world-class|state-of-the-art|cutting-edge|visionary|inspiring|inspired|triumph|triumphant|dazzling|immaculate|pristine|bravo|guardian angel|peace of mind|priceless|blown away|i'm sold|i am sold|supportive|biggest champion|biggest supporter|loyal supporter|biggest fan|ecstatic customer|unwavering faith|full faith|complete faith|total faith|full confidence|confidence in your|so impressed|highly impressed|kudos|remarkable|beautifully", 0.85, "praise"),
++  // Product qualities: only next to a word for the product, like "product faults (en)".
++  rule("product qualities (en)", "reliable|robust|efficient|effective|smart|intelligent|advanced|seamless|seamlessly|innovative|clever|vigilant|responsive|accurate", 0.6, "praise", { needsProduct: true }),
++  rule("buy now", "let me buy|want to buy|i want one|where can i buy|take my money|buy it immediately|install it immediately|get it right now|right this very second", 0.8, "praise"),
++  // "I'd gladly pay a premium just to keep this away from me" is a rejection, whatever "pay" says.
++  rule("keep away", "keep it away|keep this away|far away from me|stay away from|get rid of", -0.6, "reject"),
++  rule("decent","decent|decent idea|fair idea|okay idea|ok idea|ठीक ठाक|theek thaak|thik thak|चल जाएगा|chal jayega", 0.3, "praise"),
+   rule("needed", "जरूरी|ज़रूरी|necessary|needed|need this|इसकी जरूरत|इसकी ज़रूरत|जरूरत है इसकी", 0.5, "praise", { topic: "Features" }),
+   rule("would use", "इस्तेमाल करूंगा|इस्तेमाल करूँगा|इस्तेमाल करूंगी|यूज करूंगा|यूज़ करूँगा|use करूंगा|use करूँगा|will use|would use|i would install|i will install|लगवाऊंगा|लगवा लूंगा|ले लूंगा|खरीदूंगा|खरीद लूंगा|would buy|will buy|i will take", 0.7, "praise"),
+   rule("would pay", "पैसे दूंगा|पैसे दे दूंगा|पे करूंगा|pay करूंगा|will pay|would pay|ready to pay|देने को तैयार", 0.6, "praise", { topic: "Pricing" }),
+@@ -46,7 +63,31 @@ const RULES: Rule[] = [
+   rule("interesting", "interesting|इंटरेस्टिंग|दिलचस्प", 0.35, "praise"),
+   rule("easy", "easy to use|user friendly|simple to use|आसान|इजी|सिंपल", 0.6, "praise", { topic: "UX" }),
+   // ---- rejection ---------------------------------------------------------------------------------------------
+-  rule("useless", "useless|बेकार|फालतू|bekar|time waste|waste of time|वेस्ट ऑफ", -0.75, "reject"),
++  rule("useless", "useless|बेकार|फालतू|bekar|time waste|waste of time|वेस्ट ऑफ", -0.8, "reject"),
++  // ---- added in the nlp-engine pass: the strongest rejections, dislike, "not for me", "don't want" ---------------
++  rule("strong reject", "worst|terrible|horrible|pathetic|garbage|worthless|waste of money|total waste|complete waste|ridiculous|absurd|stupid|dumb|disgusting|पैसे की बर्बादी|पैसों की बर्बादी|पैसा बर्बाद|समय की बर्बादी|टाइम की बर्बादी|वक्त की बर्बादी|बर्बादी है|घटिया|बेहूदा|बेवकूफी|बेकार की चीज|फालतू की चीज|ghatiya|bakwaas|bakwass|bekaar|bekaar hai|faltu|faaltu|paise ki barbadi|paison ki barbadi|time ki barbadi|barbadi hai|paisa barbaad|bewakoofi", -0.85, "reject"),
++  rule("dislike", "dislike|don't like it|do not like it|dont like it|didn't like|did not like|don't like this|not impressed|disappointing|disappointed|पसंद नहीं|पसंद नही|pasand nahi|pasand nahin|अच्छा नहीं लगा|अच्छा नही लगा|अच्छी नहीं लगी|accha nahi laga|acha nahi laga|achha nahi laga|निराशाजनक|मज़ा नहीं आया|मजा नहीं आया", -0.65, "reject"),
++  rule("not for me", "not for me|of no use|no use to me|no use for me|किसी काम का नहीं|किसी काम की नहीं|किसी काम का नही|मेरे काम का नहीं|मेरे काम की नहीं|मेरे किसी काम|kisi kaam ka nahi|kisi kaam ki nahi|mere kaam ka nahi|mere kaam ki nahi|koi kaam ka nahi|कोई काम का नहीं", -0.7, "reject"),
++  rule("don't want", "don't want|do not want|dont want|नहीं चाहिए|नही चाहिए|nahi chahiye|nahin chahiye|no thanks|no thank you|नहीं लेना|nahi lena", -0.6, "reject"),
++  // Strong English words that are always an opinion (nobody calls a road "idiotic" or "fraudulent").
++  rule("strong reject (en)", "appalled|appalling|atrocious|disastrous|catastrophic|idiotic|moronic|dreadful|awful|abysmal|abysmally|hideous|repulsive|repulsed|disgusted|horrified|horrendous|outraged|outrageous|delusional|fraudulent|fatally flawed|incompetent|amateurish|pitiful|shameful|embarrassment|insulting|offensive|creepy|madness|epic failure|hater|i reject it|reject it|i reject|vehemently opposed|strongly opposed|totally against|lack of faith|no faith|zero faith|untrustworthy|unacceptable|lousy|crap|crappy|it sucks|this sucks|trash|filthy|wretched|terribly|horribly|miserable|laughable", -0.85, "reject"),
++  // Words that can be about the road or an accident too ("brake failure", "reckless drivers", "it was a nightmare"):
++  // only counted with a word for the product right next to them.
++  rule("product faults (en)", "broken|flawed|defective|faulty|unreliable|buggy|bug-ridden|fragile|obsolete|inefficient|reckless|dangerous|hazardous|disaster|catastrophe|nightmare|failure|fail|invasive|intrusive|spy|terrifying|scary|annoying|irritating|inferior", -0.7, "reject", { needsProduct: true }),
++  // Strong Hindi rejections (always an opinion) and words that can also be about roads or accidents (only next to the product).
++  rule("strong reject (hi)", "फ्रॉड|फ्रॉड है|घिनौना|घिनौनी|झूठा दावा|झूठे दावे|कचरा|रद्दी|स्कैम|बेवकूफ बनाने|बेवकूफ बना रहे|उल्लू बनाने|पैसे लूटने|पैसा लूटने|पैसे लूट|पैसा डुबाने|पैसे डुबाने|नामुमकिन|सिरदर्द|सिर दर्द|बंद कर दो|बंद कर दीजिए|पिट जाएगा|पिट जाएगी|डूब जाएगा|डूब जाएगी|शून्य प्रतिशत|ज़ीरो प्रतिशत|जीरो प्रतिशत|zero percent|शून्य विश्वास|रत्ती भर भी भरोसा नहीं|बेहद खराब|सबसे खराब|सबसे बेकार|सबसे रद्दी|kachra|raddi|ghinona|jhootha|jhutha|namumkin|sirdard|band kar do|pit jayega|doob jayega|ullu bana|bewakoof bana|paise loot|scam hai|fraud hai", -0.85, "reject"),
++  rule("product faults (hi)", "भयानक|भयंकर|खतरनाक|खतरा|फेल|फ़ेल|झूठा|झूठी|बेकार सा|घटिया सा|bhayanak|khatarnak|khatra|fail hai", -0.7, "reject", { needsProduct: true }),
++  rule("won't recommend", "सलाह नहीं दूंगा|सलाह नहीं दूंगी|सलाह नहीं दूँगा|सलाह नहीं देंगे|रिकमेंड नहीं|recommend नहीं|won't recommend|wouldn't recommend|would not recommend|will not recommend|never recommend|किसी को नहीं बताऊंगा|kisi ko recommend nahi|recommend nahi karunga|salah nahi dunga", -0.75, "reject"),
++  rule("would not install (hi)", "कभी न लगाऊं|कभी ना लगाऊं|न लगाऊं|ना लगाऊं|कभी नहीं लगाऊं|कभी न लगवाऊं|न लगवाऊं|कभी न लूं|न खरीदूं|kabhi na lagaun|kabhi na lagwaun|na lagaun", -0.75, "reject"),
++  // Strong Hindi praise (mirror of "strong reject (hi)").
++  rule("strong praise (hi)", "अद्भुत|क्रांतिकारी|वरदान|पूरा समर्थन|समर्थन करता हूं|समर्थन करती हूं|100% समर्थन|अतुलनीय|मानसिक शांति|मास्टरपीस|सर्वश्रेष्ठ|सर्वश्रेठ|गेम-चेंजर|गेम चेंजर|गेमचेंजर|जादू कर|अटूट विश्वास|अटूट भरोसा|पूरा भरोसा है|सही रास्ते पर|अभूतपूर्व|बेजोड़|इतिहास रच|जानें बचाने|जानें बचाएगा|लाखों जानें|निशब्द|रोंगटे खड़े|वफादार कस्टमर|वफादार ग्राहक|बेताब हूं|प्रेरित करूंगा|प्रेरित करूंगी|सबको सलाह दूंगा|recommend करूंगा|अनिवार्य होना चाहिए|अनिवार्य कर देना चाहिए|लगवाने के लिए तैयार|लगवाने को तैयार|लगवाने के लिए पूरी तरह तैयार|खरीदने के लिए तैयार|खुशी-खुशी|खुशी खुशी|उत्साहित हूं|बहुत खुशी|adbhut|krantikari|vardaan|sarvashreshth|lajawab|jadoo|atoot vishwas|khushi khushi|lagwane ke liye taiyaar", 0.85, "praise"),
++  rule("product qualities (hi)", "एडवांस|सटीक|तेज़|भरोसेमंद|विश्वसनीय|कारगर|असरदार|स्मार्ट|बढ़िया काम|advance|bharosemand", 0.6, "praise", { needsProduct: true }),
++  rule("no problem", "दिक्कत नहीं|कोई दिक्कत नहीं|रत्ती भर भी दिक्कत नहीं|परेशानी नहीं|कोई परेशानी नहीं|बड़ी बात नहीं|कोई बड़ी बात नहीं|छोटी सी बात|no problem|not a problem|no issue|no issues|koi dikkat nahi|dikkat nahi|koi problem nahi|problem nahi", 0.4, "praise"),
++  rule("junk","junk|a joke|complete joke|total joke|joke hai|मज़ाक है|मजाक है|time pass|timepass|टाइम पास|टाइमपास|gimmick|गिमिक|dikhawa|दिखावा", -0.8, "reject"),
++  rule("unnecessary", "unnecessary|not a fan|not really a fan|nobody needs|no one needs|no chance|कोई मतलब नहीं|कोई मतलब नही|koi matlab nahi|कोई जरूरत नहीं|kya zaroorat|क्या ज़रूरत|क्या जरूरत|not worth it|not worth|वर्थ नहीं|worth nahi", -0.6, "reject"),
++  rule("meh", "nothing special|nothing great|nothing new|so so|so-so|कुछ खास नहीं|कुछ ख़ास नहीं|kuch khaas nahi|kuch khas nahi|कुछ नया नहीं|kuch naya nahi", -0.25, "reject"),
++  rule("rip-off", "rip-off|ripoff|rip off|लूट|loot hai|loot|not a penny|not one penny|डाका|लूट है", -0.75, "price", { topic: "Pricing" }),
++  rule("no way", "no way|not a single rupee|not one rupee|एक पैसा नहीं|एक रुपया नहीं|एक भी पैसा नहीं|ek paisa nahi|ek rupaya nahi|ek bhi paisa nahi|मुफ्त में भी नहीं|फ्री में भी नहीं|free mein bhi nahi|free me bhi nahi|even for free|not even for free", -0.75, "price", { topic: "Pricing" }),
+   rule("will not work", "flop|फ्लॉप|नहीं चलेगा|नहीं चल पाएगा|काम नहीं करेगा|काम नहीं आएगा|काम नहीं करेगी|will not work|won't work|wont work|doesn't work|does not work|not going to work", -0.6, "reject", { topic: "Features" }),
+   rule("would not use", "इस्तेमाल नहीं करूंगा|यूज नहीं करूंगा|नहीं लूंगा|नहीं खरीदूंगा|नहीं लगवाऊंगा|will not use|won't use|wouldn't use|would not use|not going to use|never use", -0.7, "reject"),
+   rule("price too high", "too expensive|बहुत महंगा|महंगा|महंगी|expensive|costly|कौन देगा|कोई नहीं देगा|कुछ नहीं देगा|नहीं दूंगा|पैसे नहीं दूंगा|won't pay|will not pay|would not pay|not pay|too much", -0.5, "price", { weight: 0.5, topic: "Pricing" }),
+@@ -58,7 +99,7 @@ const RULES: Rule[] = [
+   // "the roads are bad", "लोग परेशान हैं" are about the problem, not about the product, so these only count right next to a word for the product.
+   rule("bad", "bad|poor|slow|खराब|धीमा|निराश|frustrating|frustrated|annoying|परेशान|hate|नफरत", -0.6, "reject", { needsProduct: true }),
+   // ---- more ways of saying it: Hindi, Hinglish typed in English letters, English --------------------------------
+-  rule("very good", "bahut badhiya|bahut badhia|bahut accha|bahut acha|bahut achha|बहुत बढ़िया|बहुत ही अच्छा|बहुत ही बढ़िया|ekdum mast|एकदम मस्त|zabardast|jabardast|ज़बरदस्त|best idea|great idea|superb|outstanding|wonderful|really good|very good|really nice|very nice|really useful|very useful|बहुत उपयोगी|बहुत यूसफुल|बहुत यूज़फुल|बहुत जरूरी|बहुत ज़रूरी|bahut zaroori|bahut jaruri", 0.8, "praise"),
++  rule("very good", "super|super idea|super hai|kamaal|kamal ka|kamaal ka|kamaal hai|lajawab|lajawaab|shandar|shaandar|mast hai|बहुत बढ़िया है|excellent idea|great concept|great product|bahut badhiya|bahut badhia|bahut accha|bahut acha|bahut achha|बहुत बढ़िया|बहुत ही अच्छा|बहुत ही बढ़िया|ekdum mast|एकदम मस्त|zabardast|jabardast|ज़बरदस्त|best idea|great idea|superb|outstanding|wonderful|really good|very good|really nice|very nice|really useful|very useful|बहुत उपयोगी|बहुत यूसफुल|बहुत यूज़फुल|बहुत जरूरी|बहुत ज़रूरी|bahut zaroori|bahut jaruri", 0.8, "praise"),
+   rule("nice", "accha idea|acha idea|achha idea|badhiya|badiya|badhia|bढ़िया|sahi hai|bilkul sahi|makes sense|मेक्स सेंस|मेकस सेंस|सही बात है|सही कह रहे|समझ में आता है|समझ आता है|impressive|impressed|इम्प्रेस|इंप्रेस|प्रभावित|pasand aaya|pasand aayi|pasand hai|पसंद आई", 0.5, "praise"),
+   rule("useful (typed)", "kaam ka hai|kaam ki cheez|kaam aayega|kaam aaega|kaam aa sakta|useful hai|faydemand|फायदेमंद|फ़ायदेमंद|लाभदायक|beneficial|बेनिफिशियल|बेनिफीचल|valuable|worth it|worth the money|worth paying|paisa vasool|पैसा वसूल|helps a lot|bahut help|काफी मदद|बहुत मदद|बड़ी मदद", 0.6, "praise", { topic: "Features" }),
+   rule("needed (typed)", "zaroorat hai|jarurat hai|ज़रूरत है|जरूरत है|जरुरत है|need of the hour|समय की मांग|वक्त की जरूरत|must have|must-have|should be there|होना चाहिए ही|aaj ki zaroorat|इसकी सख्त जरूरत", 0.5, "praise", { topic: "Features" }),
+@@ -72,7 +113,7 @@ const RULES: Rule[] = [
+   rule("not interested", "not interested|interested nahi|इंटरेस्टेड नहीं|इंटरेस्टेड नही|दिलचस्पी नहीं|दिलचस्पी नही|रुचि नहीं|रुचि नही|interest nahi|no interest", -0.65, "reject"),
+   rule("no need", "don't need|do not need|no need|dont need|not needed|जरूरत नहीं|ज़रूरत नहीं|जरूरत नही|ज़रूरत नही|जरुरत नहीं|zaroorat nahi|jarurat nahi|ज़रूरी नहीं|जरूरी नहीं|जरूरी नही", -0.6, "reject"),
+   rule("no point", "kya fayda|क्या फायदा|क्या फ़ायदा|kya faida|no point|pointless|कोई फायदा नहीं|कोई फ़ायदा नहीं|कोई फायदा नही|no benefit|बिना मतलब|बेमतलब|बे-मतलब|faida nahi|fayda nahi", -0.6, "reject"),
+-  rule("bad idea", "bad idea|बुरा आइडिया|खराब आइडिया|गलत आइडिया|silly idea|stupid idea|rubbish|nonsense|bakwas|बकवास|scam|fraud|धोखा|cheating|धंधा है|दुकानदारी", -0.75, "reject"),
++  rule("bad idea", "bad idea|बुरा आइडिया|खराब आइडिया|गलत आइडिया|silly idea|stupid idea|rubbish|nonsense|bakwas|बकवास|scam|fraud|धोखा|cheating|धंधा है|दुकानदारी", -0.8, "reject"),
+   rule("will not work (typed)", "nahi chalega|nahi chalegi|nahi chalenge|kaam nahi karega|kaam nahi karegi|flop hoga|fail ho jayega|fail hoga|नहीं चलेगी|नहीं चलेंगे|काम नहीं कर पाएगा|काम नहीं कर पाएगी|काम नहीं करेंगे|कारगर नहीं|कारगर नही|असरदार नहीं|practical nahi|practical नहीं|प्रैक्टिकल नहीं|not practical|impractical|unrealistic|अनरियलिस्टिक|मुमकिन नहीं|संभव नहीं|possible nahi|not possible", -0.6, "reject", { topic: "Features" }),
+   rule("would not use (typed)", "use nahi karunga|use nahi karungi|nahi lunga|nahi lungi|nahi lagwaunga|nahi khareedunga|नहीं लगवाऊंगी|नहीं खरीदूंगी|नहीं लूंगी|यूज नहीं करूंगी|नहीं करवाऊंगा|i'd not use|i would never|i will never use|i won't buy|i won't install|i will not buy|i will not install", -0.7, "reject"),
+   rule("no trust (typed)", "bharosa nahi|vishwas nahi|trust nahi|भरोसा नही|विश्वास नही|ट्रस्ट नही|trust issues|trust issue hai|कौन भरोसा करेगा|who will trust|can't trust|cannot trust|cant trust", -0.5, "reject"),
+@@ -87,10 +128,11 @@ const RULES: Rule[] = [
+ 
+ const NEGATOR = new RegExp(`${WORD}(?:नहीं|नही|मत|not|no|nobody|no one|never|dont|don't|doesnt|doesn't|isnt|isn't|cant|can't|cannot|wont|won't|nahi|nahin)${WORD_END}`, "u");
+ const QUESTION_WORD = new RegExp(`${WORD}(?:क्या|कितना|कितनी|कितने|kya|kitna|kitni|how|what|do you|would you|is it|are you)${WORD_END}`, "u");
++const INTENSIFIER = new RegExp(`${WORD}(?:very|really|totally|completely|absolutely|extremely|highly|truly|so|super|utterly|incredibly|phenomenally|wonderfully|exceptionally|tremendously|deeply|profoundly|thoroughly|horribly|terribly|absolute|total|complete|utter|pure|most|बहुत|बहुत ही|बिल्कुल|बिलकुल|एकदम|सच में|सचमुच|बेहद|पूरी तरह|सबसे|bahut|bohot|bilkul|ekdum|sach mein|sach me|ekdam|sabse)${WORD_END}`, "u");
+ const BOUNDARY = /[.!?।\n,;]/;
+ /** Words that start a new clause: a "not" before them does not belong to what comes after them. */
+ const CLAUSE_WORD = /(?:^|\s)(?:लेकिन|मगर|पर|but|however|though|क्योंकि|because|और|and)(?=\s|$)/gu;
+-const PRODUCT_WORD = new RegExp(`${WORD}(?:trata|तराता|ट्राटा|ट्रेटा|तरता|त्राता|app|एप|ऐप|अप्लिकेशन|application|device|डिवाइस|सेंसर|sensor|product|प्रोडक्ट|idea|आइडिया|आईडिया|solution|सोल्यूशन|सॉल्यूशन|dashboard|report|feature|फीचर|इसका|इसकी|इसमें|इसे|यह|ये|this|it)${WORD_END}`, "u");
++const PRODUCT_WORD = new RegExp(`${WORD}(?:trata|सिस्टम|तकनीक|कॉन्सेप्ट|प्रोजेक्ट|प्रोडक्ट|डिवाइस|दावा|concept|system|software|technology|tech|startup|company|hardware|engineering|unit|तराता|ट्राटा|ट्रेटा|तरता|त्राता|app|एप|ऐप|अप्लिकेशन|application|device|डिवाइस|सेंसर|sensor|product|प्रोडक्ट|idea|आइडिया|आईडिया|solution|सोल्यूशन|सॉल्यूशन|dashboard|report|feature|फीचर|इसका|इसकी|इसमें|इसे|यह|ये|this|it)${WORD_END}`, "u");
+ 
+ function clauseBefore(text: string, start: number) {
+   const slice = text.slice(Math.max(0, start - 80), start);
+@@ -119,10 +161,13 @@ export function findCues(raw: string): Cue[] {
+ export function findCuesNormalized(text: string): Cue[] {
+   const found: Cue[] = [];
+   const taken: Array<[number, number]> = [];
+-  // Longer, more specific rules claim their words first (so "not good" is one cue, "good" inside it is not another one).
+-  const order = [...RULES].sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+-  for (const item of order) {
+-    for (const match of text.matchAll(item.re)) {
++  // Longer, more specific phrases claim their words first ("nobody will use" is one cue, "will use" inside it is not
++  // another one); between phrases of the same length the stronger rule wins.
++  const candidates: Array<{ item: Rule; match: RegExpMatchArray }> = [];
++  for (const item of RULES) for (const match of text.matchAll(item.re)) candidates.push({ item, match });
++  candidates.sort((a, b) => b.match[0].length - a.match[0].length || Math.abs(b.item.value) - Math.abs(a.item.value));
++  for (const { item, match } of candidates) {
++    {
+       const start = match.index!;
+       const end = start + match[0].length;
+       if (taken.some(([from, to]) => start < to && end > from)) continue;
+@@ -142,6 +187,8 @@ export function findCuesNormalized(text: string): Cue[] {
+         // "नहीं चलेगा" etc. already contain the negation. Only a negation OUTSIDE the phrase flips it ("not bad").
+         if (!NEGATOR.test(match[0])) value = Math.abs(value) * 0.4;
+       }
++      // "really useful", "बिल्कुल बेकार", "ekdum faltu": an intensifier right before an un-negated phrase makes it count more.
++      if (!negated && item.kind !== "doubt" && INTENSIFIER.test(beforeWords.slice(-2).join(" "))) value = Math.sign(value) * Math.min(0.95, Math.abs(value) * 1.2);
+       taken.push([start, end]);
+       found.push({ text: match[0], value, weight: item.weight ?? 1, kind: value < 0 && item.kind === "praise" ? "reject" : item.kind, topic: item.topic, start, end });
+     }
+diff --git a/src/lib/rules/analyze.ts b/src/lib/rules/analyze.ts
+index 53e7c17..32c7a45 100644
+--- a/src/lib/rules/analyze.ts
++++ b/src/lib/rules/analyze.ts
+@@ -10,9 +10,10 @@
+ import type { AccidentExperience, Intent, Level, MentionType, Role, SentimentLabel, Stance, Tone, Transport, TrataAnalysis, Understanding, Verdict } from "@/lib/trata";
+ import { buildDoc, isCustomerCall, type UCue, extractAccident, extractConcern, extractFeatures, extractIntents, extractKeyPoints, extractMentions, extractQa, extractRole, extractTransport, extractUnderstanding, mergeFeatures, quote, type Doc } from "./extract";
+ import { buildResponderReport } from "./responder";
++import { extractPrices } from "./prices";
+ import { clip } from "./text";
+ 
+-export const RULES_VERSION = 1;
++export const RULES_VERSION = 2;
+ export const RULES_ENGINE_NAME = "trata-rules";
+ 
+ export type RulesOptions = { lang?: "en" | "hi"; meta?: TrataAnalysis["meta"] };
+@@ -37,6 +38,10 @@ export function verdictFor(score: number, label: SentimentLabel, wouldUse: Inten
+ const TONE_VALUE: Partial<Record<Tone, number>> = { positive: 0.6, mixed: 0.1, negative: -0.6 };
+ const INTENT_VALUE: Partial<Record<Intent, number>> = { yes: 0.7, maybe: 0.15, no: -0.7 };
+ const SENTIMENT_GAP = 0.4;
++/** The largest share of the remaining distance to ±1 that many fully agreeing opinion phrases can add (see analyzeWithRules). */
++const EVIDENCE_PULL = 0.7;
++/** Calls with this many opinion phrases or fewer are not pulled at all (real calls usually have 1-6). */
++const EVIDENCE_FROM = 8;
+ 
+ /** What the detailed answers (per-question tones, feature opinions, would-use, would-pay) add up to, or null when there is too little. */
+ function impliedScore(qa: Array<{ tone: Tone }>, features: Array<{ stance: Stance; score: number }>, wouldUse: Intent, wouldPay: Intent, minimum: number) {
+@@ -183,6 +188,7 @@ export function analyzeWithRules(raw: string, options: RulesOptions = {}): Trata
+   const features = mergeFeatures(extractFeatures(doc));
+   const { mentions, alternatives } = extractMentions(doc, lang);
+   const qa = extractQa(doc);
++  const prices = extractPrices(doc);
+   const understanding = extractUnderstanding(doc, features);
+   const painPoints = mentions.filter((mention) => mention.type === "pain_point").length;
+   const concern = extractConcern(doc, accident, painPoints);
+@@ -202,6 +208,16 @@ export function analyzeWithRules(raw: string, options: RulesOptions = {}): Trata
+   } else if (opinions.length) score = opinionScore;
+   else if (implied !== null) score = implied * 0.8;
+   if (score !== null) score -= Math.min(doubts.length * 0.03, 0.15);
++  // Evidence adds up: an average of phrase values can never pass ~0.85, so a call with forty agreeing strong remarks would
++  // score like a call with four. Move the score part of the way toward ±1, by how much the phrases agree (squared, so mixed
++  // calls barely move) and how many there are beyond the first EVIDENCE_FROM (an ordinary call is not moved at all).
++  if (score !== null && opinions.length) {
++    const total = opinions.reduce((sum, cue) => sum + Math.abs(cue.value) * cue.weight, 0);
++    const net = opinions.reduce((sum, cue) => sum + cue.value * cue.weight, 0);
++    const agreement = total ? Math.abs(net) / total : 0;
++    const volume = 1 - Math.exp(-Math.max(0, opinions.length - EVIDENCE_FROM) / 6);
++    if (Math.sign(net) === Math.sign(score)) score += Math.sign(score) * (1 - Math.abs(score)) * agreement ** 2 * volume * EVIDENCE_PULL;
++  }
+   const discussed = score !== null;
+   let label: SentimentLabel = discussed ? labelForScore(score!) : "not_discussed";
+   const finalScore = discussed ? reconcile(label, Math.max(-1, Math.min(1, score!))) : 0;
+@@ -289,6 +305,7 @@ export function analyzeWithRules(raw: string, options: RulesOptions = {}): Trata
+     topics,
+     features: features.slice(0, 25),
+     mentions,
++    ...(prices.length ? { prices } : {}),
+     profile: { role, transport, accident: accident.value, understanding },
+     qa,
+     responder: buildResponderReport(doc, { label, wouldUse: intents.wouldUse, wouldPay: intents.wouldPay, features, labelFor: labelForScore }, lang),
+diff --git a/src/lib/rules/classify.ts b/src/lib/rules/classify.ts
+index e1b13e4..979464c 100644
+--- a/src/lib/rules/classify.ts
++++ b/src/lib/rules/classify.ts
+@@ -70,8 +70,8 @@ export const hasCustomerMark = (unit: Unit) => CUSTOMER_MARK.test(unit.n);
+ export const startsWithReply = (unit: Unit) => REPLY_START.test(unit.n);
+ 
+ // ---- labels written in the transcript ----------------------------------------------------------------------------
+-const INTERVIEWER_LABEL = /^(?:interviewer|इंटरव्यूअर|इंटरव्यूवर|इंटरव्यू लेने वाला|question|प्रश्न|सवाल|host|team|trata team|q|i)$/u;
+-const CUSTOMER_LABEL = /^(?:customer|ग्राहक|कस्टमर|respondent|participant|प्रतिभागी|answer|उत्तर|जवाब|guest|interviewee|a|c)$/u;
++const INTERVIEWER_LABEL = /^(?:interviewer|moderator|researcher|founder|agent|इंटरव्यूअर|इंटरव्यूवर|इंटरव्यू लेने वाला|question|प्रश्न|सवाल|host|team|trata team|q|i)$/u;
++const CUSTOMER_LABEL = /^(?:customer|responder|response|user|client|caller|prospect|ग्राहक|कस्टमर|respondent|participant|प्रतिभागी|answer|उत्तर|जवाब|guest|interviewee|a|c)$/u;
+ 
+ export function classify(units: Unit[]): { units: Classified[]; mode: SpeakerMode } {
+   const raw = units.map((unit) => ({ q: isQuestion(unit), p: pitchScore(unit), cm: hasCustomerMark(unit) }));
+diff --git a/src/lib/rules/extract.ts b/src/lib/rules/extract.ts
+index adee922..cbacc2a 100644
+--- a/src/lib/rules/extract.ts
++++ b/src/lib/rules/extract.ts
+@@ -40,7 +40,7 @@ const NEG = once(phrase("नहीं|नही|मत|not|no|never|dont|don't|d
+ const POSITIVE_CUE = 0.15;
+ 
+ // ============================================================================ building the Doc ==================
+-const OPINION_Q = re("कैसा\\s+लगा|कैसी\\s+लगी|कैसा\\s+लग|कैसी\\s+लग|कैसा\\s+है|कैसी\\s+है|लगता\\s+है|पसंद|यूसफुल|यूजफुल|useful|उपयोगी|मददगार|helpful|काम\\s+का|काम\\s+की|आइडिया|आईडिया|idea|सोल्यूशन|सॉल्यूशन|solution|सही|अच्छा|good|think|feel|like|राय|सोचते|opinion|interesting|इंटरेस्टिंग|बेहतर|फायदेमंद|beneficial|worth|जरूरी|necessary|need");
++const OPINION_Q = re("कैसा\\s+लगा|कैसी\\s+लगी|कैसा\\s+लग|कैसी\\s+लग|कैसा\\s+है|कैसी\\s+है|लगता\\s+है|पसंद|यूसफुल|यूजफुल|useful|उपयोगी|मददगार|helpful|काम\\s+का|काम\\s+की|आइडिया|आईडिया|idea|सोल्यूशन|सॉल्यूशन|solution|सही|अच्छा|good|think|feel|like|राय|सोचते|opinion|interesting|इंटरेस्टिंग|बेहतर|फायदेमंद|beneficial|worth|जरूरी|necessary|need|reaction|react|फायदा|फ़ायदा|faayda|fayda|भरोसा|विश्वास|bharosa|thoughts|thought|views|view|impression|perspective|feedback|trust|excite|excitement|excited|kaisa|kaisi|pasand|accha|achha|acha|laga|lagta|sochte|raay|rai|vichar|विचार");
+ const PRICE_QUOTE = re("(?:₹|rs\\.?|inr)\\s*[0-9][0-9,]*|[0-9][0-9,]*(?:\\.[0-9]+)?\\s*(?:रुपये|रुपए|रुपया|rupees?|rs|हजार|हज़ार|thousand|k|सौ|लाख|lakhs?)|(?:एक|दो|तीन|चार|पांच|पाँच|छह|सात|आठ|नौ|दस|बीस|तीस|पचास|सौ)\\s+(?:रुपये|रुपए|हजार|हज़ार|लाख|सौ)");
+ /** Lakhs and crores are the price of a car, not what someone would pay for a safety device. */
+ const DO_GIVE = re("(?:मैं|मै|हम)\\s+(?:तो\\s+|भी\\s+)?(?:दे\\s+दूंगा|दे\\s+दूंगी|दूंगा|दूंगी|दे\\s+सकता|दे\\s+सकती|दे\\s+देंगे|देंगे)|i\\s+(?:would|will|can)\\s+(?:give|pay)|i'?d\\s+pay|main\\s+(?:de\\s+)?dunga");
+@@ -48,6 +48,8 @@ const BIG_AMOUNT = re("लाख|लाग|lakhs?|crores?|करोड़|कर
+ const TRANSPORT_Q = re("कैसे\\s+(?:आते|जाते|ट्रेवल|ट्रैवल|travel|सफर|आना|जाना|commute)|कौन\\s*सी?\\s+(?:गाड़ी|गाडी|कार|बाइक|वाहन|vehicle|transport|साधन)|किस\\s+(?:से|साधन|गाड़ी)|(?:गाड़ी|कार|बाइक|वाहन|vehicle)\\s+(?:चलाते|चलाती|रखते|use)|how\\s+do\\s+you\\s+(?:travel|commute|get\\s+around)|which\\s+(?:vehicle|transport|car|bike)|do\\s+you\\s+(?:drive|ride|own)|what\\s+do\\s+you\\s+(?:drive|ride)|ट्रेवल\\s+करते|travel\\s+करते|आना\\s+जाना|आते\\s+जाते|कैसे\\s+जाते|रोज\\s+का\\s+सफर|आमतौर\\s+पर\\s+कैसे");
+ 
+ /** "How are you? – Fine." and "Can you hear me? – Yes, the weather is nice": remarks that are not about Trata. */
++/** "Would you have any problem / concern with it?": a "no" to this is a yes to the product, and a "yes" is a worry. */
++const PROBLEM_Q = re("कोई\\s+(?:भी\\s+)?(?:परेशानी|दिक्कत|दिकत|समस्या|प्रॉब्लम|problem|चिंता|आपत्ति|डर|इश्यू|issue)|(?:परेशानी|दिक्कत|समस्या|आपत्ति)\\s+(?:होगी|है|हो\\s+सकती)|any\\s+(?:problem|problems|issue|issues|concern|concerns|objection|objections|worry|worries|hesitation)|(?:does|do|would)\\s+(?:this|that|it|these)\\s+(?:worry|concern|bother|diminish)|would\\s+you\\s+mind|koi\\s+(?:dikkat|problem|pareshani|tension)");
+ const HELLO_Q = re("कैसे\\s+(?:हो|हैं)|कैसी\\s+हैं|कैसे\\s+है\\s+आप|how\\s+are\\s+you|क्या\\s+हाल|बिजी|busy|टाइम\\s+है|time\\s+है|available|फ्री\\s+हैं|आवाज|सुनाई|सुन\\s+पा|can\\s+you\\s+hear|हेलो|hello|अभी\\s+बात|बात\\s+कर\\s+सकते");
+ const SMALL_TALK = re("मौसम|weather|आवाज़|आवाज|सुनाई|नेटवर्क|कनेक्शन|connection|हेलो|hello|नमस्ते|नमस्कार|धन्यवाद|शुक्रिया|thank\\s+you|thanks|गुड\\s+मॉर्निंग|good\\s+morning|good\\s+evening|गुड\\s+ईवनिंग");
+ /** After an opinion word: "…तो बहुत हो सकता है लेकिन…", the shape of a reply, not of a question. */
+@@ -90,7 +92,7 @@ export const questionKind = (doc: Pick<Doc, "units">, exchange: Exchange) => {
+ };
+ 
+ /** Words that name Trata or the idea itself (the ASR writes the brand several ways). Generic "यह / this" is left out on purpose. */
+-export const PRODUCT_CTX = re("trata|ट्राटा|ट्रैटा|ट्रेटा|तराता|तरता|त्राता|ट्रटा|app|ऐप|एप|application|अप्लिकेशन|device|डिवाइस|सेंसर|sensor|idea|आइडिया|आईडिया|product|प्रोडक्ट|solution|सोल्यूशन|सॉल्यूशन|feature|फीचर|dashboard|डैशबोर्ड|इसका|इसकी|इसमें|इसे|इसको|इसके");
++export const PRODUCT_CTX = re("trata|सिस्टम|तकनीक|टेक्नोलॉजी|टेक्नॉलजी|कॉन्सेप्ट|कांसेप्ट|प्रोजेक्ट|स्टार्टअप|ब्रांड|सर्विस|technology|concept|system|software|hardware|startup|brand|innovation|dispatch|ट्राटा|ट्रैटा|ट्रेटा|तराता|तरता|त्राता|ट्रटा|app|ऐप|एप|application|अप्लिकेशन|device|डिवाइस|सेंसर|sensor|idea|आइडिया|आईडिया|product|प्रोडक्ट|solution|सोल्यूशन|सॉल्यूशन|feature|फीचर|dashboard|डैशबोर्ड|इसका|इसकी|इसमें|इसे|इसको|इसके");
+ 
+ /**
+  * Is this remark an opinion OF TRATA? Only when the remark itself names the product or idea, when it answers a question about
+@@ -157,12 +159,14 @@ export function buildDoc(raw: string): Doc {
+   // "Does it seem useful?" – "Yes." is praise even though the reply has no opinion word of its own.
+   for (const exchange of exchanges) {
+     const kind = questionKind(base, exchange);
+-    if (!kind.opinion || kind.use || kind.pay || kind.accident || kind.transport) continue;
++    const problem = once(PROBLEM_Q).test(qNorm(base, exchange)) && exchange.q.some((k) => PRODUCT_CTX.test(units[k].n));
++    if (!(kind.opinion || problem) || kind.use || kind.pay || kind.accident || kind.transport) continue;
+     const first = units[exchange.a[0]];
+     if (exchange.a.some((k) => hasCue.has(k))) continue;
+-    const yes = L.AFFIRM_START.test(first.n);
+-    const no = !yes && L.NEGATE_START.test(first.n);
++    let yes = L.AFFIRM_START.test(first.n);
++    let no = !yes && L.NEGATE_START.test(first.n);
+     if (!yes && !no) continue;
++    if (problem) [yes, no] = [no, yes]; // "any problem with it?" – "not at all!" is praise
+     const word = first.n.match(/^\S+/u)![0];
+     cues.push({ text: word, value: yes ? 0.5 : -0.5, weight: 0.8, kind: yes ? "praise" : "reject", start: first.ns, end: first.ns + word.length, unit: exchange.a[0] });
+   }
+@@ -238,8 +242,10 @@ function collectVotes(doc: Doc, rules: L.IntentRule[] | readonly L.IntentRule[],
+     if (asks === "use" ? !kind.use : !kind.pay) continue;
+     if (doc.introAt >= 0 && exchange.a[0] < doc.introAt) continue;
+     const first = doc.units[exchange.a[0]];
+-    if (L.AFFIRM_START.test(first.n)) votes.yes += 1;
+-    else if (L.NEGATE_START.test(first.n)) votes.no += 1;
++    // "Would you have any problem installing it?" – "Not at all" is a yes to using it.
++    const problem = once(PROBLEM_Q).test(qNorm(doc, exchange));
++    if (L.AFFIRM_START.test(first.n)) votes[problem ? "no" : "yes"] += 1;
++    else if (L.NEGATE_START.test(first.n)) votes[problem ? "yes" : "no"] += 1;
+     else if (L.MAYBE_START.test(first.n)) votes.maybe += 0.6;
+     if (asks === "pay") {
+       if (exchange.a.some((k) => once(DO_GIVE).test(doc.units[k].n))) votes.yes += 1;
+@@ -328,6 +334,7 @@ export function extractTransport(doc: Doc): Transport[] {
+       const pattern = globalOf(item.re);
+       for (const match of unit.n.matchAll(pattern)) {
+         if (wordsAfter(unit.n, match.index! + match[0].length, 2).match(NEG)) continue; // "गाड़ी नहीं है"
++        if (aboutOthers(unit.n, match.index!)) continue; // "my friends who run a taxi fleet"
+         counts.set(item.mode, (counts.get(item.mode) ?? 0) + (asked ? 2 : 1));
+         break;
+       }
+@@ -336,14 +343,24 @@ export function extractTransport(doc: Doc): Transport[] {
+   return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([mode]) => mode);
+ }
+ 
++/** "my friends who run a taxi fleet", "मेरे भाई ट्रक चलाते हैं": what comes right after these words is about someone else. */
++const OTHERS_BEFORE = re(`friends?|दोस्त|दोस्तों|brothers?|भाई|uncle|अंकल|relatives?|रिश्तेदार|cousins?|कजिन|neighbou?rs?|पड़ोसी|father|dad|पापा|पिताजी|बेटा|son|who\\s+(?:run|runs|own|owns|drive|drives)|जो\\s+(?:चलाते|चलाता|चलाती)|they|उनके|उनका|उनकी|unke|unka|someone|people|लोग|log|colleagues?|साथी`);
++/** True when the words just before position `at` in `text` (same clause) name someone other than the speaker. */
++function aboutOthers(text: string, at: number) {
++  const before = text.slice(Math.max(0, at - 45), at).split(/[,.;।!?]/u).pop() ?? "";
++  return once(OTHERS_BEFORE).test(before);
++}
++
+ export function extractRole(doc: Doc, transport: Transport[]): Role {
+   const order: Array<[Role, RegExp[]]> = [
+     ["fleet_owner", L.ROLE_PATTERNS.fleet_owner], ["professional_driver", L.ROLE_PATTERNS.professional_driver],
+     ["safety_professional", L.ROLE_PATTERNS.safety_professional], ["private_driver", L.ROLE_PATTERNS.private_driver],
+     ["passenger", L.ROLE_PATTERNS.passenger], ["other", L.ROLE_PATTERNS.other],
+   ];
+-  const text = customerUnits(doc).map(({ unit }) => unit.n).join("\n");
+-  for (const [role, patterns] of order) if (patterns.some((pattern) => once(pattern).test(text))) return role;
++  const texts = customerUnits(doc).map(({ unit }) => unit.n);
++  // A role counts only when it is about the speaker: "my friends who run a taxi fleet" does not make them a fleet owner.
++  const said = (pattern: RegExp) => texts.some((text) => Array.from(text.matchAll(globalOf(pattern))).some((match) => !aboutOthers(text, match.index!)));
++  for (const [role, patterns] of order) if (patterns.some(said)) return role;
+   if (transport.some((mode) => mode === "car" || mode === "two_wheeler") && customerUnits(doc).some(({ unit }) => L.TRAVEL_VERBS.test(unit.n))) return "private_driver";
+   if (transport.length && transport.every((mode) => ["public_transport", "bus", "auto_rickshaw", "cab_taxi", "walks", "bicycle"].includes(mode))) return "passenger";
+   return "unclear";
+@@ -454,6 +471,11 @@ function keywordsOf(doc: Doc, index: number, pattern: RegExp, limit = 4) {
+   return out;
+ }
+ 
++/** "My car already has SOS": a product they own, so an SOS mention there is a competitor, not a request. */
++const OWNS_ALREADY = re(`already|पहले\\s+से|pehle\\s+se|built[-\\s]?in|inbuilt|इनबिल्ट|comes\\s+with|(?:my|मेरी|मेरे)\\s+(?:car|गाड़ी|कार)\\s+(?:has|में\\s+है)`);
++/** A request that names a thing to add, even when it is not one of Trata's listed features (an SOS button, a helmet sensor). */
++const REQUEST_THING = re(`इसमें|साथ\\s+में|और\\s+एक|should\\s+(?:also|be|have)|there\\s+should|add|button|बटन|option|ऑप्शन|feature|फीचर|फ़ीचर|mode|मोड|चाहिए|chahiye|होना\\s+चाहिए|hona\\s+chahiye`);
++
+ export function extractMentions(doc: Doc, lang: "en" | "hi" = "en"): { mentions: Mention[]; alternatives: string[] } {
+   const candidates: Array<{ type: MentionType; text: string; unit: number }> = [];
+   const alternatives: string[] = [];
+@@ -475,8 +497,11 @@ export function extractMentions(doc: Doc, lang: "en" | "hi" = "en"): { mentions:
+ 
+     // --- products and habits already in their life
+     const names: string[] = [];
++    const asking = L.REQUESTS.test(text) && !once(OWNS_ALREADY).test(text);
+     for (const item of L.ALTERNATIVES) {
+       if (!item.re.test(text)) continue;
++      // "There should be an SOS button" asks for a feature; it is not a product they already have.
++      if (asking && item.name === "Car-maker built-in SOS") continue;
+       addAlternative(item.name);
+       if (item.kind === "competitor") names.push(item.name);
+     }
+@@ -503,7 +528,7 @@ export function extractMentions(doc: Doc, lang: "en" | "hi" = "en"): { mentions:
+       if (!match) continue;
+       const start = unit.ns + match.index;
+       const end = start + match[0].length;
+-      if (trigger.type === "feature_request" && !(L.FEATURES.some((feature) => feature.re.test(text)) || /(?:इसमें|साथ में|और एक|should also|add)/u.test(text))) continue;
++      if (trigger.type === "feature_request" && !(L.FEATURES.some((feature) => feature.re.test(text)) || once(REQUEST_THING).test(text))) continue;
+       if (trigger.type === "pricing") {
+         const amount = globalOf(PRICE_QUOTE).exec(text);
+         const at = amount ?? match;
+diff --git a/src/lib/rules/lexicon.ts b/src/lib/rules/lexicon.ts
+index 183b2e9..1313c44 100644
+--- a/src/lib/rules/lexicon.ts
++++ b/src/lib/rules/lexicon.ts
+@@ -82,22 +82,22 @@ export const ASKS_ABOUT_ACCIDENT = re(`(?:ever|have\\s+you|were\\s+you|been)${ne
+ export type IntentRule = { value: Intent; re: RegExp; weight: number };
+ export const USE_RULES: IntentRule[] = [
+   { value: "yes", weight: 1, re: re(`(?:इस्तेमाल|उपयोग|यूज|यूज़|use)\\s*(?:जरूर\\s+|ज़रूर\\s+)?(?:करूंगा|करूंगी|करेंगे|कर\\s+लूंगा|कर\\s+लूंगी|कर\\s+सकता|कर\\s+सकती|करना\\s+चाहूंगा|करना\\s+चाहूंगी|करना\\s+चाहेंगे|करुँगा|karunga|karungi|kar\\s+lunga)|लगवा(?:ऊंगा|ऊंगी|उंगा|उंगी|ऊँगा)|लगवा\\s+लूंगा|लगवा\\s+लूंगी|लगवाना\\s+चाहूंगा|लगवाना\\s+चाहूंगी|लगा\\s+लूंगा|लगा\\s+लूंगी|लगाऊंगा|लगाऊंगी|इंस्टॉल\\s+कर\\s+(?:लूंगा|लूंगी|दूंगा|लेंगे)|ले\\s+लूंगा|ले\\s+लूंगी|ले\\s+लेंगे|लेना\\s+चाहूंगा|लेना\\s+चाहूंगी|लेना\\s+चाहेंगे|खरीदूंगा|खरीदूंगी|खरीद\\s+लूंगा|खरीद\\s+लूंगी|खरीदना\\s+चाहूंगा|मैं\\s+लूंगा|मैं\\s+लगवाऊंगा|(?:जरूर|ज़रूर)\\s+(?:लूंगा|लूंगी|लगवाऊंगा|लगवाऊंगी|लगाऊंगा|खरीदूंगा|यूज\\s+करूंगा)|(?:लूंगा|लगवाऊंगा|लगाऊंगा|खरीदूंगा)\\s+(?:जरूर|ज़रूर)|i\\s*(?:'d|would|will|'ll|definitely\\s+would|definitely\\s+will|surely\\s+will|am\\s+going\\s+to)\\s+(?:definitely\\s+|surely\\s+|happily\\s+|probably\\s+)?(?:use|install|buy|try|adopt|fit|(?:take|get|have)\\s+(?:it|one|this))|(?:i\\s+)?would\\s+(?:love|like)\\s+to\\s+(?:use|have|install|buy|try)|sign\\s+me\\s+up|count\\s+me\\s+in|मुझे\\s+(?:लगवाना|चाहिए|लेना)\\s*(?:है|होगा)?|मैं\\s+(?:तो\\s+)?(?:इसे|यह|इसको)\\s+(?:आज\\s+ही\\s+)?(?:लगा|लगवा|ले|खरीद)\\s*(?:लूंगा|लूंगी|लेता|लेती|दूंगा)|i\\s+(?:want|need)\\s+(?:this|it|one)`) },
+-  { value: "no", weight: 1, re: re(`(?:इस्तेमाल|उपयोग|यूज|यूज़|use)\\s*(?:नहीं|नही|नहि|nahi|nahin)\\s*(?:करूंगा|करूंगी|करेंगे|करता|करती|करना|करुँगा)|(?:नहीं|नही|nahi|nahin)\\s+(?:लूंगा|लूंगी|लगवाऊंगा|लगवाऊंगी|खरीदूंगा|खरीदूंगी|लगाऊंगा|लगाऊंगी|चाहिए|चाहता|चाहती|लगवाना|लेना|चाहूंगा|चाहूंगी)|मुझे\\s+(?:इसकी\\s+)?(?:जरूरत|ज़रूरत|जरुरत)\\s+(?:नहीं|नही)|मेरे\\s+(?:काम|लिए)\\s+(?:का|की|के)?\\s*(?:नहीं|नही)|i\\s*(?:won't|will\\s+not|would\\s+not|wouldn't|don't|do\\s+not|(?:would|will)\\s+never|never|am\\s+not\\s+going\\s+to)\\s+(?:ever\\s+)?(?:use|install|buy|need|want|take|get|pay\\s+for|try)|i\\s+(?:don't|do\\s+not)\\s+(?:think\\s+i\\s+)?need\\s+(?:it|this)|not\\s+for\\s+me|no\\s+use\\s+for\\s+me|nahi\\s+(?:lunga|lungi|karunga|karungi)`) },
++  { value: "no", weight: 1, re: re(`(?:इस्तेमाल|उपयोग|यूज|यूज़|use)\\s*(?:नहीं|नही|नहि|nahi|nahin)\\s*(?:करूंगा|करूंगी|करेंगे|करता|करती|करना|करुँगा)|(?:नहीं|नही|nahi|nahin)\\s+(?:लूंगा|लूंगी|लगवाऊंगा|लगवाऊंगी|खरीदूंगा|खरीदूंगी|लगाऊंगा|लगाऊंगी|चाहिए|चाहता|चाहती|लगवाना|लेना|चाहूंगा|चाहूंगी)|मुझे\\s+(?:इसकी\\s+)?(?:जरूरत|ज़रूरत|जरुरत)\\s+(?:नहीं|नही)|मेरे\\s+(?:काम|लिए)\\s+(?:का|की|के)?\\s*(?:नहीं|नही)|i\\s*(?:won't|will\\s+not|would\\s+not|wouldn't|don't|do\\s+not|(?:would|will)\\s+never|never|am\\s+not\\s+going\\s+to)\\s+(?:ever\\s+)?(?:use|install|buy|need|want|take|get|pay\\s+for|try)|i\\s+(?:don't|do\\s+not)\\s+(?:think\\s+i\\s+)?need\\s+(?:it|this)|not\\s+for\\s+me|(?:कभी\\s+)?(?:न|ना|नहीं|नही)\\s+(?:लगाऊं|लगवाऊं|लूं|खरीदूं)|(?:kabhi\\s+)?na\\s+(?:lagaun|lagwaun|lun)|no\\s+use\\s+for\\s+me|nahi\\s+(?:lunga|lungi|karunga|karungi)`) },
+   { value: "maybe", weight: 0.6, re: re(`देखेंगे|देखूंगा|देखूंगी|सोचूंगा|सोचूंगी|सोचेंगे|सोच\\s+कर\\s+बताऊंगा|सोचकर\\s+बताता|शायद\\s+(?:लगवा|ले|यूज|इस्तेमाल|करूं|लूं|लगाऊं)|(?:यूज|इस्तेमाल|लगवा|ले)\\s+(?:भी\\s+)?सकता\\s+हूं|depends|डिपेंड\\s+करता|कीमत\\s+पर\\s+डिपेंड|price\\s+पर\\s+depend|अगर\\s+(?:सस्ता|कम\\s+दाम|फ्री|मुफ्त|कीमत\\s+ठीक|ठीक\\s+दाम)|if\\s+(?:it's|it\\s+is|the\\s+price\\s+is|its)\\s+(?:cheap|free|affordable|reasonable|right)|maybe\\s+i|may\\s+be\\s+i|might\\s+(?:use|buy|install|try|consider)|try\\s+करूंगा|try\\s+कर\\s+सकता|ट्राई\\s+करूंगा|let\\s+me\\s+think|will\\s+think|i'll\\s+think|कभी\\s+सोचा\\s+तो|possibly|शायद`) },
+ ];
+ export const PAY_RULES: IntentRule[] = [
+-  { value: "yes", weight: 1, re: re(`(?:पैसे|पैसा)\\s+(?:भी\\s+|तो\\s+|मैं\\s+|खुशी\\s+से\\s+)?(?:दूंगा|दूंगी|दे\\s+दूंगा|दे\\s+दूंगी|दे\\s+सकता|दे\\s+सकती|देने\\s+(?:को\\s+)?तैयार|देंगे|दे\\s+देंगे)|(?:paise|paisa)\\s+(?:bhi\\s+|to\\s+)?(?:dunga|dungi|de\\s+dunga|de\\s+sakta|de\\s+sakti)|pay\\s+(?:करूंगा|करूंगी|कर\\s+दूंगा|कर\\s+सकता|कर\\s+सकती)|(?:will|would|can|could|ready\\s+to|happy\\s+to|willing\\s+to|glad\\s+to|ok\\s+to|fine\\s+to)\\s+pay|i'?d\\s+pay|i\\s+can\\s+afford|afford\\s+(?:कर|it)|अफॉर्डेबल|affordable|worth\\s+(?:it|the\\s+money|paying|every)|पैसा\\s+वसूल|पैसे\\s+वसूल|वाजिब|reasonable|(?:कीमत|दाम|प्राइस|price|रेट)\\s+(?:ठीक|सही|वाजिब|चलेगा|ok|okay|fine|good|reasonable|कम)|(?:ठीक|सही)\\s+(?:कीमत|दाम|प्राइस)|सस्ता\\s+है|कम\\s+है\\s+(?:कीमत|दाम)|(?:चलेगा|चल\\s+जाएगा|ठीक\\s+है)${near(25)}(?:कीमत|दाम|प्राइस|price|हजार|हज़ार|रुपये|रुपए|सौ)|(?:हजार|हज़ार|रुपये|रुपए|सौ|लाख)${near(25)}(?:ठीक\\s+है|चलेगा|चल\\s+जाएगा|दे\\s+सकता|दे\\s+सकती|दे\\s+दूंगा|दे\\s+देंगे|बहुत\\s+ज्यादा\\s+अफॉर्डेबल)|paisa\\s+dunga|paise\\s+dunga|pay\\s+karunga`) },
+-  { value: "no", weight: 1, re: re(`(?:पैसे|पैसा)\\s+(?:तो\\s+|भी\\s+)?(?:बिल्कुल\\s+|बिलकुल\\s+|कभी\\s+)?(?:नहीं|नही)\\s+(?:दूंगा|दूंगी|दूँगा|दूँगी|देंगे|दूंगा)|(?:पैसे|पैसा)\\s+(?:नहीं|नही|nahi)\\s+(?:दूंगा|दूंगी|दे|देगा|देंगे|देता|देते|दे\\s+सकता|दे\\s+पाऊंगा)|कौन\\s+(?:देगा|देता|देते)|कोई\\s+(?:नहीं|नही)\\s+(?:देगा|देगी|देंगे)|(?:नहीं|नही)\\s+(?:दूंगा|दूंगी|देंगे|दे\\s+पाऊंगा|दे\\s+पाऊंगी)|मुफ्त|(?:फ्री|free)\\s+(?:होना|चाहिए|में|होगा|का)|should\\s+be\\s+free|(?:won't|wont|will\\s+not|would\\s+not|wouldn't|don't|do\\s+not|never|can't|cannot)\\s+(?:ever\\s+)?pay|not\\s+(?:paying|going\\s+to\\s+pay|willing\\s+to\\s+pay)|(?:बहुत|too|काफी|ज्यादा)\\s+(?:महंगा|महंगी|महँगा|expensive|costly)|(?:महंगा|महंगी|महँगा)\\s+(?:है|लग|होगा|पड़ेगा|हो\\s+जाएगा)|costly|expensive|afford\\s+(?:नहीं|nahi)|(?:नहीं|नही)\\s+(?:कर\\s+)?(?:पाऊंगा|पाऊंगी|पाएंगे)\\s*(?:afford|सपोर्ट|support)|(?:सपोर्ट|support|afford)\\s+(?:नहीं|नही)\\s+कर|budget\\s+(?:नहीं|में\\s+नहीं)|no\\s+budget|paisa\\s+nahi|paise\\s+nahi|mehnga|mahanga|महंगा`) },
++  { value: "yes", weight: 1, re: re(`(?:पैसे|पैसा)\\s+(?:भी\\s+|तो\\s+|मैं\\s+|खुशी\\s+से\\s+)?(?:दूंगा|दूंगी|दे\\s+दूंगा|दे\\s+दूंगी|दे\\s+सकता|दे\\s+सकती|देने\\s+(?:को\\s+)?तैयार|देंगे|दे\\s+देंगे)|(?:paise|paisa)\\s+(?:bhi\\s+|to\\s+)?(?:dunga|dungi|de\\s+dunga|de\\s+sakta|de\\s+sakti)|pay\\s+(?:करूंगा|करूंगी|कर\\s+दूंगा|कर\\s+सकता|कर\\s+सकती)|(?:will|would|can|could|ready\\s+to|happy\\s+to|willing\\s+to|glad\\s+to|ok\\s+to|fine\\s+to)\\s+(?:(?:gladly|happily|easily|definitely|surely|even)\\s+)?pay(?![^.!?]{0,80}(?:keep|away|rid\\s+of|avoid))|pay\\s+any\\s+(?:price|premium|amount)|(?:कीमत|पैसे|पैसा|दाम)\\s+(?:चुकाने|देने|भरने)\\s+(?:को|के\\s+लिए)\\s+(?:भी\\s+)?तैयार|कोई\\s+भी\\s+कीमत|kitni\\s+bhi\\s+keemat|koi\\s+bhi\\s+keemat|any\\s+price|i'?d\\s+pay|i\\s+can\\s+afford|afford\\s+(?:कर|it)|अफॉर्डेबल|affordable|worth\\s+(?:it|the\\s+money|paying|every)|पैसा\\s+वसूल|पैसे\\s+वसूल|वाजिब|reasonable|(?:कीमत|दाम|प्राइस|price|रेट)\\s+(?:(?:toh|to|तो)\\s+)?(?:theek|thik|sahi|ठीक|सही|वाजिब|चलेगा|ok|okay|fine|good|reasonable|कम)|(?:ठीक|सही)\\s+(?:कीमत|दाम|प्राइस)|सस्ता\\s+है|कम\\s+है\\s+(?:कीमत|दाम)|(?:चलेगा|चल\\s+जाएगा|ठीक\\s+है)${near(25)}(?:कीमत|दाम|प्राइस|price|हजार|हज़ार|रुपये|रुपए|सौ)|(?:हजार|हज़ार|रुपये|रुपए|सौ|लाख)${near(25)}(?:ठीक\\s+है|चलेगा|चल\\s+जाएगा|दे\\s+सकता|दे\\s+सकती|दे\\s+दूंगा|दे\\s+देंगे|बहुत\\s+ज्यादा\\s+अफॉर्डेबल)|paisa\\s+dunga|paise\\s+dunga|pay\\s+karunga|paisa\\s+vasool|de\\s+dunga|de\\s+dungi|de\\s+denge`) },
++  { value: "no", weight: 1, re: re(`(?:पैसे|पैसा)\\s+(?:तो\\s+|भी\\s+)?(?:बिल्कुल\\s+|बिलकुल\\s+|कभी\\s+)?(?:नहीं|नही)\\s+(?:दूंगा|दूंगी|दूँगा|दूँगी|देंगे|दूंगा)|(?:पैसे|पैसा)\\s+(?:नहीं|नही|nahi)\\s+(?:दूंगा|दूंगी|दे|देगा|देंगे|देता|देते|दे\\s+सकता|दे\\s+पाऊंगा)|कौन\\s+(?:देगा|देता|देते)|कोई\\s+(?:नहीं|नही)\\s+(?:देगा|देगी|देंगे)|(?:नहीं|नही)\\s+(?:दूंगा|दूंगी|देंगे|दे\\s+पाऊंगा|दे\\s+पाऊंगी)|मुफ्त|(?:फ्री|free)\\s+(?:होना|चाहिए|में|होगा|का)|should\\s+be\\s+free|(?:won't|wont|will\\s+not|would\\s+not|wouldn't|don't|do\\s+not|never|can't|cannot)\\s+(?:ever\\s+)?pay|not\\s+(?:paying|going\\s+to\\s+pay|willing\\s+to\\s+pay)|(?:बहुत|too|काफी|ज्यादा)\\s+(?:महंगा|महंगी|महँगा|expensive|costly)|(?:महंगा|महंगी|महँगा)\\s+(?:है|लग|होगा|पड़ेगा|हो\\s+जाएगा)|costly|expensive|afford\\s+(?:नहीं|nahi)|(?:नहीं|नही)\\s+(?:कर\\s+)?(?:पाऊंगा|पाऊंगी|पाएंगे)\\s*(?:afford|सपोर्ट|support)|(?:सपोर्ट|support|afford)\\s+(?:नहीं|नही)\\s+कर|budget\\s+(?:नहीं|में\\s+नहीं)|no\\s+budget|paisa\\s+nahi|paise\\s+nahi|mehnga|mahanga|महंगा|nahi\\s+dunga|nahi\\s+dungi|nahi\\s+denge|ek\\s+(?:bhi\\s+)?paisa\\s+nahi|not\\s+a\\s+single\\s+rupee|(?:free|फ्री|मुफ्त)\\s+(?:mein|me|में)\\s+(?:bhi|भी)\\s+(?:nahi|नहीं)|एक\\s+(?:भी\\s+)?(?:पैसा|रुपया)\\s+(?:नहीं|नही)|overpriced`) },
+   { value: "maybe", weight: 0.6, re: re(`depends|डिपेंड|कीमत\\s+पर|price\\s+पर|कितने\\s+का|कितनी\\s+कीमत|how\\s+much\\s+(?:is|will|would|does|it)|कितना\\s+(?:लगेगा|पड़ेगा|खर्चा|खर्च|पैसा)|अगर\\s+(?:सस्ता|कम|फ्री|मुफ्त)|if\\s+(?:cheap|it\\s+is\\s+cheap|the\\s+price\\s+is\\s+right|free)|देखते\\s+हैं|सोचेंगे|negotiable|बात\\s+कर\\s+सकते`) },
+ ];
+ /** Who the sentence is about: "bike riders will not pay" is a remark about a kind of customer, not the speaker's own answer. */
+ export const THIRD_PERSON = lexOnce("वो|वह|वे|उसे|उसको|उनको|उन्हें|लोग|कोई|आम आदमी|गरीब|बाइक वाला|बाइक वाले|स्प्लेंडर|they|them|people|most people|he|she|bike rider|riders|ड्राइवर लोग|कस्टमर|customers|public|जनता|हर कोई|everyone|everybody|आदमी|बंदा|बंदे|दूसरे|others");
+ export const FIRST_PERSON = lexOnce("मैं|मैंने|मेरे|मेरी|मेरा|मुझे|मुझको|हम|हमारे|हमारी|हमारा|i|i'd|i'll|i've|i'm|my|me|main|mera|meri|mujhe");
+-export const AFFIRM_START = rx(`^(?:हां|हाँ|हा|जी|जी\\s+हां|जी\\s+हाँ|जी\\s+बिल्कुल|बिल्कुल|ज़रूर|जरूर|क्यों\\s+नहीं|yes|yeah|yep|yup|sure|of\\s+course|absolutely|definitely|haan|ji\\s+haan|bilkul|zaroor)${E}`, "u");
+-export const NEGATE_START = rx(`^(?:नहीं|नही|ना|नहीं\\s+नहीं|no|nope|never|nahi|nahin|कभी\\s+नहीं)${E}`, "u");
++export const AFFIRM_START = rx(`^(?:हां|हाँ|हा|जी|जी\\s+हां|जी\\s+हाँ|जी\\s+बिल्कुल|बिल्कुल|ज़रूर|जरूर|क्यों\\s+नहीं|yes|yeah|yep|yup|sure|of\\s+course|absolutely|definitely|haan|ji\\s+haan|bilkul|zaroor)${E}(?!\\s+right${E})(?![\\s,]+(?:(?:भी|bhi|at)\\s+)?(?:not|nahi|nahin|नहीं|नही|ना|na|all)${E})`, "u");
++export const NEGATE_START = rx(`^(?:नहीं|नही|ना|नहीं\\s+नहीं|no|nope|never|nahi|nahin|not\\s+at\\s+all|not\\s+in\\s+the\\s+slightest|(?:बिल्कुल|बिलकुल|bilkul)\\s+(?:भी|bhi)\\s+(?:नहीं|नही|nahi)|kabhi\\s+nahi|no\\s+way|(?:absolutely|definitely|certainly|bilkul|बिल्कुल|बिलकुल)[\\s,]+(?:not|nahi|nahin|नहीं|नही)|कभी\\s+नहीं)${E}`, "u");
+ export const MAYBE_START = rx(`^(?:शायद|maybe|perhaps|देखेंगे|सोचूंगा|depends|डिपेंड|पता\\s+नहीं|not\\s+sure|कह\\s+नहीं\\s+सकता|can't\\s+say|hmm|हम्म|देखते\\s+हैं)${E}`, "u");
+-export const ASKS_ABOUT_USE = re(`यूज|इस्तेमाल|उपयोग|use|using|लगवा[\\p{L}\\p{M}]*|लगा(?:ओगे|ओगी|एंगे|ना)|install[\\p{L}\\p{M}]*|खरीद[\\p{L}\\p{M}]*|buy|purchase|लेना|लोगे|लोगी|लेंगे|चाहोगे|चाहोगी|चाहेंगे|चाहते|want\\s+to|would\\s+you\\s+like|adopt|try\\s+करोगे|ट्राई`);
+-export const ASKS_ABOUT_PAY = re(`पैसे|पैसा|कीमत|दाम|प्राइस|price|pricing|pay|paying|दोगे|दोगी|देंगे|देना|कितना\\s+दे|कितने\\s+दे|how\\s+much|खर्च|खर्चा|cost|कॉस्ट|afford|subscription|सब्सक्रिप्शन|फीस|fee|charge|budget|बजट`);
++export const ASKS_ABOUT_USE = re(`यूज|इस्तेमाल|उपयोग|use|using|लगवा[\\p{L}\\p{M}]*|लगा(?:ओगे|ओगी|एंगे|ना)|install[\\p{L}\\p{M}]*|खरीद[\\p{L}\\p{M}]*|buy|purchase|लेना|लोगे|लोगी|लेंगे|चाहोगे|चाहोगी|चाहेंगे|चाहते|want\\s+to|would\\s+you\\s+like|adopt|लगाने|लगवाने|इंस्टॉल|इनस्टॉल|इन्स्टॉल|इंस्टाल|इनस्टाल|karenge|karoge|karogi|lagwayenge|lagwaoge|lagwaogi|lagayenge|lenge|loge|logi|kharidenge|kharidoge|chahenge|chahoge|try\\s+करोगे|ट्राई`);
++export const ASKS_ABOUT_PAY = re(`पैसे|पैसा|कीमत|दाम|प्राइस|price|pricing|pay|paying|दोगे|दोगी|देंगे|देना|कितना\\s+दे|कितने\\s+दे|how\\s+much|खर्च|खर्चा|cost|कॉस्ट|afford|subscription|सब्सक्रिप्शन|फीस|fee|charge|budget|paise|paisa|rupaye|rupaiye|rupay|rupees|denge|doge|dogi|dena|kharcha|kharch|keemat|kimat|daam|बजट`);
+ 
+ // ================================================================ features of Trata ===============================
+ export type FeatureSpec = { name: string; re: RegExp };
+@@ -158,7 +158,7 @@ export const MENTION_TRIGGERS: Trigger[] = [
+   { type: "pain_point", label: "pain", re: re(`(?:एम्बुलेंस|एंबुलेंस|इंबुलेंस|ambulance)${near(45)}(?:देर|late|delay|डिले|नहीं\\s+(?:आती|आई|आता|मिलती|मिली|पहुंच)|फंस|stuck|traffic|ट्रैफिक)|(?:देर|late|delay|डिले|दिले)${near(35)}(?:एम्बुलेंस|एंबुलेंस|इंबुलेंस|ambulance|मदद|help|हॉस्पिटल|hospital|इलाज|treatment)|मदद\\s+(?:नहीं|देर\\s+से|समय\\s+पर\\s+नहीं|नही)|help\\s+(?:late|delay|nahi|never|doesn't|does\\s+not)|समय\\s+पर\\s+(?:नहीं|मदद\\s+नहीं|इलाज\\s+नहीं|पहुंच)|दिमाग\\s+(?:काम\\s+)?(?:नहीं\\s+)?(?:करता|चलता|बंद)|दिमाग\\s+बंद|घबरा[\\p{L}\\p{M}]*|घबरा|panic[\\p{L}\\p{M}]*|बेसुध|बेहोश|unconscious|लोकेशन\\s+(?:नहीं|पता\\s+नहीं)|(?:फैमिली|परिवार|family)\\s+(?:को\\s+)?(?:पता\\s+नहीं|खबर\\s+नहीं|कॉल\\s+नहीं|इन्फॉर्म\\s+नहीं|नहीं\\s+पता)|वीडियो\\s+बना[\\p{L}\\p{M}]*|video\\s+(?:बना[\\p{L}\\p{M}]*|shoot|record[\\p{L}\\p{M}]*|making)|फोटो\\s+खींच|तमाशा|भीड़\\s+(?:लग|जमा)|crowd\\s+(?:gathers|forms|collect[\\p{L}\\p{M}]*)|कोई\\s+(?:मदद\\s+)?(?:नहीं|नही)\\s+(?:करता|आता|रुकता|रुकते)|(?:nobody|no\\s+one)\\s+(?:helps|stops|comes|came)|पुलिस\\s+(?:के\\s+)?(?:चक्कर|केस|कार्रवाई|कार्यवाही|एक्शन|लफड़ा|झंझट|परेशानी|पूछताछ)|police\\s+(?:case|trouble|harass[\\p{L}\\p{M}]*|action|hassle|questioning)|कानूनी\\s+(?:झंझट|पचड़ा|दिक्कत|लफड़ा)|legal\\s+(?:trouble|issue|hassle|problem)|फंस\\s+(?:जाऊंगा|जाएंगे|जाते\\s+हैं|जाऊँगा|जाता\\s+है)|आगे\\s+नहीं\\s+आते|हॉस्पिटल\\s+(?:दूर|नहीं\\s+मिलता|पास\\s+में\\s+नहीं)|golden\\s+hour|गोल्डन\\s+आवर|समय\\s+बर्बाद|time\\s+waste|टाइम\\s+वेस्ट`) },
+   { type: "objection", label: "objection", re: re(`(?:लेकिन|मगर|but|however)${near(60)}(?:दिक्कत|दिकत|problem|issue|मुश्किल|difficult|risk|खतरा|डर|ट्रस्ट|trust|भरोसा|false|गलत|नहीं\\s+चलेगा|काम\\s+नहीं|फेल|fail|महंगा|expensive|कैसे)|(?:दिक्कत|दिकत|दिक्तर|problem|issue|challenge|मुश्किल|risk|खतरा|डर)${near(30)}(?:सेंसर|sensor|ऐप|app|डिवाइस|device|इसमें|इसका|इसके|यह|ये|this|it)|(?:सेंसर|सेन्सर|sensor|ऐप|app|डिवाइस|device|इसमें|इसका|this|it)${near(40)}(?:दिक्कत|दिख्कत|problem|issue|गिर\\s+गया|खराब|फेल|fail|काम\\s+नहीं|नहीं\\s+चलेगा|नहीं\\s+चल|टूट|बैटरी|battery|नेटवर्क|network|सिग्नल|signal|इंटरनेट|internet)|false\\s+(?:alarm|alert|positive)|गलत\\s+(?:अलर्ट|अलार्म|कॉल)|बैटरी|battery|नेटवर्क\\s+(?:नहीं|कम|issue|problem|दिक्कत)|इंटरनेट\\s+(?:नहीं|कम)|ट्रस्ट\\s+(?:ना|नहीं)|trust\\s+(?:नहीं|issue|ना\\s+करें|not)|भरोसा\\s+(?:नहीं|नही)|काम\\s+करेगा\\s+या\\s+नहीं|will\\s+it\\s+work|कैसे\\s+(?:काम\\s+)?करेगा|होगा\\s+कैसे|नहीं\\s+चलेगा|won't\\s+work|कौन\\s+लगवाएगा|who\\s+will\\s+(?:install|use|buy)|फ्लॉप|flop`) },
+   { type: "use_case", label: "use case", re: re(`(?:हाईवे|highway|नाइट|रात\\s+(?:में|को)|night|अकेले|alone|लंबी\\s+(?:यात्रा|ड्राइव|दूरी)|long\\s+(?:drive|trip|route|distance|journey)|सफर|trip|बच्चों?|बच्चे|kids?|children|बुजुर्ग|elderly|माता-?पिता|parents?|पापा|मम्मी|स्कूल|school|कॉलेज|college|ऑफिस|office|डिलीवरी|delivery|फ्लीट|fleet|ट्रक|truck|कैब|cab|टैक्सी|taxi|ऑटो|auto|बाइक|bike|पहाड़|hills?|mountain[\\p{L}\\p{M}]*|गांव|गाँव|village|rural|सुनसान|एलोन|remote|isolated|चंडीगढ़|चंडीगर|जंगल)${near(60)}(?:काम\\s+आ[\\p{L}\\p{M}]*|काम\\s+की|useful|यूसफुल|उपयोगी|helpful|फायदा|benefit|सही\\s+रहेगा|बढ़िया\\s+रहेगा|अच्छा\\s+रहेगा)|(?:काम\\s+आ(?:एगा|येगा|जाएगा|जायेगा)|काम\\s+आजाएगा|useful|फायदेमंद|helpful)${near(45)}(?:जब|when|अगर|if|उन|those|जहां|where|जिन|लोगों|people|वहां|इलाके|areas?)|(?:सुनसान|एकदम\\s+रात|अनजान|unknown|isolated|remote|सूनसान)${near(40)}(?:इलाके|इलाका|जगह|area|road|सड़क|highway)`) },
+-  { type: "promise", label: "promise", re: re(`(?:मैं|मैंने|i)${near(40)}(?:दिखाऊंगा|दिखाऊंगी|बताऊंगा|बताऊंगी|बात\\s+करूंगा|बात\\s+करूंगी|पूछूंगा|पूछूंगी|मिलवाऊंगा|मिलवा\\s+दूंगा|भेजूंगा|भेज\\s+दूंगा|शेयर\\s+करूंगा|कनेक्ट\\s+करवा|रेफर|refer|इंट्रोड्यूस|introduce|try\\s+करूंगा|टेस्ट\\s+करूंगा|test\\s+करूंगा|देखूंगा|check\\s+करूंगा|call\\s+back|कॉल\\s+करूंगा|फोन\\s+करूंगा|will\\s+(?:show|share|tell|ask|introduce|connect|refer|try|test|check|call|send|talk)|can\\s+help|help\\s+you)|बाद\\s+में\\s+(?:बताता|बताती|बात\\s+करता|कॉल)|कल\\s+(?:बात\\s+करते|कॉल\\s+करूं)|मेरी\\s+(?:तरफ\\s+से\\s+)?(?:मदद|हेल्प)|मैं\\s+मदद\\s+करूंगा|you\\s+can\\s+(?:count|rely)\\s+on\\s+me`) },
++  { type: "promise", label: "promise", re: re(`(?:मैं|मैंने|i)${near(40)}(?:connect\\s+you|introduce\\s+you|put\\s+you\\s+in\\s+touch|refer\\s+you|refer|मिलवा|बात\\s+करवा|connect\\s+करवा|connect\\s+kar|milwa|baat\\s+karwa|दिखाऊंगा|दिखाऊंगी|बताऊंगा|बताऊंगी|बात\\s+करूंगा|बात\\s+करूंगी|पूछूंगा|पूछूंगी|मिलवाऊंगा|मिलवा\\s+दूंगा|भेजूंगा|भेज\\s+दूंगा|शेयर\\s+करूंगा|कनेक्ट\\s+करवा|रेफर|refer|इंट्रोड्यूस|introduce|try\\s+करूंगा|टेस्ट\\s+करूंगा|test\\s+करूंगा|देखूंगा|check\\s+करूंगा|call\\s+back|कॉल\\s+करूंगा|फोन\\s+करूंगा|will\\s+(?:show|share|tell|ask|introduce|connect|refer|try|test|check|call|send|talk)|can\\s+help|help\\s+you)|बाद\\s+में\\s+(?:बताता|बताती|बात\\s+करता|कॉल)|कल\\s+(?:बात\\s+करते|कॉल\\s+करूं)|मेरी\\s+(?:तरफ\\s+से\\s+)?(?:मदद|हेल्प)|मैं\\s+मदद\\s+करूंगा|you\\s+can\\s+(?:count|rely)\\s+on\\s+me`) },
+ ];
+ /** Things worth keeping even when they fit no other box: who else matters (carmakers, insurers, government), rules of thumb, big numbers. */
+ export const INTERESTING: Array<{ re: RegExp; label: string }> = [
+diff --git a/src/lib/rules/text.ts b/src/lib/rules/text.ts
+index 27ad352..b57b7a2 100644
+--- a/src/lib/rules/text.ts
++++ b/src/lib/rules/text.ts
+@@ -71,10 +71,10 @@ export type Unit = {
+ const STAMP_LINE = /^\s*(?:\[?\d{1,2}:\d{2}(?::\d{2})?\]?)\s*$/;
+ const NOISE_LINE = /^\s*(?:this content was generated by ai\.?|generated by ai|transcript(?:ion)?(?: by .*)?)\s*$/i;
+ 
+-const LABEL_WORDS = "interviewer|interviewee|इंटरव्यूअर|इंटरव्यूवर|इंटरव्यू लेने वाला|customer|ग्राहक|कस्टमर|respondent|participant|प्रतिभागी|question|प्रश्न|सवाल|answer|उत्तर|जवाब|host|guest|team|trata team|speaker\\s*[0-9a-z]+|स्पीकर\\s*[0-9a-z]+|q|a|i|c";
++const LABEL_WORDS = "interviewer|interviewee|responder|response|user|client|caller|prospect|moderator|researcher|founder|agent|इंटरव्यूअर|इंटरव्यूवर|इंटरव्यू लेने वाला|customer|ग्राहक|कस्टमर|respondent|participant|प्रतिभागी|question|प्रश्न|सवाल|answer|उत्तर|जवाब|host|guest|team|trata team|speaker\\s*[0-9a-z]+|स्पीकर\\s*[0-9a-z]+|q|a|i|c";
+ const LABEL_AT_START = new RegExp(`^\\s*(?:${normalizePattern(LABEL_WORDS)})\\s*[:：]\\s*`, "u");
+ // A label in the middle of a line: "...है? ग्राहक: हाँ" – cut before it so it starts its own unit.
+-const LABEL_INLINE = new RegExp(`(?<=[.!?।…\\s])((?:interviewer|इंटरव्यूअर|customer|ग्राहक|कस्टमर|respondent|question|प्रश्न|answer|उत्तर|जवाब|speaker\\s*[0-9]+|स्पीकर\\s*[0-9]+)\\s*[:：])`, "gu");
++const LABEL_INLINE = new RegExp(`(?<=[.!?।…\\s])((?:interviewer|interviewee|responder|respondent|participant|client|caller|prospect|moderator|researcher|इंटरव्यूअर|customer|ग्राहक|कस्टमर|respondent|question|प्रश्न|answer|उत्तर|जवाब|speaker\\s*[0-9]+|स्पीकर\\s*[0-9]+)\\s*[:：])`, "gu");
+ 
+ /** Soft places to cut a long unpunctuated stretch: just before words that usually start a new thought. */
+ const SOFT_BREAK = new Set(normalizePattern("और लेकिन मगर पर तो फिर क्योंकि इसलिए जैसे अगर अच्छा हां हाँ नहीं मतलब बट एंड but and so because then also if actually basically well okay ok").split(" "));
+diff --git a/src/lib/trata.ts b/src/lib/trata.ts
+index 8a38123..0106714 100644
+--- a/src/lib/trata.ts
++++ b/src/lib/trata.ts
+@@ -33,6 +33,15 @@ export type Evidence = { text: string; pos: number | null; verified: boolean };
+ export type Topic = { discussed: boolean; score: number };
+ export type FeatureOpinion = { name: string; stance: Stance; score: number; importance: Importance; evidence: Evidence | null; count?: number };
+ export type Mention = { type: MentionType; text: string; evidence: Evidence | null };
++export const PRICE_PERIODS = ["one_time", "month", "year", "unspecified"] as const;
++export const PRICE_STANCES = ["accepts", "too_high", "suggests", "mentioned"] as const;
++export type PricePeriod = (typeof PRICE_PERIODS)[number];
++export type PriceStance = (typeof PRICE_STANCES)[number];
++/**
++ * One amount of money said in the call, in rupees. `who` is "interviewer" when the interviewer named the price and the
++ * customer only answered it ("Would you pay 1500 a year?" – "Yes"). `limit: "max"` marks "up to 2000" / "more than 3000 is too much".
++ */
++export type PricePoint = { amount: number; period: PricePeriod; stance: PriceStance; limit?: "max" | "min"; who: "customer" | "interviewer"; text: string; evidence: Evidence | null };
+ /** Who the customer is, as they described themselves. Drives the "how many drive a car" style charts. */
+ export type CustomerProfile = { role: Role; transport: Transport[]; accident: AccidentExperience; understanding: Understanding };
+ /** One question the interviewer asked and what the customer answered. */
+@@ -61,6 +70,8 @@ export type TrataAnalysis = {
+   topics: { UX: Topic; Pricing: Topic; Features: Topic };
+   features: FeatureOpinion[];
+   mentions: Mention[];
++  /** Prices said in the call, as numbers (rules v2). Absent on older saved interviews. */
++  prices?: PricePoint[];
+   /** Added by engine result version 3; older saved interviews do not have these. */
+   profile?: CustomerProfile;
+   /** Responder-only extraction (see ResponderReport). Built by the website's rules; absent on older saved interviews. */
+@@ -133,6 +144,20 @@ export function analysisProblem(value: unknown): string | null {
+     if (!isText(item.text, 600)) return `${at}.text is too long`;
+     const problem = evidenceProblem(item.evidence === undefined ? null : item.evidence, `${at}.evidence`, true); if (problem) return problem;
+   }
++  if (value.prices !== undefined) {
++    if (!isList(value.prices, 20)) return "prices is not a list of at most 20";
++    for (const [index, item] of value.prices.entries()) {
++      const at = `prices[${index}]`;
++      if (!isObject(item)) return `${at} is not an object`;
++      if (typeof item.amount !== "number" || !Number.isFinite(item.amount) || item.amount <= 0 || item.amount > 10_000_000) return `${at}.amount is not a positive number`;
++      if (!oneOf(PRICE_PERIODS, item.period)) return `${at}.period is not allowed`;
++      if (!oneOf(PRICE_STANCES, item.stance)) return `${at}.stance is not allowed`;
++      if (item.limit !== undefined && item.limit !== "max" && item.limit !== "min") return `${at}.limit is not allowed`;
++      if (item.who !== "customer" && item.who !== "interviewer") return `${at}.who is not allowed`;
++      if (!isText(item.text, 200)) return `${at}.text is too long`;
++      const problem = evidenceProblem(item.evidence === undefined ? null : item.evidence, `${at}.evidence`, true); if (problem) return problem;
++    }
++  }
+   if (value.profile !== undefined) {
+     const profile = value.profile;
+     if (!isObject(profile)) return "profile is not an object";
+@@ -182,6 +207,7 @@ export function clampAnalysis(analysis: TrataAnalysis): TrataAnalysis {
+     problemConcern: { ...analysis.problemConcern, note: cut(analysis.problemConcern.note, 500) },
+     features: (analysis.features ?? []).slice(0, 60).map((feature) => ({ ...feature, name: cut(feature.name, 100), evidence: evidence(feature.evidence ?? null) })),
+     mentions: (analysis.mentions ?? []).slice(0, 80).map((mention) => ({ ...mention, text: cut(mention.text, 600), evidence: evidence(mention.evidence ?? null) })),
++    ...(analysis.prices ? { prices: analysis.prices.slice(0, 20).map((price) => ({ ...price, text: cut(price.text, 200), evidence: evidence(price.evidence ?? null) })) } : {}),
+     ...(analysis.qa ? { qa: analysis.qa.slice(0, 30).map((item) => ({ ...item, question: cut(item.question, 400), answer: cut(item.answer, 600), evidence: evidence(item.evidence ?? null) })) } : {}),
+     keyPoints: (analysis.keyPoints ?? []).slice(0, 20).map((point) => cut(point, 500)),
+     alternatives: (analysis.alternatives ?? []).slice(0, 20).map((item) => cut(item, 200)),
+@@ -194,18 +220,20 @@ export function sentimentTone(scoreValue: number): "positive" | "negative" | "ne
+   return scoreValue > 0.15 ? "positive" : scoreValue < -0.15 ? "negative" : "neutral";
+ }
+ 
++const PERIOD_SHORT: Record<PricePeriod, string> = { one_time: " one-time", month: "/month", year: "/year", unspecified: "" };
+ const joined = (items: string[]) => items.filter(Boolean).join(" | ");
+ 
+ /** The analysis flattened into the extra CSV columns (name -> value). `analysis_json` keeps everything. */
+ export function analysisCsvColumns(analysis: TrataAnalysis | undefined): Record<string, string | number> {
+   if (!analysis) {
+-    return { idea_label: "", verdict: "", would_use: "", would_pay: "", problem_concern: "", customer_role: "", transport: "", accident_experience: "", understood_idea: "", questions_and_answers: "", needs_review: "", review_reasons: "", summary: "", features: "", specific_mentions: "", asr_engine: "", asr_model: "", llm_model: "", duration_sec: "", analysis_json: "" };
++    return { idea_label: "", verdict: "", would_use: "", would_pay: "", price_points: "", problem_concern: "", customer_role: "", transport: "", accident_experience: "", understood_idea: "", questions_and_answers: "", needs_review: "", review_reasons: "", summary: "", features: "", specific_mentions: "", asr_engine: "", asr_model: "", llm_model: "", duration_sec: "", analysis_json: "" };
+   }
+   return {
+     idea_label: analysis.ideaSentiment.label,
+     verdict: analysis.verdict,
+     would_use: analysis.wouldUse,
+     would_pay: analysis.wouldPay,
++    price_points: joined((analysis.prices ?? []).map((price) => `₹${price.amount}${PERIOD_SHORT[price.period]} ${price.stance}${price.limit === "max" ? " (limit)" : ""}${price.who === "interviewer" ? " (asked)" : ""}`)),
+     problem_concern: analysis.problemConcern.level,
+     customer_role: analysis.profile?.role ?? "",
+     transport: (analysis.profile?.transport ?? []).join("; "),
+diff --git a/src/lib/rules/prices.ts b/src/lib/rules/prices.ts
+new file mode 100644
+index 0000000..b145ec3
+--- /dev/null
++++ b/src/lib/rules/prices.ts
+@@ -0,0 +1,184 @@
++/**
++ * Prices said in the call, as numbers: "I can pay 1500 for the device and 99 a month", "3000 a year is too much",
++ * "दो हज़ार तक दे दूंगा", "saal ka 500 chalega". Each amount gets a period (one-time / month / year), what the customer
++ * thinks of it (accepts, too high, suggests, just mentioned) and, for "up to 2000" / "more than 3000", whether it is a limit.
++ *
++ * Only money counts: an amount needs a currency word, a "thousand / सौ / हज़ार" multiplier, or a price question / pay word in
++ * the same sentence. Car prices (lakhs, crores), years ("2 साल पहले"), minutes and distances are left out.
++ */
++import type { Evidence, PricePeriod, PricePoint, PriceStance } from "@/lib/trata";
++import { normalizePattern, once, rx } from "./text";
++import { WORD, WORD_END } from "@/lib/call-sentiment";
++import { quote, questionKind, type Doc } from "./extract";
++import * as L from "./lexicon";
++
++const W = WORD;
++const E = WORD_END;
++const r = (body: string) => rx(`${W}(?:${normalizePattern(body)})${E}`, "u");
++
++const CURRENCY = "₹|rs\\.?|inr|/-|rupees?|rupaye|rupaiye|rupay|rupiya|रुपये|रुपए|रुपया|रूपये|रूपए|रु\\.?|bucks";
++const MULTIPLIER: Record<string, number> = {
++  k: 1000, thousand: 1000, "हजार": 1000, "हज़ार": 1000, hazaar: 1000, hazar: 1000, hajar: 1000,
++  hundred: 100, "सौ": 100, sau: 100,
++};
++const WORD_NUMBER: Record<string, number> = {
++  "एक": 1, ek: 1, one: 1, "दो": 2, do: 2, two: 2, "तीन": 3, teen: 3, tin: 3, three: 3, "चार": 4, char: 4, chaar: 4, four: 4,
++  "पांच": 5, "पाँच": 5, paanch: 5, panch: 5, five: 5, "छह": 6, "छः": 6, chhe: 6, six: 6, "सात": 7, saat: 7, seven: 7,
++  "आठ": 8, aath: 8, eight: 8, "नौ": 9, nau: 9, nine: 9, "दस": 10, das: 10, ten: 10, "बीस": 20, bees: 20, twenty: 20,
++  "पच्चीस": 25, pachchees: 25, "तीस": 30, tees: 30, thirty: 30, "चालीस": 40, chalis: 40, forty: 40, "पचास": 50, pachas: 50,
++  pachaas: 50, fifty: 50, "सौ": 100, sau: 100, hundred: 100, "डेढ़": 1.5, "डेढ": 1.5, dedh: 1.5, "ढाई": 2.5, dhai: 2.5,
++};
++
++const MULT_WORDS = Object.keys(MULTIPLIER).map((w) => w.replace(/\./g, "\\.")).join("|");
++const NUM_WORDS = Object.keys(WORD_NUMBER).join("|");
++/** 1500 · 1,500 · 1.5k · ₹ 99 · 2 हज़ार · do hazaar · डेढ़ हज़ार · पचास रुपये */
++const AMOUNT = rx(
++  `(?:(?:${CURRENCY})\\s*)?(?:(?<digits>[0-9][0-9,]*(?:\\.[0-9]+)?)|(?<word>${normalizePattern(NUM_WORDS)}))\\s*(?<mult>${normalizePattern(MULT_WORDS)})?${E}\\s*(?<cur>${normalizePattern(CURRENCY)})?`,
++  "gu",
++);
++/** Words right after a number that make it NOT a price. */
++const NOT_MONEY_AFTER = r("minutes?|mins?|मिनट|seconds?|सेकंड|hours?|घंटे|घंटा|km|kms|किमी|किलोमीटर|kilometers?|meters?|मीटर|cc|kmph|years?\\s+ago|साल\\s+पहले|saal\\s+pehle|साल\\s+से|saal\\s+se|people|लोग|log|लोगों|%|percent|प्रतिशत|बार|times|baar|cars?|गाड़ियां|गाड़ियों|गाड़ी|vehicles?|trucks?|ट्रक|बच्चे|kids|din|दिन|days?|weeks?|हफ्ते|lakh|lakhs|लाख|crores?|करोड़|करोड|th|st|nd|rd|am|pm|बजे|baje|ka\\s+accident|accidents?");
++const BIG = r("लाख|lakhs?|crores?|करोड़|करोड");
++const PAY_CONTEXT = r(`pay|paying|price|pricing|cost|costs|fee|fees|charge|subscription|afford|expensive|cheap|costly|worth|budget|कीमत|दाम|प्राइस|फीस|पैसे|पैसा|खर्च|खर्चा|महंगा|महंगी|सस्ता|सस्ती|सब्सक्रिप्शन|दूंगा|दूंगी|देंगे|दे\\s+दूंगा|दे\\s+सकता|दे\\s+सकती|चलेगा|paise|paisa|kharcha|keemat|daam|mehnga|sasta|dunga|denge|de\\s+dunga|chalega`);
++
++const PERIOD_MONTH = r("per\\s+month|a\\s+month|monthly|month|months|/month|/mo|pm|p\\.m\\.|महीना|महीने|महीनेका|मासिक|मंथली|mahina|mahine|mahine\\s+ka|har\\s+mahine|हर\\s+महीने");
++const PERIOD_YEAR = r("per\\s+year|a\\s+year|yearly|annual|annually|year|years|/year|/yr|p\\.a\\.|pa|साल|सालाना|वार्षिक|ईयरली|इयरली|saal|sal|saalana|har\\s+saal|हर\\s+साल");
++const PERIOD_ONCE = r("one[\\s-]?time|onetime|once|lifetime|एक\\s+बार|ek\\s+baar|वन[\\s-]?टाइम|device|डिवाइस|installation|इंस्टॉलेशन|install|इंस्टॉल|hardware|हार्डवेयर|sensor|सेंसर|unit|यूनिट|खरीदने|kharidne|buy|purchase");
++
++const TOO_HIGH = r(`too\\s+(?:much|expensive|costly|high|steep)|expensive|costly|overpriced|steep|महंगा|महंगी|महँगा|ज़्यादा|ज्यादा|zyada|jyada|jada|mehnga|mehenga|mahanga|nahi\\s+dunga|नहीं\\s+दूंगा|नहीं\\s+दे\\s+(?:सकता|सकती|पाऊंगा|पाएंगे)|won'?t\\s+pay|can'?t\\s+(?:pay|afford)|cannot\\s+(?:pay|afford)|not\\s+(?:pay|worth)|बहुत\\s+है|bahut\\s+hai|out\\s+of\\s+(?:my\\s+)?budget|बजट\\s+से\\s+बाहर`);
++const ACCEPTS = r(`can\\s+(?:easily\\s+)?pay|will\\s+pay|would\\s+pay|i'?d\\s+pay|i'?ll\\s+pay|happy\\s+to\\s+pay|ready\\s+to\\s+pay|willing\\s+to\\s+pay|pay\\s+(?:around|about|up\\s+to)|is\\s+(?:fine|ok|okay|reasonable|affordable|good|fair)|(?:fine|ok|okay|reasonable|affordable|fair|acceptable)|worth|चलेगा|चल\\s+जाएगा|ठीक|सही|वाजिब|दे\\s+दूंगा|दे\\s+दूंगी|दे\\s+सकता|दे\\s+सकती|दे\\s+देंगे|दूंगा|दूंगी|देंगे|तैयार|de\\s+dunga|de\\s+dungi|de\\s+sakta|de\\s+sakti|de\\s+denge|dunga|chalega|chal\\s+jayega|theek|thik|sahi|affordable\\s+hai`);
++const LIMIT_MAX = r(`up\\s*to|upto|max(?:imum)?|at\\s+most|not\\s+more\\s+than|no\\s+more\\s+than|तक|tak|से\\s+ज़्यादा\\s+नहीं|से\\s+ज्यादा\\s+नहीं|se\\s+zyada\\s+nahi|ज़्यादा\\s+से\\s+ज़्यादा|ज्यादा\\s+से\\s+ज्यादा|zyada\\s+se\\s+zyada|within|under|below|से\\s+कम|se\\s+kam`);
++const MORE_THAN = r(`more\\s+than|above|over|beyond|से\\s+ज़्यादा|से\\s+ज्यादा|se\\s+zyada|se\\s+jyada|से\\s+ऊपर|se\\s+upar`);
++const SUGGESTS = r(`should\\s+be|should\\s+cost|keep\\s+it|charge|रखो|रखिए|रखें|रखना\\s+चाहिए|होना\\s+चाहिए|होनी\\s+चाहिए|hona\\s+chahiye|honi\\s+chahiye|rakho|rakhiye|rakhna`);
++const NEGATOR = r("नहीं|नही|not|no|never|can't|cannot|won't|nahi|nahin");
++
++const BOUNDARY = /[.!?।\n]/u;
++const CLAUSE = /[,;]|\s(?:and|but|लेकिन|पर|मगर|aur|और|or|या)\s/u;
++
++/** The sentence and the clause (comma / "and" / "but" piece) around a stretch of the unit's normalised text. */
++function around(text: string, start: number, end: number) {
++  let s = start; while (s > 0 && !BOUNDARY.test(text[s - 1])) s -= 1;
++  let e = end; while (e < text.length && !BOUNDARY.test(text[e])) e += 1;
++  const sentence = text.slice(s, e);
++  const parts: Array<[number, number]> = [];
++  let from = 0;
++  const pieces = sentence.split(CLAUSE);
++  for (const piece of pieces) { const at = sentence.indexOf(piece, from); parts.push([at, at + piece.length]); from = at + piece.length; }
++  const rel = start - s;
++  const own = parts.find(([a, b]) => rel >= a && rel < b) ?? [0, sentence.length];
++  return { sentence, clause: sentence.slice(own[0], own[1]), before: text.slice(Math.max(s, start - 30), start), after: text.slice(end, Math.min(e, end + 30)) };
++}
++
++function periodOf(after: string, before: string, sentence: string): PricePeriod {
++  const near = `${before} ${after}`;
++  if (once(PERIOD_MONTH).test(near)) return "month";
++  if (once(PERIOD_YEAR).test(near)) return "year";
++  if (once(PERIOD_ONCE).test(near)) return "one_time";
++  if (once(PERIOD_MONTH).test(sentence) && !once(PERIOD_YEAR).test(sentence)) return "month";
++  if (once(PERIOD_YEAR).test(sentence) && !once(PERIOD_MONTH).test(sentence)) return "year";
++  return "unspecified";
++}
++
++function stanceOf(clause: string, sentence: string, before: string): { stance: PriceStance; limit?: "max" | "min" } {
++  const limit = once(MORE_THAN).test(before) ? "max" as const : once(LIMIT_MAX).test(`${before} ${clause}`) ? "max" as const : undefined;
++  // "2k is too much, maybe 500 a month max": a limit in the amount's own clause is what the customer accepts.
++  if (limit && !once(MORE_THAN).test(before) && !once(TOO_HIGH).test(clause)) return { stance: once(SUGGESTS).test(clause) ? "suggests" : "accepts", limit };
++  for (const text of [clause, sentence]) {
++    if (once(TOO_HIGH).test(text)) return { stance: "too_high", ...(limit ? { limit } : {}) };
++    if (once(SUGGESTS).test(text)) return { stance: "suggests", ...(limit ? { limit } : {}) };
++    if (once(ACCEPTS).test(text)) return { stance: once(NEGATOR).test(text) && !/(?:दिक्कत|problem|issue)/u.test(text) ? "too_high" : "accepts", ...(limit ? { limit } : {}) };
++  }
++  return { stance: "mentioned", ...(limit ? { limit } : {}) };
++}
++
++function amountOf(groups: Record<string, string | undefined>): number | null {
++  const base = groups.digits ? Number(groups.digits.replace(/,/g, "")) : groups.word ? WORD_NUMBER[groups.word] : NaN;
++  if (!Number.isFinite(base)) return null;
++  const mult = groups.mult ? MULTIPLIER[groups.mult] ?? 1 : 1;
++  return Math.round(base * mult * 100) / 100;
++}
++
++const asked = (doc: Doc) => {
++  const pay = new Set<number>();
++  for (const exchange of doc.exchanges) if (questionKind(doc, exchange).pay) exchange.a.forEach((k) => pay.add(k));
++  return pay;
++};
++
++/** Every price in the call, customer-side first, then prices the interviewer named that the customer answered. */
++export function extractPrices(doc: Doc, limit = 12): PricePoint[] {
++  const out: PricePoint[] = [];
++  const payAnswers = asked(doc);
++  const seen = new Set<string>();
++  const push = (point: PricePoint) => {
++    const key = `${point.amount}:${point.period}`;
++    if (seen.has(key) || out.length >= limit) return;
++    seen.add(key);
++    out.push(point);
++  };
++
++  const read = (index: number, who: "customer" | "interviewer") => {
++    const unit = doc.units[index];
++    const text = unit.n;
++    const found: Array<{ amount: number; start: number; end: number; period: PricePeriod; around: ReturnType<typeof around> }> = [];
++    for (const match of text.matchAll(AMOUNT)) {
++      const groups = match.groups ?? {};
++      const start = match.index!;
++      const end = start + match[0].trimEnd().length;
++      const amount = amountOf(groups);
++      if (amount === null || amount <= 0) continue;
++      const tail = text.slice(end, end + 18);
++      if (once(NOT_MONEY_AFTER).test(tail.trimStart().split(/\s+/u).slice(0, 2).join(" ")) && !groups.cur) continue;
++      if (once(BIG).test(tail.split(/\s+/u).slice(0, 2).join(" "))) continue;
++      const lead = text.slice(Math.max(0, start - 8), start);
++      const hasCurrency = !!groups.cur || /(?:₹|rs\.?|inr)\s*$/u.test(lead) || /^(?:₹|rs|inr)/u.test(match[0]);
++      const ctx = around(text, start, end);
++      const money = hasCurrency || !!groups.mult || ((who === "interviewer" || payAnswers.has(index) || once(PAY_CONTEXT).test(ctx.sentence)) && !!groups.digits);
++      if (!money) continue;
++      // A bare word number ("एक", "do") is only money with a multiplier or a currency word next to it.
++      if (groups.word && !groups.mult && !groups.cur) continue;
++      // A four-digit year (2019, 2025) with no currency is a date.
++      if (!hasCurrency && !groups.mult && /^(?:19|20)\d\d$/u.test(groups.digits ?? "")) continue;
++      if (amount >= 100000) continue; // a car, not a safety device
++      found.push({ amount, start, end, period: periodOf(ctx.after, ctx.before, ctx.sentence), around: ctx });
++    }
++    return found;
++  };
++
++  for (let index = 0; index < doc.units.length; index += 1) {
++    const unit = doc.units[index];
++    if (unit.kind !== "C" || (doc.introAt >= 0 && index < doc.introAt)) continue;
++    for (const item of read(index, "customer")) {
++      const { stance, limit: edge } = stanceOf(item.around.clause, item.around.sentence, item.around.before);
++      push({ amount: item.amount, period: item.period, stance, ...(edge ? { limit: edge } : {}), who: "customer", text: clip(doc, index, item.start, item.end), evidence: quote(doc, index) });
++    }
++  }
++  // "Would you pay 1500 a year?" – "Yes." The interviewer named the price; the answer says what the customer thinks of it.
++  for (const exchange of doc.exchanges) {
++    if (!questionKind(doc, exchange).pay) continue;
++    const first = doc.units[exchange.a[0]];
++    const answer = exchange.a.map((k) => doc.units[k].n).join(" ");
++    const yes = L.AFFIRM_START.test(first.n) || once(L.PAY_RULES[0].re).test(answer);
++    const no = L.NEGATE_START.test(first.n) || once(L.PAY_RULES[1].re).test(answer);
++    const stance: PriceStance = no && !yes ? "too_high" : yes && !no ? "accepts" : "mentioned";
++    for (const k of exchange.q) {
++      for (const item of read(k, "interviewer")) {
++        push({ amount: item.amount, period: item.period, stance, who: "interviewer", text: clip(doc, k, item.start, item.end), evidence: quote(doc, exchange.a[0]) });
++      }
++    }
++  }
++  return out;
++}
++
++/** A few words around the amount, from the original text. */
++function clip(doc: Doc, index: number, start: number, end: number) {
++  const unit = doc.units[index];
++  const norm = unit.n;
++  let s = start; let words = 0;
++  while (s > 0 && words < 5) { s -= 1; if (/\s/u.test(norm[s]) && !/\s/u.test(norm[s + 1] ?? "")) words += 1; if (BOUNDARY.test(norm[s])) { s += 1; break; } }
++  let e = end; words = 0;
++  while (e < norm.length && words < 5) { if (BOUNDARY.test(norm[e])) break; if (/\s/u.test(norm[e]) && !/\s/u.test(norm[e - 1] ?? "")) words += 1; e += 1; }
++  const raw = doc.raw.slice(doc.map[unit.ns + s] ?? 0, doc.map[unit.ns + e] ?? doc.raw.length).trim();
++  return raw.replace(/^[,;:\-–—\s]+|[,;:\-–—\s]+$/gu, "").slice(0, 160);
++}
++
++export type { Evidence };
+diff --git a/src/lib/insights.ts b/src/lib/insights.ts
+new file mode 100644
+index 0000000..d393c57
+--- /dev/null
++++ b/src/lib/insights.ts
+@@ -0,0 +1,135 @@
++/**
++ * What a call says about the customer beyond the score: would they use and pay, the prices they named, what they asked
++ * for, what worries them and what they use today. Shared by the customer panel, the full report and the PDF, so all
++ * three show the same thing. Pure TypeScript, no React.
++ */
++import type { Customer } from "@/lib/customers";
++import type { Intent, Mention, MentionType, PricePeriod, PricePoint, PriceStance, TrataAnalysis } from "@/lib/trata";
++
++type Lang = "en" | "hi";
++const pick = (lang: Lang, en: string, hi: string) => lang === "hi" ? hi : en;
++
++export function rupees(amount: number) { return `₹${amount.toLocaleString("en-IN")}`; }
++
++export function periodLabel(period: PricePeriod, lang: Lang) {
++  return period === "month" ? pick(lang, "per month", "प्रति माह")
++    : period === "year" ? pick(lang, "per year", "प्रति वर्ष")
++    : period === "one_time" ? pick(lang, "one-time", "एक बार")
++    : pick(lang, "period not said", "अवधि नहीं बताई");
++}
++
++export function priceStanceLabel(stance: PriceStance, lang: Lang) {
++  return stance === "accepts" ? pick(lang, "Willing to pay", "देने को तैयार")
++    : stance === "too_high" ? pick(lang, "Too expensive", "बहुत महंगा")
++    : stance === "suggests" ? pick(lang, "Suggested price", "सुझाई गई कीमत")
++    : pick(lang, "Mentioned", "ज़िक्र किया");
++}
++
++/** "Up to ₹2,000 per year" / "More than ₹3,000 per year" style headline for one price. */
++export function priceHeadline(price: PricePoint, lang: Lang) {
++  const amount = rupees(price.amount);
++  const lead = price.limit === "max" ? (price.stance === "too_high" ? pick(lang, `Above ${amount}`, `${amount} से ज़्यादा`) : pick(lang, `Up to ${amount}`, `${amount} तक`)) : amount;
++  return price.period === "unspecified" ? lead : `${lead} ${periodLabel(price.period, lang)}`;
++}
++
++export function priceTone(stance: PriceStance) { return stance === "accepts" || stance === "suggests" ? "pos" : stance === "too_high" ? "neg" : "neu"; }
++
++/** The mention types, gathered under the headings a reader looks for. */
++export const INSIGHT_GROUPS: Array<{ key: "asks" | "worries" | "uses" | "promises" | "pricing"; types: MentionType[] }> = [
++  { key: "asks", types: ["feature_request", "suggestion"] },
++  { key: "worries", types: ["objection", "privacy_concern", "pain_point"] },
++  { key: "uses", types: ["use_case"] },
++  { key: "promises", types: ["promise"] },
++  { key: "pricing", types: ["pricing"] },
++];
++
++export function insightGroupTitle(key: (typeof INSIGHT_GROUPS)[number]["key"], lang: Lang) {
++  return key === "asks" ? pick(lang, "Suggestions & feature requests", "सुझाव और फ़ीचर की माँग")
++    : key === "worries" ? pick(lang, "Concerns & objections", "चिंताएँ और आपत्तियाँ")
++    : key === "uses" ? pick(lang, "How they would use it", "वे इसका इस्तेमाल कैसे करेंगे")
++    : key === "promises" ? pick(lang, "Offers of help", "मदद की पेशकश")
++    : pick(lang, "What they said about price", "कीमत पर उन्होंने क्या कहा");
++}
++
++export type CustomerInsights = {
++  wouldUse: Intent;
++  wouldPay: Intent;
++  prices: PricePoint[];
++  groups: Array<{ key: (typeof INSIGHT_GROUPS)[number]["key"]; items: Mention[] }>;
++  alternatives: string[];
++  empty: boolean;
++};
++
++export function insightsOf(analysis: TrataAnalysis | null | undefined): CustomerInsights | null {
++  if (!analysis) return null;
++  const prices = analysis.prices ?? [];
++  const groups = INSIGHT_GROUPS.map(({ key, types }) => ({ key, items: analysis.mentions.filter((mention) => types.includes(mention.type)) })).filter((group) => group.items.length);
++  const alternatives = analysis.alternatives ?? [];
++  const empty = !prices.length && !groups.length && !alternatives.length && analysis.wouldUse === "unclear" && analysis.wouldPay === "unclear";
++  return { wouldUse: analysis.wouldUse, wouldPay: analysis.wouldPay, prices, groups, alternatives, empty };
++}
++
++/** A short line for a mention, without the quote marks. */
++export function mentionText(mention: Mention) { return (mention.evidence?.text ?? mention.text).trim(); }
++
++// ---------------------------------------------------------------- the group view
++
++export type PriceRange = { period: PricePeriod; accepted: number[]; tooHigh: number[]; customers: number };
++export type GroupInsights = {
++  analysed: number;
++  wouldUse: Record<Intent, number>;
++  wouldPay: Record<Intent, number>;
++  ranges: PriceRange[];
++  asks: Array<{ who: string; text: string }>;
++  worries: Array<{ who: string; text: string }>;
++  promises: Array<{ who: string; text: string }>;
++  alternatives: Array<{ name: string; count: number }>;
++};
++
++const zero = (): Record<Intent, number> => ({ yes: 0, maybe: 0, no: 0, unclear: 0 });
++
++export function groupInsightsOf(customers: Customer[]): GroupInsights {
++  const out: GroupInsights = { analysed: 0, wouldUse: zero(), wouldPay: zero(), ranges: [], asks: [], worries: [], promises: [], alternatives: [] };
++  const ranges = new Map<PricePeriod, PriceRange & { seen: Set<string> }>();
++  const alternatives = new Map<string, number>();
++  for (const customer of customers) {
++    const analysis = customer.analysis;
++    if (!analysis) continue;
++    out.analysed += 1;
++    out.wouldUse[analysis.wouldUse] += 1;
++    out.wouldPay[analysis.wouldPay] += 1;
++    for (const price of analysis.prices ?? []) {
++      if (price.stance === "mentioned") continue;
++      const range = ranges.get(price.period) ?? { period: price.period, accepted: [], tooHigh: [], customers: 0, seen: new Set<string>() };
++      (price.stance === "too_high" ? range.tooHigh : range.accepted).push(price.amount);
++      if (!range.seen.has(customer.id)) { range.seen.add(customer.id); range.customers += 1; }
++      ranges.set(price.period, range);
++    }
++    for (const mention of analysis.mentions) {
++      const row = { who: customer.name, text: mentionText(mention) };
++      if (mention.type === "feature_request" || mention.type === "suggestion") out.asks.push(row);
++      else if (mention.type === "objection" || mention.type === "privacy_concern" || mention.type === "pain_point") out.worries.push(row);
++      else if (mention.type === "promise") out.promises.push(row);
++    }
++    for (const name of new Set(analysis.alternatives ?? [])) alternatives.set(name, (alternatives.get(name) ?? 0) + 1);
++  }
++  const order: PricePeriod[] = ["one_time", "month", "year", "unspecified"];
++  out.ranges = order.flatMap((period) => { const range = ranges.get(period); if (!range) return []; const { seen: _seen, ...rest } = range; return [rest]; });
++  out.alternatives = Array.from(alternatives, ([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count);
++  return out;
++}
++
++export function median(values: number[]) {
++  if (!values.length) return 0;
++  const sorted = [...values].sort((a, b) => a - b);
++  const middle = Math.floor(sorted.length / 2);
++  return sorted.length % 2 ? sorted[middle] : Math.round((sorted[middle - 1] + sorted[middle]) / 2);
++}
++
++/** "₹99 – ₹500 (typical ₹199)" for the prices customers accepted in one period. */
++export function rangeText(values: number[], lang: Lang) {
++  if (!values.length) return "—";
++  const low = Math.min(...values), high = Math.max(...values);
++  if (low === high) return rupees(low);
++  return `${rupees(low)} – ${rupees(high)} (${pick(lang, "typical", "आम तौर पर")} ${rupees(median(values))})`;
++}
+diff --git a/src/components/CustomerInsights.tsx b/src/components/CustomerInsights.tsx
+new file mode 100644
+index 0000000..d180e02
+--- /dev/null
++++ b/src/components/CustomerInsights.tsx
+@@ -0,0 +1,128 @@
++"use client";
++
++import type { DictKey } from "@/lib/i18n";
++import { useI18n } from "@/components/I18nProvider";
++import { insightGroupTitle, insightsOf, mentionText, periodLabel, priceHeadline, priceStanceLabel, priceTone, rupees, type CustomerInsights } from "@/lib/insights";
++import type { TrataAnalysis } from "@/lib/trata";
++
++/**
++ * Everything the rules found about one customer apart from the score: intent, prices, asks, worries, what they use
++ * today and who they are. `variant="screen"` is the card in the customer panel and full report; `variant="print"` is
++ * the numbered-table layout used in the PDF.
++ */
++export function CustomerInsightsView({ analysis, variant = "screen", lang: quoteLang }: { analysis: TrataAnalysis | null | undefined; variant?: "screen" | "print"; lang?: string }) {
++  const { lang, t } = useI18n();
++  const L = (en: string, hi: string) => lang === "hi" ? hi : en;
++  const text = (key: string) => t[key as DictKey] ?? key;
++  const insights = insightsOf(analysis);
++  if (!insights || !analysis) return null;
++  const language = lang === "hi" ? "hi" : "en";
++  const profile = analysis.profile;
++  const profileRows: Array<[string, string]> = profile ? [
++    [t.trRole, text(`role_${profile.role}`)],
++    [t.trTransport, profile.transport.length ? profile.transport.map((mode) => text(`transport_${mode}`)).join(", ") : t.trNotSaid],
++    [t.trAccident, text(`accident_${profile.accident}`)],
++    [t.trUnderstood, text(`understanding_${profile.understanding}`)],
++  ] : [];
++
++  if (variant === "print") return <PrintInsights insights={insights} analysis={analysis} profileRows={profileRows} L={L} text={text} language={language} quoteLang={quoteLang} />;
++
++  return <div className="fn-insights">
++    <div className="fn-ins-intent">
++      <IntentTile label={t.trWouldUse} value={insights.wouldUse} text={text} />
++      <IntentTile label={t.trWouldPay} value={insights.wouldPay} text={text} />
++      <div className="fn-ins-tile"><span>{t.trVerdictTitle}</span><b>{text(`verdict_${analysis.verdict}`)}</b></div>
++    </div>
++
++    {insights.prices.length > 0 && <div className="fn-ins-block">
++      <span className="eyebrow">{L("Prices they talked about", "कीमतें जिनकी बात हुई")}</span>
++      <ul className="fn-ins-prices">{insights.prices.map((price, index) => <li key={index} className={`tone-${priceTone(price.stance)}`}>
++        <strong>{priceHeadline(price, language)}</strong>
++        <em>{priceStanceLabel(price.stance, language)}{price.who === "interviewer" ? L(" · asked by interviewer", " · इंटरव्यूअर ने पूछा") : ""}</em>
++        <q lang={quoteLang}>{price.text}</q>
++      </li>)}</ul>
++    </div>}
++
++    {insights.groups.filter((group) => group.key !== "pricing").map((group) => <div className={`fn-ins-block fn-ins-${group.key}`} key={group.key}>
++      <span className="eyebrow">{insightGroupTitle(group.key, language)} <b>{group.items.length}</b></span>
++      <ul className="fn-ins-list">{group.items.map((mention, index) => <li key={index}><small>{text(`mention_${mention.type}`)}</small><span lang={quoteLang}>{mentionText(mention)}</span></li>)}</ul>
++    </div>)}
++
++    {insights.alternatives.length > 0 && <div className="fn-ins-block">
++      <span className="eyebrow">{L("What they use today", "वे अभी क्या इस्तेमाल करते हैं")}</span>
++      <div className="fn-ins-tags">{insights.alternatives.map((name) => <span key={name}>{name}</span>)}</div>
++    </div>}
++
++    {profileRows.length > 0 && <div className="fn-ins-block">
++      <span className="eyebrow">{t.trProfileTitle}</span>
++      <dl className="fn-ins-profile">{profileRows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
++    </div>}
++
++    {analysis.features.length > 0 && <div className="fn-ins-block">
++      <span className="eyebrow">{t.trFeaturesTitle}</span>
++      <div className="fn-ins-tags">{analysis.features.map((feature) => <span key={feature.name} className={`tone-${feature.score > 0.15 ? "pos" : feature.score < -0.15 ? "neg" : "neu"}`}>{feature.name} · {text(`stance_${feature.stance}`)}</span>)}</div>
++    </div>}
++  </div>;
++}
++
++function IntentTile({ label, value, text }: { label: string; value: string; text: (key: string) => string }) {
++  return <div className={`fn-ins-tile intent-${value}`}><span>{label}</span><b>{text(`intent_${value}`)}</b></div>;
++}
++
++function PrintInsights({ insights, analysis, profileRows, L, text, language, quoteLang }: { insights: CustomerInsights; analysis: TrataAnalysis; profileRows: Array<[string, string]>; L: (en: string, hi: string) => string; text: (key: string) => string; language: "en" | "hi"; quoteLang?: string }) {
++  return <>
++    <h3>{L("Decision signals", "निर्णय के संकेत")}</h3>
++    <div className="report-kpis">
++      <div className={`report-kpi intent-${insights.wouldUse}`}><span>{L("Would use", "इस्तेमाल करेंगे")}</span><b>{text(`intent_${insights.wouldUse}`)}</b></div>
++      <div className={`report-kpi intent-${insights.wouldPay}`}><span>{L("Would pay", "भुगतान करेंगे")}</span><b>{text(`intent_${insights.wouldPay}`)}</b></div>
++      <div className="report-kpi"><span>{L("Verdict", "निष्कर्ष")}</span><b>{text(`verdict_${analysis.verdict}`)}</b></div>
++      <div className="report-kpi"><span>{L("Concern about the problem", "समस्या को लेकर चिंता")}</span><b>{text(`level_${analysis.problemConcern.level}`)}</b></div>
++    </div>
++
++    <h3>{L("Prices discussed", "कीमतों पर बात")}</h3>
++    {insights.prices.length ? <table className="report-table">
++      <thead><tr><th>{L("Amount", "राशि")}</th><th>{L("Period", "अवधि")}</th><th>{L("Reaction", "प्रतिक्रिया")}</th><th>{L("In their words", "उनके शब्दों में")}</th></tr></thead>
++      <tbody>{insights.prices.map((price, index) => <tr key={index}>
++        <td><b>{price.limit === "max" ? (price.stance === "too_high" ? "> " : "≤ ") : ""}{rupees(price.amount)}</b></td>
++        <td>{periodLabel(price.period, language)}</td>
++        <td><span className={`report-tag tone-${priceTone(price.stance)}`}>{priceStanceLabel(price.stance, language)}</span>{price.who === "interviewer" && <small className="report-muted"> {L("(price asked by interviewer)", "(कीमत इंटरव्यूअर ने पूछी)")}</small>}</td>
++        <td lang={quoteLang}>“{price.text}”</td>
++      </tr>)}</tbody>
++    </table> : <p className="report-muted">{L("No amounts of money were named in this call.", "इस बातचीत में कोई राशि नहीं बताई गई।")}</p>}
++
++    {insights.groups.filter((group) => group.key !== "pricing").map((group) => <div key={group.key}>
++      <h3>{insightGroupTitle(group.key, language)}</h3>
++      <table className="report-table report-table-tight">
++        <tbody>{group.items.map((mention, index) => <tr key={index}><th>{text(`mention_${mention.type}`)}</th><td lang={quoteLang}>{mentionText(mention)}</td></tr>)}</tbody>
++      </table>
++    </div>)}
++
++    {insights.alternatives.length > 0 && <>
++      <h3>{L("What they use today", "वे अभी क्या इस्तेमाल करते हैं")}</h3>
++      <p>{insights.alternatives.map((name) => <span className="report-tag" key={name}>{name}</span>)}</p>
++    </>}
++
++    {profileRows.length > 0 && <>
++      <h3>{L("Who they are", "वे कौन हैं")}</h3>
++      <table className="report-table"><tbody>{pairs(profileRows).map((row, index) => <tr key={index}>{row.flatMap(([label, value]) => [<th key={`${label}-k`}>{label}</th>, <td key={`${label}-v`}>{value}</td>])}</tr>)}</tbody></table>
++    </>}
++
++    {analysis.features.length > 0 && <>
++      <h3>{L("Opinions on features", "फ़ीचर पर राय")}</h3>
++      <table className="report-table">
++        <thead><tr><th>{L("Feature", "फ़ीचर")}</th><th>{L("Opinion", "राय")}</th><th>{L("Score", "स्कोर")}</th><th>{L("Quote", "उद्धरण")}</th></tr></thead>
++        <tbody>{analysis.features.map((feature) => <tr key={feature.name}><td>{feature.name}</td><td>{text(`stance_${feature.stance}`)}</td><td>{feature.score >= 0 ? "+" : ""}{feature.score.toFixed(2)}</td><td lang={quoteLang}>{feature.evidence ? `“${feature.evidence.text}”` : "—"}</td></tr>)}</tbody>
++      </table>
++    </>}
++
++    {analysis.qa && analysis.qa.length > 0 && <>
++      <h3>{L("Questions and answers", "सवाल और जवाब")}</h3>
++      <table className="report-table report-qa">
++        <thead><tr><th>{L("Interviewer asked", "इंटरव्यूअर ने पूछा")}</th><th>{L("Customer answered", "ग्राहक ने जवाब दिया")}</th><th>{L("Tone", "भाव")}</th></tr></thead>
++        <tbody>{analysis.qa.map((item, index) => <tr key={index}><td lang={quoteLang}>{item.question || "—"}</td><td lang={quoteLang}>{item.answer}</td><td>{text(`tone_${item.tone}`)}</td></tr>)}</tbody>
++      </table>
++    </>}
++  </>;
++}
++
++function pairs<T>(rows: T[]): T[][] { const out: T[][] = []; for (let index = 0; index < rows.length; index += 2) out.push(rows.slice(index, index + 2)); return out; }

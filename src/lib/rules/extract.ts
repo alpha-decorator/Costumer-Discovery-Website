@@ -40,7 +40,7 @@ const NEG = once(phrase("नहीं|नही|मत|not|no|never|dont|don't|d
 const POSITIVE_CUE = 0.15;
 
 // ============================================================================ building the Doc ==================
-const OPINION_Q = re("कैसा\\s+लगा|कैसी\\s+लगी|कैसा\\s+लग|कैसी\\s+लग|कैसा\\s+है|कैसी\\s+है|लगता\\s+है|पसंद|यूसफुल|यूजफुल|useful|उपयोगी|मददगार|helpful|काम\\s+का|काम\\s+की|आइडिया|आईडिया|idea|सोल्यूशन|सॉल्यूशन|solution|सही|अच्छा|good|think|feel|like|राय|सोचते|opinion|interesting|इंटरेस्टिंग|बेहतर|फायदेमंद|beneficial|worth|जरूरी|necessary|need");
+const OPINION_Q = re("कैसा\\s+लगा|कैसी\\s+लगी|कैसा\\s+लग|कैसी\\s+लग|कैसा\\s+है|कैसी\\s+है|लगता\\s+है|पसंद|यूसफुल|यूजफुल|useful|उपयोगी|मददगार|helpful|काम\\s+का|काम\\s+की|आइडिया|आईडिया|idea|सोल्यूशन|सॉल्यूशन|solution|सही|अच्छा|good|think|feel|like|राय|सोचते|opinion|interesting|इंटरेस्टिंग|बेहतर|फायदेमंद|beneficial|worth|जरूरी|necessary|need|reaction|react|फायदा|फ़ायदा|faayda|fayda|भरोसा|विश्वास|bharosa|thoughts|thought|views|view|impression|perspective|feedback|trust|excite|excitement|excited|kaisa|kaisi|pasand|accha|achha|acha|laga|lagta|sochte|raay|rai|vichar|विचार");
 const PRICE_QUOTE = re("(?:₹|rs\\.?|inr)\\s*[0-9][0-9,]*|[0-9][0-9,]*(?:\\.[0-9]+)?\\s*(?:रुपये|रुपए|रुपया|rupees?|rs|हजार|हज़ार|thousand|k|सौ|लाख|lakhs?)|(?:एक|दो|तीन|चार|पांच|पाँच|छह|सात|आठ|नौ|दस|बीस|तीस|पचास|सौ)\\s+(?:रुपये|रुपए|हजार|हज़ार|लाख|सौ)");
 /** Lakhs and crores are the price of a car, not what someone would pay for a safety device. */
 const DO_GIVE = re("(?:मैं|मै|हम)\\s+(?:तो\\s+|भी\\s+)?(?:दे\\s+दूंगा|दे\\s+दूंगी|दूंगा|दूंगी|दे\\s+सकता|दे\\s+सकती|दे\\s+देंगे|देंगे)|i\\s+(?:would|will|can)\\s+(?:give|pay)|i'?d\\s+pay|main\\s+(?:de\\s+)?dunga");
@@ -48,6 +48,8 @@ const BIG_AMOUNT = re("लाख|लाग|lakhs?|crores?|करोड़|कर
 const TRANSPORT_Q = re("कैसे\\s+(?:आते|जाते|ट्रेवल|ट्रैवल|travel|सफर|आना|जाना|commute)|कौन\\s*सी?\\s+(?:गाड़ी|गाडी|कार|बाइक|वाहन|vehicle|transport|साधन)|किस\\s+(?:से|साधन|गाड़ी)|(?:गाड़ी|कार|बाइक|वाहन|vehicle)\\s+(?:चलाते|चलाती|रखते|use)|how\\s+do\\s+you\\s+(?:travel|commute|get\\s+around)|which\\s+(?:vehicle|transport|car|bike)|do\\s+you\\s+(?:drive|ride|own)|what\\s+do\\s+you\\s+(?:drive|ride)|ट्रेवल\\s+करते|travel\\s+करते|आना\\s+जाना|आते\\s+जाते|कैसे\\s+जाते|रोज\\s+का\\s+सफर|आमतौर\\s+पर\\s+कैसे");
 
 /** "How are you? – Fine." and "Can you hear me? – Yes, the weather is nice": remarks that are not about Trata. */
+/** "Would you have any problem / concern with it?": a "no" to this is a yes to the product, and a "yes" is a worry. */
+const PROBLEM_Q = re("कोई\\s+(?:भी\\s+)?(?:परेशानी|दिक्कत|दिकत|समस्या|प्रॉब्लम|problem|चिंता|आपत्ति|डर|इश्यू|issue)|(?:परेशानी|दिक्कत|समस्या|आपत्ति)\\s+(?:होगी|है|हो\\s+सकती)|any\\s+(?:problem|problems|issue|issues|concern|concerns|objection|objections|worry|worries|hesitation)|(?:does|do|would)\\s+(?:this|that|it|these)\\s+(?:worry|concern|bother|diminish)|would\\s+you\\s+mind|koi\\s+(?:dikkat|problem|pareshani|tension)");
 const HELLO_Q = re("कैसे\\s+(?:हो|हैं)|कैसी\\s+हैं|कैसे\\s+है\\s+आप|how\\s+are\\s+you|क्या\\s+हाल|बिजी|busy|टाइम\\s+है|time\\s+है|available|फ्री\\s+हैं|आवाज|सुनाई|सुन\\s+पा|can\\s+you\\s+hear|हेलो|hello|अभी\\s+बात|बात\\s+कर\\s+सकते");
 const SMALL_TALK = re("मौसम|weather|आवाज़|आवाज|सुनाई|नेटवर्क|कनेक्शन|connection|हेलो|hello|नमस्ते|नमस्कार|धन्यवाद|शुक्रिया|thank\\s+you|thanks|गुड\\s+मॉर्निंग|good\\s+morning|good\\s+evening|गुड\\s+ईवनिंग");
 /** After an opinion word: "…तो बहुत हो सकता है लेकिन…", the shape of a reply, not of a question. */
@@ -90,7 +92,7 @@ export const questionKind = (doc: Pick<Doc, "units">, exchange: Exchange) => {
 };
 
 /** Words that name Trata or the idea itself (the ASR writes the brand several ways). Generic "यह / this" is left out on purpose. */
-export const PRODUCT_CTX = re("trata|ट्राटा|ट्रैटा|ट्रेटा|तराता|तरता|त्राता|ट्रटा|app|ऐप|एप|application|अप्लिकेशन|device|डिवाइस|सेंसर|sensor|idea|आइडिया|आईडिया|product|प्रोडक्ट|solution|सोल्यूशन|सॉल्यूशन|feature|फीचर|dashboard|डैशबोर्ड|इसका|इसकी|इसमें|इसे|इसको|इसके");
+export const PRODUCT_CTX = re("trata|सिस्टम|तकनीक|टेक्नोलॉजी|टेक्नॉलजी|कॉन्सेप्ट|कांसेप्ट|प्रोजेक्ट|स्टार्टअप|ब्रांड|सर्विस|technology|concept|system|software|hardware|startup|brand|innovation|dispatch|ट्राटा|ट्रैटा|ट्रेटा|तराता|तरता|त्राता|ट्रटा|app|ऐप|एप|application|अप्लिकेशन|device|डिवाइस|सेंसर|sensor|idea|आइडिया|आईडिया|product|प्रोडक्ट|solution|सोल्यूशन|सॉल्यूशन|feature|फीचर|dashboard|डैशबोर्ड|इसका|इसकी|इसमें|इसे|इसको|इसके");
 
 /**
  * Is this remark an opinion OF TRATA? Only when the remark itself names the product or idea, when it answers a question about
@@ -157,12 +159,14 @@ export function buildDoc(raw: string): Doc {
   // "Does it seem useful?" – "Yes." is praise even though the reply has no opinion word of its own.
   for (const exchange of exchanges) {
     const kind = questionKind(base, exchange);
-    if (!kind.opinion || kind.use || kind.pay || kind.accident || kind.transport) continue;
+    const problem = once(PROBLEM_Q).test(qNorm(base, exchange)) && exchange.q.some((k) => PRODUCT_CTX.test(units[k].n));
+    if (!(kind.opinion || problem) || kind.use || kind.pay || kind.accident || kind.transport) continue;
     const first = units[exchange.a[0]];
     if (exchange.a.some((k) => hasCue.has(k))) continue;
-    const yes = L.AFFIRM_START.test(first.n);
-    const no = !yes && L.NEGATE_START.test(first.n);
+    let yes = L.AFFIRM_START.test(first.n);
+    let no = !yes && L.NEGATE_START.test(first.n);
     if (!yes && !no) continue;
+    if (problem) [yes, no] = [no, yes]; // "any problem with it?" – "not at all!" is praise
     const word = first.n.match(/^\S+/u)![0];
     cues.push({ text: word, value: yes ? 0.5 : -0.5, weight: 0.8, kind: yes ? "praise" : "reject", start: first.ns, end: first.ns + word.length, unit: exchange.a[0] });
   }
@@ -238,8 +242,10 @@ function collectVotes(doc: Doc, rules: L.IntentRule[] | readonly L.IntentRule[],
     if (asks === "use" ? !kind.use : !kind.pay) continue;
     if (doc.introAt >= 0 && exchange.a[0] < doc.introAt) continue;
     const first = doc.units[exchange.a[0]];
-    if (L.AFFIRM_START.test(first.n)) votes.yes += 1;
-    else if (L.NEGATE_START.test(first.n)) votes.no += 1;
+    // "Would you have any problem installing it?" – "Not at all" is a yes to using it.
+    const problem = once(PROBLEM_Q).test(qNorm(doc, exchange));
+    if (L.AFFIRM_START.test(first.n)) votes[problem ? "no" : "yes"] += 1;
+    else if (L.NEGATE_START.test(first.n)) votes[problem ? "yes" : "no"] += 1;
     else if (L.MAYBE_START.test(first.n)) votes.maybe += 0.6;
     if (asks === "pay") {
       if (exchange.a.some((k) => once(DO_GIVE).test(doc.units[k].n))) votes.yes += 1;
@@ -328,6 +334,7 @@ export function extractTransport(doc: Doc): Transport[] {
       const pattern = globalOf(item.re);
       for (const match of unit.n.matchAll(pattern)) {
         if (wordsAfter(unit.n, match.index! + match[0].length, 2).match(NEG)) continue; // "गाड़ी नहीं है"
+        if (aboutOthers(unit.n, match.index!)) continue; // "my friends who run a taxi fleet"
         counts.set(item.mode, (counts.get(item.mode) ?? 0) + (asked ? 2 : 1));
         break;
       }
@@ -336,14 +343,24 @@ export function extractTransport(doc: Doc): Transport[] {
   return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([mode]) => mode);
 }
 
+/** "my friends who run a taxi fleet", "मेरे भाई ट्रक चलाते हैं": what comes right after these words is about someone else. */
+const OTHERS_BEFORE = re(`friends?|दोस्त|दोस्तों|brothers?|भाई|uncle|अंकल|relatives?|रिश्तेदार|cousins?|कजिन|neighbou?rs?|पड़ोसी|father|dad|पापा|पिताजी|बेटा|son|who\\s+(?:run|runs|own|owns|drive|drives)|जो\\s+(?:चलाते|चलाता|चलाती)|they|उनके|उनका|उनकी|unke|unka|someone|people|लोग|log|colleagues?|साथी`);
+/** True when the words just before position `at` in `text` (same clause) name someone other than the speaker. */
+function aboutOthers(text: string, at: number) {
+  const before = text.slice(Math.max(0, at - 45), at).split(/[,.;।!?]/u).pop() ?? "";
+  return once(OTHERS_BEFORE).test(before);
+}
+
 export function extractRole(doc: Doc, transport: Transport[]): Role {
   const order: Array<[Role, RegExp[]]> = [
     ["fleet_owner", L.ROLE_PATTERNS.fleet_owner], ["professional_driver", L.ROLE_PATTERNS.professional_driver],
     ["safety_professional", L.ROLE_PATTERNS.safety_professional], ["private_driver", L.ROLE_PATTERNS.private_driver],
     ["passenger", L.ROLE_PATTERNS.passenger], ["other", L.ROLE_PATTERNS.other],
   ];
-  const text = customerUnits(doc).map(({ unit }) => unit.n).join("\n");
-  for (const [role, patterns] of order) if (patterns.some((pattern) => once(pattern).test(text))) return role;
+  const texts = customerUnits(doc).map(({ unit }) => unit.n);
+  // A role counts only when it is about the speaker: "my friends who run a taxi fleet" does not make them a fleet owner.
+  const said = (pattern: RegExp) => texts.some((text) => Array.from(text.matchAll(globalOf(pattern))).some((match) => !aboutOthers(text, match.index!)));
+  for (const [role, patterns] of order) if (patterns.some(said)) return role;
   if (transport.some((mode) => mode === "car" || mode === "two_wheeler") && customerUnits(doc).some(({ unit }) => L.TRAVEL_VERBS.test(unit.n))) return "private_driver";
   if (transport.length && transport.every((mode) => ["public_transport", "bus", "auto_rickshaw", "cab_taxi", "walks", "bicycle"].includes(mode))) return "passenger";
   return "unclear";
@@ -454,6 +471,11 @@ function keywordsOf(doc: Doc, index: number, pattern: RegExp, limit = 4) {
   return out;
 }
 
+/** "My car already has SOS": a product they own, so an SOS mention there is a competitor, not a request. */
+const OWNS_ALREADY = re(`already|पहले\\s+से|pehle\\s+se|built[-\\s]?in|inbuilt|इनबिल्ट|comes\\s+with|(?:my|मेरी|मेरे)\\s+(?:car|गाड़ी|कार)\\s+(?:has|में\\s+है)`);
+/** A request that names a thing to add, even when it is not one of Trata's listed features (an SOS button, a helmet sensor). */
+const REQUEST_THING = re(`इसमें|साथ\\s+में|और\\s+एक|should\\s+(?:also|be|have)|there\\s+should|add|button|बटन|option|ऑप्शन|feature|फीचर|फ़ीचर|mode|मोड|चाहिए|chahiye|होना\\s+चाहिए|hona\\s+chahiye`);
+
 export function extractMentions(doc: Doc, lang: "en" | "hi" = "en"): { mentions: Mention[]; alternatives: string[] } {
   const candidates: Array<{ type: MentionType; text: string; unit: number }> = [];
   const alternatives: string[] = [];
@@ -475,8 +497,11 @@ export function extractMentions(doc: Doc, lang: "en" | "hi" = "en"): { mentions:
 
     // --- products and habits already in their life
     const names: string[] = [];
+    const asking = L.REQUESTS.test(text) && !once(OWNS_ALREADY).test(text);
     for (const item of L.ALTERNATIVES) {
       if (!item.re.test(text)) continue;
+      // "There should be an SOS button" asks for a feature; it is not a product they already have.
+      if (asking && item.name === "Car-maker built-in SOS") continue;
       addAlternative(item.name);
       if (item.kind === "competitor") names.push(item.name);
     }
@@ -503,7 +528,7 @@ export function extractMentions(doc: Doc, lang: "en" | "hi" = "en"): { mentions:
       if (!match) continue;
       const start = unit.ns + match.index;
       const end = start + match[0].length;
-      if (trigger.type === "feature_request" && !(L.FEATURES.some((feature) => feature.re.test(text)) || /(?:इसमें|साथ में|और एक|should also|add)/u.test(text))) continue;
+      if (trigger.type === "feature_request" && !(L.FEATURES.some((feature) => feature.re.test(text)) || once(REQUEST_THING).test(text))) continue;
       if (trigger.type === "pricing") {
         const amount = globalOf(PRICE_QUOTE).exec(text);
         const at = amount ?? match;

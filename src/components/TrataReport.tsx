@@ -5,6 +5,7 @@ import { useI18n } from "@/components/I18nProvider";
 import { format, type DictKey } from "@/lib/i18n";
 import type { Interview } from "@/lib/interviews";
 import { MENTION_TYPES, sentimentTone, type Evidence, type MentionType, type TrataAnalysis } from "@/lib/trata";
+import { priceHeadline, priceStanceLabel, priceTone } from "@/lib/insights";
 
 type Topics = { UX: number; Pricing: number; Features: number };
 type Props = { customer: Interview; reference?: Topics | null; onClose: () => void; onManage?: () => void };
@@ -225,6 +226,17 @@ export function TrataReport({ customer, reference, onClose, onManage }: Props) {
 
           {analysis.summary && <section className="tr-card tr-wide"><h3>{t.trSummary}</h3><p>{analysis.summary}</p>
             {analysis.keyPoints.length > 0 && <ul className="tr-points">{analysis.keyPoints.map((point, index) => <li key={index}>{point}</li>)}</ul>}</section>}
+
+          {analysis.prices && analysis.prices.length > 0 && (
+            <section className="tr-card tr-wide" aria-labelledby="tr-prices-title">
+              <h3 id="tr-prices-title">{lang === "hi" ? "कीमतें जिनकी बात हुई" : "Prices they talked about"}</h3>
+              <ul className="fn-ins-prices">{analysis.prices.map((price, index) => <li key={index} className={`tone-${priceTone(price.stance)}`}>
+                <strong>{priceHeadline(price, lang === "hi" ? "hi" : "en")}</strong>
+                <em>{priceStanceLabel(price.stance, lang === "hi" ? "hi" : "en")}{price.who === "interviewer" ? (lang === "hi" ? " · इंटरव्यूअर ने पूछा" : " · asked by interviewer") : ""}</em>
+                <q lang={quoteLang}>{price.text}</q>
+              </li>)}</ul>
+            </section>
+          )}
 
           {analysis.profile && (
             <section className="tr-card tr-wide" aria-labelledby="tr-profile-title">

@@ -33,6 +33,15 @@ export type Evidence = { text: string; pos: number | null; verified: boolean };
 export type Topic = { discussed: boolean; score: number };
 export type FeatureOpinion = { name: string; stance: Stance; score: number; importance: Importance; evidence: Evidence | null; count?: number };
 export type Mention = { type: MentionType; text: string; evidence: Evidence | null };
+export const PRICE_PERIODS = ["one_time", "month", "year", "unspecified"] as const;
+export const PRICE_STANCES = ["accepts", "too_high", "suggests", "mentioned"] as const;
+export type PricePeriod = (typeof PRICE_PERIODS)[number];
+export type PriceStance = (typeof PRICE_STANCES)[number];
+/**
+ * One amount of money said in the call, in rupees. `who` is "interviewer" when the interviewer named the price and the
+ * customer only answered it ("Would you pay 1500 a year?" – "Yes"). `limit: "max"` marks "up to 2000" / "more than 3000 is too much".
+ */
+export type PricePoint = { amount: number; period: PricePeriod; stance: PriceStance; limit?: "max" | "min"; who: "customer" | "interviewer"; text: string; evidence: Evidence | null };
 /** Who the customer is, as they described themselves. Drives the "how many drive a car" style charts. */
 export type CustomerProfile = { role: Role; transport: Transport[]; accident: AccidentExperience; understanding: Understanding };
 /** One question the interviewer asked and what the customer answered. */
@@ -61,6 +70,8 @@ export type TrataAnalysis = {
   topics: { UX: Topic; Pricing: Topic; Features: Topic };
   features: FeatureOpinion[];
   mentions: Mention[];
+  /** Prices said in the call, as numbers (rules v2). Absent on older saved interviews. */
+  prices?: PricePoint[];
   /** Added by engine result version 3; older saved interviews do not have these. */
   profile?: CustomerProfile;
   /** Responder-only extraction (see ResponderReport). Built by the website's rules; absent on older saved interviews. */
@@ -133,6 +144,20 @@ export function analysisProblem(value: unknown): string | null {
     if (!isText(item.text, 600)) return `${at}.text is too long`;
     const problem = evidenceProblem(item.evidence === undefined ? null : item.evidence, `${at}.evidence`, true); if (problem) return problem;
   }
+  if (value.prices !== undefined) {
+    if (!isList(value.prices, 20)) return "prices is not a list of at most 20";
+    for (const [index, item] of value.prices.entries()) {
+      const at = `prices[${index}]`;
+      if (!isObject(item)) return `${at} is not an object`;
+      if (typeof item.amount !== "number" || !Number.isFinite(item.amount) || item.amount <= 0 || item.amount > 10_000_000) return `${at}.amount is not a positive number`;
+      if (!oneOf(PRICE_PERIODS, item.period)) return `${at}.period is not allowed`;
+      if (!oneOf(PRICE_STANCES, item.stance)) return `${at}.stance is not allowed`;
+      if (item.limit !== undefined && item.limit !== "max" && item.limit !== "min") return `${at}.limit is not allowed`;
+      if (item.who !== "customer" && item.who !== "interviewer") return `${at}.who is not allowed`;
+      if (!isText(item.text, 200)) return `${at}.text is too long`;
+      const problem = evidenceProblem(item.evidence === undefined ? null : item.evidence, `${at}.evidence`, true); if (problem) return problem;
+    }
+  }
   if (value.profile !== undefined) {
     const profile = value.profile;
     if (!isObject(profile)) return "profile is not an object";
@@ -182,6 +207,7 @@ export function clampAnalysis(analysis: TrataAnalysis): TrataAnalysis {
     problemConcern: { ...analysis.problemConcern, note: cut(analysis.problemConcern.note, 500) },
     features: (analysis.features ?? []).slice(0, 60).map((feature) => ({ ...feature, name: cut(feature.name, 100), evidence: evidence(feature.evidence ?? null) })),
     mentions: (analysis.mentions ?? []).slice(0, 80).map((mention) => ({ ...mention, text: cut(mention.text, 600), evidence: evidence(mention.evidence ?? null) })),
+    ...(analysis.prices ? { prices: analysis.prices.slice(0, 20).map((price) => ({ ...price, text: cut(price.text, 200), evidence: evidence(price.evidence ?? null) })) } : {}),
     ...(analysis.qa ? { qa: analysis.qa.slice(0, 30).map((item) => ({ ...item, question: cut(item.question, 400), answer: cut(item.answer, 600), evidence: evidence(item.evidence ?? null) })) } : {}),
     keyPoints: (analysis.keyPoints ?? []).slice(0, 20).map((point) => cut(point, 500)),
     alternatives: (analysis.alternatives ?? []).slice(0, 20).map((item) => cut(item, 200)),
@@ -194,18 +220,20 @@ export function sentimentTone(scoreValue: number): "positive" | "negative" | "ne
   return scoreValue > 0.15 ? "positive" : scoreValue < -0.15 ? "negative" : "neutral";
 }
 
+const PERIOD_SHORT: Record<PricePeriod, string> = { one_time: " one-time", month: "/month", year: "/year", unspecified: "" };
 const joined = (items: string[]) => items.filter(Boolean).join(" | ");
 
 /** The analysis flattened into the extra CSV columns (name -> value). `analysis_json` keeps everything. */
 export function analysisCsvColumns(analysis: TrataAnalysis | undefined): Record<string, string | number> {
   if (!analysis) {
-    return { idea_label: "", verdict: "", would_use: "", would_pay: "", problem_concern: "", customer_role: "", transport: "", accident_experience: "", understood_idea: "", questions_and_answers: "", needs_review: "", review_reasons: "", summary: "", features: "", specific_mentions: "", asr_engine: "", asr_model: "", llm_model: "", duration_sec: "", analysis_json: "" };
+    return { idea_label: "", verdict: "", would_use: "", would_pay: "", price_points: "", problem_concern: "", customer_role: "", transport: "", accident_experience: "", understood_idea: "", questions_and_answers: "", needs_review: "", review_reasons: "", summary: "", features: "", specific_mentions: "", asr_engine: "", asr_model: "", llm_model: "", duration_sec: "", analysis_json: "" };
   }
   return {
     idea_label: analysis.ideaSentiment.label,
     verdict: analysis.verdict,
     would_use: analysis.wouldUse,
     would_pay: analysis.wouldPay,
+    price_points: joined((analysis.prices ?? []).map((price) => `₹${price.amount}${PERIOD_SHORT[price.period]} ${price.stance}${price.limit === "max" ? " (limit)" : ""}${price.who === "interviewer" ? " (asked)" : ""}`)),
     problem_concern: analysis.problemConcern.level,
     customer_role: analysis.profile?.role ?? "",
     transport: (analysis.profile?.transport ?? []).join("; "),

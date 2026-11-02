@@ -1,0 +1,319 @@
+[
+  {
+    "id": "ho-en-sp-1",
+    "expect": "sp",
+    "score": 0.66,
+    "label": "strong_positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "wonderful(+0.80)",
+      "fantastic(+0.85)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-en-sp-2",
+    "expect": "sp",
+    "score": 0.43,
+    "label": "positive",
+    "verdict": "lean_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": false,
+    "cues": [
+      "impressive(+0.50)",
+      "doubt(-0.04)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-en-p-1",
+    "expect": "p",
+    "score": 0.107,
+    "label": "mixed",
+    "verdict": "undecided",
+    "wouldUse": "maybe",
+    "wouldPay": "maybe",
+    "pass": false,
+    "cues": [],
+    "note": ""
+  },
+  {
+    "id": "ho-hi-sp-1",
+    "expect": "sp",
+    "score": 0.656,
+    "label": "strong_positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "वाह(+0.85)",
+      "बहुत ही बढिया(+0.80)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-hi-sp-2",
+    "expect": "sp",
+    "score": 0.563,
+    "label": "positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "बहुत अच्छा(+0.55)",
+      "इस्तेमाल करूंगी(+0.70)",
+      "सही है(+0.55)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-hi-p-1",
+    "expect": "p",
+    "score": 0.32,
+    "label": "positive",
+    "verdict": "lean_yes",
+    "wouldUse": "maybe",
+    "wouldPay": "maybe",
+    "pass": true,
+    "cues": [
+      "अच्छा लग रहा(+0.55)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-hn-sp-1",
+    "expect": "sp",
+    "score": 0.46,
+    "label": "positive",
+    "verdict": "lean_yes",
+    "wouldUse": "yes",
+    "wouldPay": "unclear",
+    "pass": false,
+    "cues": [
+      "badiya(+0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-hn-sp-2",
+    "expect": "sp",
+    "score": 0.584,
+    "label": "positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [
+      "useful(+0.60)",
+      "use karunga(+0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-mx-sp-1",
+    "expect": "sp",
+    "score": 0.568,
+    "label": "positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "helpful(+0.60)",
+      "great(+0.55)",
+      "लगवाऊंगा(+0.70)",
+      "affordable(+0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-en-n0-1",
+    "expect": "n0",
+    "score": 0.077,
+    "label": "neutral",
+    "verdict": "undecided",
+    "wouldUse": "maybe",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [
+      "not sure(-0.04)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-hi-n0-1",
+    "expect": "n0",
+    "score": 0.05,
+    "label": "neutral",
+    "verdict": "undecided",
+    "wouldUse": "maybe",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "बढिया(+0.55)",
+      "बजट से बाहर(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-hn-n0-1",
+    "expect": "n0",
+    "score": 0,
+    "label": "not_discussed",
+    "verdict": "no_signal",
+    "wouldUse": "unclear",
+    "wouldPay": "unclear",
+    "pass": false,
+    "cues": [],
+    "note": ""
+  },
+  {
+    "id": "ho-en-n-1",
+    "expect": "n",
+    "score": -0.44,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "unclear",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [],
+    "note": ""
+  },
+  {
+    "id": "ho-hi-n-1",
+    "expect": "n",
+    "score": -0.495,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "जरूरत नहीं(-0.60)",
+      "पैसे नहीं दूंगा(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-hn-n-1",
+    "expect": "n",
+    "score": -0.536,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "fayda nahi(-0.60)",
+      "zaroorat nahi(-0.60)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-en-sn-1",
+    "expect": "sn",
+    "score": -0.527,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "unclear",
+    "wouldPay": "no",
+    "pass": false,
+    "cues": [
+      "bad idea(-0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-en-sn-2",
+    "expect": "sn",
+    "score": -0.533,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "unclear",
+    "pass": false,
+    "cues": [],
+    "note": ""
+  },
+  {
+    "id": "ho-hi-sn-1",
+    "expect": "sn",
+    "score": -0.492,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "maybe",
+    "wouldPay": "no",
+    "pass": false,
+    "cues": [
+      "बेकार(-0.75)",
+      "फालतू(-0.75)",
+      "लगवाऊंगा(-0.52)",
+      "नहीं दूंगा(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-hi-sn-2",
+    "expect": "sn",
+    "score": -0.607,
+    "label": "strong_negative",
+    "verdict": "strong_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "बेकार(-0.75)",
+      "बकवास(-0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-hn-sn-1",
+    "expect": "sn",
+    "score": -0.075,
+    "label": "neutral",
+    "verdict": "undecided",
+    "wouldUse": "yes",
+    "wouldPay": "unclear",
+    "pass": false,
+    "cues": [
+      "bakwas(-0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-hn-sn-2",
+    "expect": "sn",
+    "score": -0.56,
+    "label": "negative",
+    "verdict": "strong_no",
+    "wouldUse": "no",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [
+      "bekar(-0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "ho-mx-sn-1",
+    "expect": "sn",
+    "score": -0.607,
+    "label": "strong_negative",
+    "verdict": "strong_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "useless(-0.75)",
+      "बेकार(-0.75)"
+    ],
+    "note": ""
+  }
+]

@@ -10,9 +10,10 @@
 import type { AccidentExperience, Intent, Level, MentionType, Role, SentimentLabel, Stance, Tone, Transport, TrataAnalysis, Understanding, Verdict } from "@/lib/trata";
 import { buildDoc, isCustomerCall, type UCue, extractAccident, extractConcern, extractFeatures, extractIntents, extractKeyPoints, extractMentions, extractQa, extractRole, extractTransport, extractUnderstanding, mergeFeatures, quote, type Doc } from "./extract";
 import { buildResponderReport } from "./responder";
+import { extractPrices } from "./prices";
 import { clip } from "./text";
 
-export const RULES_VERSION = 1;
+export const RULES_VERSION = 2;
 export const RULES_ENGINE_NAME = "trata-rules";
 
 export type RulesOptions = { lang?: "en" | "hi"; meta?: TrataAnalysis["meta"] };
@@ -37,6 +38,10 @@ export function verdictFor(score: number, label: SentimentLabel, wouldUse: Inten
 const TONE_VALUE: Partial<Record<Tone, number>> = { positive: 0.6, mixed: 0.1, negative: -0.6 };
 const INTENT_VALUE: Partial<Record<Intent, number>> = { yes: 0.7, maybe: 0.15, no: -0.7 };
 const SENTIMENT_GAP = 0.4;
+/** The largest share of the remaining distance to ±1 that many fully agreeing opinion phrases can add (see analyzeWithRules). */
+const EVIDENCE_PULL = 0.7;
+/** Calls with this many opinion phrases or fewer are not pulled at all (real calls usually have 1-6). */
+const EVIDENCE_FROM = 8;
 
 /** What the detailed answers (per-question tones, feature opinions, would-use, would-pay) add up to, or null when there is too little. */
 function impliedScore(qa: Array<{ tone: Tone }>, features: Array<{ stance: Stance; score: number }>, wouldUse: Intent, wouldPay: Intent, minimum: number) {
@@ -183,6 +188,7 @@ export function analyzeWithRules(raw: string, options: RulesOptions = {}): Trata
   const features = mergeFeatures(extractFeatures(doc));
   const { mentions, alternatives } = extractMentions(doc, lang);
   const qa = extractQa(doc);
+  const prices = extractPrices(doc);
   const understanding = extractUnderstanding(doc, features);
   const painPoints = mentions.filter((mention) => mention.type === "pain_point").length;
   const concern = extractConcern(doc, accident, painPoints);
@@ -202,6 +208,16 @@ export function analyzeWithRules(raw: string, options: RulesOptions = {}): Trata
   } else if (opinions.length) score = opinionScore;
   else if (implied !== null) score = implied * 0.8;
   if (score !== null) score -= Math.min(doubts.length * 0.03, 0.15);
+  // Evidence adds up: an average of phrase values can never pass ~0.85, so a call with forty agreeing strong remarks would
+  // score like a call with four. Move the score part of the way toward ±1, by how much the phrases agree (squared, so mixed
+  // calls barely move) and how many there are beyond the first EVIDENCE_FROM (an ordinary call is not moved at all).
+  if (score !== null && opinions.length) {
+    const total = opinions.reduce((sum, cue) => sum + Math.abs(cue.value) * cue.weight, 0);
+    const net = opinions.reduce((sum, cue) => sum + cue.value * cue.weight, 0);
+    const agreement = total ? Math.abs(net) / total : 0;
+    const volume = 1 - Math.exp(-Math.max(0, opinions.length - EVIDENCE_FROM) / 6);
+    if (Math.sign(net) === Math.sign(score)) score += Math.sign(score) * (1 - Math.abs(score)) * agreement ** 2 * volume * EVIDENCE_PULL;
+  }
   const discussed = score !== null;
   let label: SentimentLabel = discussed ? labelForScore(score!) : "not_discussed";
   const finalScore = discussed ? reconcile(label, Math.max(-1, Math.min(1, score!))) : 0;
@@ -289,6 +305,7 @@ export function analyzeWithRules(raw: string, options: RulesOptions = {}): Trata
     topics,
     features: features.slice(0, 25),
     mentions,
+    ...(prices.length ? { prices } : {}),
     profile: { role, transport, accident: accident.value, understanding },
     qa,
     responder: buildResponderReport(doc, { label, wouldUse: intents.wouldUse, wouldPay: intents.wouldPay, features, labelFor: labelForScore }, lang),

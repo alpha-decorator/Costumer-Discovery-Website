@@ -1,0 +1,667 @@
+{
+  "modelId": "Xenova/distilbert-base-multilingual-cased-sentiments-student",
+  "modelPass": 38,
+  "rulesPass": 82,
+  "signOk": 74,
+  "total": 82,
+  "msPerCall": 11.75609756097561,
+  "modelMB": 138.875652,
+  "rows": [
+    {
+      "id": "en-sp-1",
+      "expect": "sp",
+      "model": 0.916,
+      "rules": 0.66,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-sp-2",
+      "expect": "sp",
+      "model": 0.934,
+      "rules": 0.647,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-sp-3",
+      "expect": "sp",
+      "model": 0.973,
+      "rules": 0.669,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-sp-4",
+      "expect": "sp",
+      "model": 0.427,
+      "rules": 0.671,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "en-sp-5",
+      "expect": "sp",
+      "model": 0.898,
+      "rules": 0.672,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-sp-1",
+      "expect": "sp",
+      "model": 0.198,
+      "rules": 0.647,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-sp-2",
+      "expect": "sp",
+      "model": 0.005,
+      "rules": 0.654,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-sp-3",
+      "expect": "sp",
+      "model": 0.9,
+      "rules": 0.629,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-sp-4",
+      "expect": "sp",
+      "model": 0.446,
+      "rules": 0.658,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-sp-1",
+      "expect": "sp",
+      "model": 0.218,
+      "rules": 0.66,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-sp-2",
+      "expect": "sp",
+      "model": 0.011,
+      "rules": 0.663,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-sp-3",
+      "expect": "sp",
+      "model": 0.072,
+      "rules": 0.669,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-sp-4",
+      "expect": "sp",
+      "model": 0.849,
+      "rules": 0.644,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "mx-sp-1",
+      "expect": "sp",
+      "model": 0.953,
+      "rules": 0.656,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-p-1",
+      "expect": "p",
+      "model": 0.953,
+      "rules": 0.525,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-p-2",
+      "expect": "p",
+      "model": 0.7,
+      "rules": 0.447,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-p-1",
+      "expect": "p",
+      "model": 0.314,
+      "rules": 0.26,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-p-1",
+      "expect": "p",
+      "model": 0.124,
+      "rules": 0.56,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "en-n0-1",
+      "expect": "n0",
+      "model": 0.247,
+      "rules": -0.091,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-n0-2",
+      "expect": "n0",
+      "model": -0.064,
+      "rules": 0.12,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-n0-1",
+      "expect": "n0",
+      "model": 0.249,
+      "rules": -0.074,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-n0-1",
+      "expect": "n0",
+      "model": -0.192,
+      "rules": 0.075,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-n-1",
+      "expect": "n",
+      "model": -0.281,
+      "rules": -0.443,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-n-2",
+      "expect": "n",
+      "model": -0.114,
+      "rules": -0.419,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-n-1",
+      "expect": "n",
+      "model": -0.116,
+      "rules": -0.49,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-n-1",
+      "expect": "n",
+      "model": -0.17,
+      "rules": -0.488,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "en-sn-1",
+      "expect": "sn",
+      "model": -0.544,
+      "rules": -0.649,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "en-sn-2",
+      "expect": "sn",
+      "model": -0.937,
+      "rules": -0.658,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-sn-3",
+      "expect": "sn",
+      "model": -0.767,
+      "rules": -0.639,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-sn-4",
+      "expect": "sn",
+      "model": -0.197,
+      "rules": -0.649,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "en-sn-5",
+      "expect": "sn",
+      "model": -0.867,
+      "rules": -0.636,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-sn-1",
+      "expect": "sn",
+      "model": -0.194,
+      "rules": -0.692,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-sn-2",
+      "expect": "sn",
+      "model": 0.115,
+      "rules": -0.607,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-sn-3",
+      "expect": "sn",
+      "model": -0.05,
+      "rules": -0.625,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-sn-4",
+      "expect": "sn",
+      "model": 0.012,
+      "rules": -0.62,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-sn-1",
+      "expect": "sn",
+      "model": -0.375,
+      "rules": -0.68,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-sn-2",
+      "expect": "sn",
+      "model": -0.019,
+      "rules": -0.637,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-sn-3",
+      "expect": "sn",
+      "model": -0.113,
+      "rules": -0.637,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "mx-sn-1",
+      "expect": "sn",
+      "model": -0.578,
+      "rules": -0.679,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-trick-1",
+      "expect": "p",
+      "model": 0.75,
+      "rules": 0.529,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "en-trick-2",
+      "expect": "n",
+      "model": -0.752,
+      "rules": -0.43,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-trick-1",
+      "expect": "n",
+      "model": 0.625,
+      "rules": -0.514,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hi-trick-2",
+      "expect": "sp",
+      "model": 0.378,
+      "rules": 0.614,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "hn-trick-1",
+      "expect": "p",
+      "model": -0.186,
+      "rules": 0.416,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-en-sp-1",
+      "expect": "sp",
+      "model": 0.754,
+      "rules": 0.66,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-en-sp-2",
+      "expect": "sp",
+      "model": 0.948,
+      "rules": 0.62,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-en-p-1",
+      "expect": "p",
+      "model": 0.257,
+      "rules": 0.22,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hi-sp-1",
+      "expect": "sp",
+      "model": 0.246,
+      "rules": 0.656,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hi-sp-2",
+      "expect": "sp",
+      "model": 0.184,
+      "rules": 0.614,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hi-p-1",
+      "expect": "p",
+      "model": 0.256,
+      "rules": 0.304,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hn-sp-1",
+      "expect": "sp",
+      "model": -0.119,
+      "rules": 0.62,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hn-sp-2",
+      "expect": "sp",
+      "model": 0.313,
+      "rules": 0.641,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-mx-sp-1",
+      "expect": "sp",
+      "model": 0.979,
+      "rules": 0.618,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-en-n0-1",
+      "expect": "n0",
+      "model": 0.108,
+      "rules": -0.15,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hi-n0-1",
+      "expect": "n0",
+      "model": 0.116,
+      "rules": 0.05,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hn-n0-1",
+      "expect": "n0",
+      "model": -0.102,
+      "rules": -0.167,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-en-n-1",
+      "expect": "n",
+      "model": -0.468,
+      "rules": -0.515,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hi-n-1",
+      "expect": "n",
+      "model": -0.252,
+      "rules": -0.495,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hn-n-1",
+      "expect": "n",
+      "model": -0.169,
+      "rules": -0.535,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-en-sn-1",
+      "expect": "sn",
+      "model": -0.926,
+      "rules": -0.655,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-en-sn-2",
+      "expect": "sn",
+      "model": -0.353,
+      "rules": -0.623,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hi-sn-1",
+      "expect": "sn",
+      "model": -0.133,
+      "rules": -0.641,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hi-sn-2",
+      "expect": "sn",
+      "model": -0.103,
+      "rules": -0.68,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hn-sn-1",
+      "expect": "sn",
+      "model": -0.183,
+      "rules": -0.641,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-hn-sn-2",
+      "expect": "sn",
+      "model": -0.078,
+      "rules": -0.625,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "ho-mx-sn-1",
+      "expect": "sn",
+      "model": -0.334,
+      "rules": -0.667,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-dv-sp-1",
+      "expect": "sp",
+      "model": 0.188,
+      "rules": 0.62,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-dv-sn-1",
+      "expect": "sn",
+      "model": 0.435,
+      "rules": -0.607,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-en-but-p",
+      "expect": "p",
+      "model": 0.849,
+      "rules": 0.489,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-en-but-n",
+      "expect": "n",
+      "model": -0.008,
+      "rules": -0.321,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-hi-but-n",
+      "expect": "n",
+      "model": 0.214,
+      "rules": -0.56,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-en-long-sp",
+      "expect": "sp",
+      "model": 0.21,
+      "rules": 0.606,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-hi-long-sp",
+      "expect": "sp",
+      "model": 0.222,
+      "rules": 0.584,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-hn-long-sn",
+      "expect": "sn",
+      "model": -0.208,
+      "rules": -0.641,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-en-sarc",
+      "expect": "n",
+      "model": -0.232,
+      "rules": -0.517,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-en-p-2",
+      "expect": "p",
+      "model": 0.85,
+      "rules": 0.267,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-hi-p-2",
+      "expect": "p",
+      "model": -0.111,
+      "rules": 0.367,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-hn-n0",
+      "expect": "n0",
+      "model": -0.186,
+      "rules": -0.171,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-hn-sp-3",
+      "expect": "sp",
+      "model": 0.039,
+      "rules": 0.647,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-en-n-3",
+      "expect": "n",
+      "model": -0.874,
+      "rules": -0.537,
+      "modelPass": true,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-hi-sn-3",
+      "expect": "sn",
+      "model": -0.233,
+      "rules": -0.621,
+      "modelPass": false,
+      "rulesPass": true
+    },
+    {
+      "id": "h2-en-sp-4",
+      "expect": "sp",
+      "model": 0.92,
+      "rules": 0.551,
+      "modelPass": true,
+      "rulesPass": true
+    }
+  ]
+}

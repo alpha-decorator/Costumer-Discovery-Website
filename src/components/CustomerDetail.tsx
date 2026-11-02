@@ -8,6 +8,7 @@ import { Icon } from "@/components/Icon";
 import { TOPICS, initialsColor, signed, summarize, tierColor, type Customer, type Tier } from "@/lib/customers";
 import { useWorkspace } from "@/components/WorkspaceProvider";
 import { DemographicsFields } from "@/components/DemographicsFields";
+import { CustomerInsightsView } from "@/components/CustomerInsights";
 import { AREAS, EDUCATIONS, GENDERS, INCOMES, OCCUPATIONS, VEHICLES, cleanDemographics, optionLabel, stateLabel } from "@/lib/demographics";
 
 /**
@@ -119,6 +120,10 @@ export function CustomerDetail({ customer, group, startEditing = false, onClose,
             ]} />
           </section>
         </div>
+        {customer.analysis && <section className="fn-detail-insights">
+          <span className="eyebrow">{L("What we learned from this call", "इस बातचीत से क्या पता चला")}</span>
+          <CustomerInsightsView analysis={customer.analysis} lang={customer.language === "hi" ? "hi" : "en"} />
+        </section>}
         <div className="upload-actions fn-detail-actions">
           <button className="button-secondary modal-delete" onClick={() => onAskDelete(customer)}>{t.deleteCustomer}</button>
           {saved && <>

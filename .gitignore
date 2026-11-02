@@ -24,3 +24,10 @@ engine/sarvam_api_key*
 # Exported customer data (never commit)
 /interviews.csv
 /customer-discovery-*.md
+
+# nlp engine test harness: compiled copies of the rules and the downloaded test model
+nlp engine/.build*/
+nlp engine/model-test/.cache/
+
+# Design references (contains a HAR recording that may hold session tokens; never commit)
+/uiux ideas/

@@ -70,8 +70,8 @@ export const hasCustomerMark = (unit: Unit) => CUSTOMER_MARK.test(unit.n);
 export const startsWithReply = (unit: Unit) => REPLY_START.test(unit.n);
 
 // ---- labels written in the transcript ----------------------------------------------------------------------------
-const INTERVIEWER_LABEL = /^(?:interviewer|इंटरव्यूअर|इंटरव्यूवर|इंटरव्यू लेने वाला|question|प्रश्न|सवाल|host|team|trata team|q|i)$/u;
-const CUSTOMER_LABEL = /^(?:customer|ग्राहक|कस्टमर|respondent|participant|प्रतिभागी|answer|उत्तर|जवाब|guest|interviewee|a|c)$/u;
+const INTERVIEWER_LABEL = /^(?:interviewer|moderator|researcher|founder|agent|इंटरव्यूअर|इंटरव्यूवर|इंटरव्यू लेने वाला|question|प्रश्न|सवाल|host|team|trata team|q|i)$/u;
+const CUSTOMER_LABEL = /^(?:customer|responder|response|user|client|caller|prospect|ग्राहक|कस्टमर|respondent|participant|प्रतिभागी|answer|उत्तर|जवाब|guest|interviewee|a|c)$/u;
 
 export function classify(units: Unit[]): { units: Classified[]; mode: SpeakerMode } {
   const raw = units.map((unit) => ({ q: isQuestion(unit), p: pitchScore(unit), cm: hasCustomerMark(unit) }));

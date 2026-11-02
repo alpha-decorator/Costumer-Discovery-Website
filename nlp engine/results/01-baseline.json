@@ -1,0 +1,670 @@
+[
+  {
+    "id": "en-sp-1",
+    "expect": "sp",
+    "score": 0.66,
+    "label": "strong_positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "amazing(+0.85)",
+      "really useful(+0.80)",
+      "i would definitely use(+0.75)",
+      "worth it(+0.60)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-sp-2",
+    "expect": "sp",
+    "score": 0.512,
+    "label": "positive",
+    "verdict": "lean_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": false,
+    "cues": [
+      "love it(+0.55)",
+      "need this(+0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-sp-3",
+    "expect": "sp",
+    "score": 0.653,
+    "label": "strong_positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "superb(+0.80)",
+      "outstanding(+0.80)",
+      "helpful(+0.60)",
+      "sign me up(+0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-sp-4",
+    "expect": "sp",
+    "score": 0.536,
+    "label": "positive",
+    "verdict": "lean_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": false,
+    "cues": [
+      "like it(+0.55)",
+      "worth the money(+0.60)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-sp-5",
+    "expect": "sp",
+    "score": 0.632,
+    "label": "strong_positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "brilliant(+0.85)",
+      "needed(+0.50)",
+      "i'd install(+0.75)",
+      "i'd pay(+0.65)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hi-sp-1",
+    "expect": "sp",
+    "score": 0.62,
+    "label": "strong_positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "बहुत बढिया(+0.80)",
+      "काम की चीज(+0.60)",
+      "लगवाऊंगा(+0.70)",
+      "पैसे दे दूंगा(+0.60)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hi-sp-2",
+    "expect": "sp",
+    "score": 0.56,
+    "label": "positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "पसंद आया(+0.55)",
+      "इस्तेमाल करूंगा(+0.70)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hi-sp-3",
+    "expect": "sp",
+    "score": 0.586,
+    "label": "positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "शानदार(+0.85)",
+      "उपयोगी(+0.60)",
+      "वाजिब(+0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hi-sp-4",
+    "expect": "sp",
+    "score": 0.647,
+    "label": "strong_positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "कमाल(+0.85)",
+      "लाजवाब(+0.85)",
+      "जरूरत है(+0.50)",
+      "लगवा लूंगा(+0.70)",
+      "पैसे देने को तैयार(+0.65)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hn-sp-1",
+    "expect": "sp",
+    "score": 0.667,
+    "label": "strong_positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "bahut badhiya(+0.80)",
+      "ekdum mast(+0.80)",
+      "use karunga(+0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hn-sp-2",
+    "expect": "sp",
+    "score": 0.56,
+    "label": "positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [
+      "pasand aaya(+0.50)",
+      "lagwa lunga(+0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hn-sp-3",
+    "expect": "sp",
+    "score": 0.629,
+    "label": "strong_positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [
+      "zabardast(+0.80)",
+      "kaam ki cheez(+0.60)",
+      "use karunga(+0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hn-sp-4",
+    "expect": "sp",
+    "score": 0.58,
+    "label": "positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [
+      "really useful(+0.80)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "mx-sp-1",
+    "expect": "sp",
+    "score": 0.627,
+    "label": "strong_positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "amazing(+0.85)",
+      "useful(+0.60)",
+      "use करूंगा(+0.70)",
+      "worth it(+0.60)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-p-1",
+    "expect": "p",
+    "score": 0.525,
+    "label": "positive",
+    "verdict": "lean_yes",
+    "wouldUse": "yes",
+    "wouldPay": "maybe",
+    "pass": true,
+    "cues": [
+      "good idea(+0.55)",
+      "i like it(+0.55)",
+      "would use(+0.70)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-p-2",
+    "expect": "p",
+    "score": 0.507,
+    "label": "positive",
+    "verdict": "lean_yes",
+    "wouldUse": "yes",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [
+      "helpful(+0.60)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hi-p-1",
+    "expect": "p",
+    "score": 0.26,
+    "label": "positive",
+    "verdict": "lean_yes",
+    "wouldUse": "maybe",
+    "wouldPay": "maybe",
+    "pass": true,
+    "cues": [
+      "अच्छा है(+0.40)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hn-p-1",
+    "expect": "p",
+    "score": 0.56,
+    "label": "positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [
+      "accha idea(+0.50)",
+      "use karunga(+0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-n0-1",
+    "expect": "n0",
+    "score": -0.333,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "maybe",
+    "wouldPay": "no",
+    "pass": false,
+    "cues": [
+      "too expensive(-0.50)",
+      "not sure(-0.04)",
+      "too much(-0.50)"
+    ],
+    "note": "praise + price objection"
+  },
+  {
+    "id": "en-n0-2",
+    "expect": "n0",
+    "score": 0.12,
+    "label": "mixed",
+    "verdict": "undecided",
+    "wouldUse": "maybe",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [],
+    "note": ""
+  },
+  {
+    "id": "hi-n0-1",
+    "expect": "n0",
+    "score": -0.074,
+    "label": "neutral",
+    "verdict": "undecided",
+    "wouldUse": "maybe",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "अच्छा है(+0.40)",
+      "बहुत महंगा(-0.50)",
+      "पैसे नहीं दूंगा(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hn-n0-1",
+    "expect": "n0",
+    "score": -0.25,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "unclear",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "mehnga(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-n-1",
+    "expect": "n",
+    "score": -0.443,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "i don't think(-0.40)",
+      "would not pay(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-n-2",
+    "expect": "n",
+    "score": -0.419,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "unclear",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "great(-0.41)",
+      "costly(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hi-n-1",
+    "expect": "n",
+    "score": -0.49,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "नहीं लगता(-0.40)",
+      "जरूरत नहीं(-0.60)",
+      "पैसे नहीं दूंगा(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hn-n-1",
+    "expect": "n",
+    "score": -0.49,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "zaroorat nahi(-0.60)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-sn-1",
+    "expect": "sn",
+    "score": -0.587,
+    "label": "negative",
+    "verdict": "strong_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "useless(-0.75)",
+      "never use(-0.70)",
+      "will not pay(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-sn-2",
+    "expect": "sn",
+    "score": -0.584,
+    "label": "negative",
+    "verdict": "strong_no",
+    "wouldUse": "no",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [
+      "hate(-0.60)",
+      "scam(-0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-sn-3",
+    "expect": "sn",
+    "score": -0.522,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": false,
+    "cues": [
+      "pointless(-0.60)",
+      "will use(-0.52)",
+      "won't pay(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-sn-4",
+    "expect": "sn",
+    "score": -0.452,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "yes",
+    "pass": false,
+    "cues": [
+      "rubbish(-0.75)",
+      "overpriced(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-sn-5",
+    "expect": "sn",
+    "score": -0.44,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": false,
+    "cues": [
+      "don't trust(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hi-sn-1",
+    "expect": "sn",
+    "score": -0.587,
+    "label": "negative",
+    "verdict": "strong_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "बेकार(-0.75)",
+      "इस्तेमाल नहीं करूंगा(-0.70)",
+      "नहीं दूंगा(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hi-sn-2",
+    "expect": "sn",
+    "score": -0.592,
+    "label": "negative",
+    "verdict": "strong_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "बकवास(-0.75)",
+      "फालतू(-0.75)",
+      "जरूरत नहीं(-0.60)",
+      "बहुत महंगा(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hi-sn-3",
+    "expect": "sn",
+    "score": -0.495,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": false,
+    "cues": [
+      "कोई नहीं लगवाएगा(-0.60)",
+      "नहीं दूंगा(-0.50)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hi-sn-4",
+    "expect": "sn",
+    "score": -0.416,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "maybe",
+    "wouldPay": "no",
+    "pass": false,
+    "cues": [
+      "काम का(-0.45)",
+      "भरोसा नहीं(-0.50)",
+      "नहीं लूंगा(-0.70)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hn-sn-1",
+    "expect": "sn",
+    "score": -0.53,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": false,
+    "cues": [
+      "use nahi karunga(-0.70)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "hn-sn-2",
+    "expect": "sn",
+    "score": -0.5,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": false,
+    "cues": [],
+    "note": ""
+  },
+  {
+    "id": "hn-sn-3",
+    "expect": "sn",
+    "score": -0.492,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "unclear",
+    "pass": false,
+    "cues": [
+      "lagwaunga(-0.56)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "mx-sn-1",
+    "expect": "sn",
+    "score": -0.387,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "yes",
+    "pass": false,
+    "cues": [
+      "useless(-0.75)"
+    ],
+    "note": ""
+  },
+  {
+    "id": "en-trick-1",
+    "expect": "p",
+    "score": 0.526,
+    "label": "positive",
+    "verdict": "lean_yes",
+    "wouldUse": "yes",
+    "wouldPay": "maybe",
+    "pass": true,
+    "cues": [
+      "useless(+0.30)",
+      "nice(+0.55)",
+      "would use(+0.70)"
+    ],
+    "note": "negated negative"
+  },
+  {
+    "id": "en-trick-2",
+    "expect": "n",
+    "score": -0.43,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "useful(-0.45)"
+    ],
+    "note": "negated positive"
+  },
+  {
+    "id": "hi-trick-1",
+    "expect": "n",
+    "score": -0.43,
+    "label": "negative",
+    "verdict": "lean_no",
+    "wouldUse": "no",
+    "wouldPay": "no",
+    "pass": true,
+    "cues": [
+      "उपयोगी(-0.45)"
+    ],
+    "note": "Hindi negated praise"
+  },
+  {
+    "id": "hi-trick-2",
+    "expect": "sp",
+    "score": 0.58,
+    "label": "positive",
+    "verdict": "strong_yes",
+    "wouldUse": "yes",
+    "wouldPay": "yes",
+    "pass": true,
+    "cues": [
+      "बहुत अच्छा(+0.55)",
+      "काम का(+0.60)",
+      "लगवाऊंगा(+0.70)"
+    ],
+    "note": "problem talk + praise"
+  },
+  {
+    "id": "hn-trick-1",
+    "expect": "p",
+    "score": 0.533,
+    "label": "positive",
+    "verdict": "lean_yes",
+    "wouldUse": "yes",
+    "wouldPay": "unclear",
+    "pass": true,
+    "cues": [],
+    "note": "negated negative Hinglish"
+  }
+]

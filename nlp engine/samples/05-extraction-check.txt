@@ -1,0 +1,16 @@
+Interviewer: Hi, thanks for your time. We are building Trata, a sensor for your car that detects a crash automatically.
+Interviewer: It then calls an ambulance, alerts nearby cab drivers and sends your live location to your family.
+Interviewer: How do you usually travel?
+Customer: I drive my own car to office every day, and on weekends I ride my bike.
+Interviewer: Have you ever been in an accident?
+Customer: Yes, two years ago I had a bike accident on the highway, I got a fracture and nobody helped for almost 40 minutes.
+Interviewer: What do you think about this idea?
+Customer: It is a really good idea, very useful. But I am worried about privacy, who will see my location data?
+Interviewer: Would you use it?
+Customer: Yes, I would use it, especially on my bike.
+Interviewer: How much would you pay for it?
+Customer: I can pay around 1500 rupees for the device, and maybe 99 rupees a month for the service. More than 3000 a year is too expensive for me.
+Interviewer: Anything else you would like to see?
+Customer: You should add a feature for two-wheelers, like a helmet sensor. It would be better if it also connects with my insurance company. Also there should be an SOS button. Right now I use Google Maps location sharing with my wife.
+Interviewer: Thank you so much.
+Customer: Sure, I can also connect you with my friends who run a taxi fleet.

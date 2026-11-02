@@ -3,3 +3,5 @@ engine/
 data/
 *.csv
 customer-discovery-report-*.md
+# Sentiment test harness and model comparison: local tooling only, not part of the site
+nlp engine/

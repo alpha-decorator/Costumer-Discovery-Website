@@ -1,0 +1,7 @@
+csv:Interview notes  old  0.391 positive        lean_yes   -> new  0.406 positive        lean_yes
+csv:hi2              old  0.391 positive        lean_yes   -> new  0.406 positive        lean_yes
+csv:hi               old  0.391 positive        lean_yes   -> new  0.406 positive        lean_yes
+engine:925df7f4      old  0.333 positive        lean_yes   -> new  0.333 positive        lean_yes
+engine:9f2c4d64      old  0.464 positive        lean_yes   -> new  0.464 positive        lean_yes
+engine:d8a3e912      old  0.390 positive        lean_yes   -> new  0.390 positive        lean_yes
+engine:d9a081bc      old  0.310 positive        lean_yes   -> new  0.310 positive        lean_yes

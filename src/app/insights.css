@@ -71,3 +71,56 @@
 .fn-row-actions{display:inline-flex;align-items:center;gap:14px}
 .fn-row-edit{gap:5px}
 @media (max-width:520px){.fn-edit-grid{grid-template-columns:1fr}.fn-row-edit{font-size:0;gap:0}}
+
+/* What we learned from a call (CustomerInsights.tsx): intent tiles, prices, asks, worries, profile. */
+.fn-detail-insights{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.fn-detail-insights>.eyebrow{display:block;margin-bottom:10px}
+.fn-insights{display:grid;gap:14px}
+.fn-ins-intent{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.fn-ins-tile{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.fn-ins-tile span{font-size:11px;color:var(--muted)}
+.fn-ins-tile b{font-size:15px}
+.fn-ins-tile.intent-yes{border-color:color-mix(in srgb,var(--s3) 55%,transparent);background:color-mix(in srgb,var(--s3) 9%,transparent)}
+.fn-ins-tile.intent-maybe{border-color:color-mix(in srgb,#d9a227 55%,transparent);background:color-mix(in srgb,#d9a227 9%,transparent)}
+.fn-ins-tile.intent-no{border-color:color-mix(in srgb,var(--s2) 55%,transparent);background:color-mix(in srgb,var(--s2) 9%,transparent)}
+.fn-ins-block{display:grid;gap:8px;min-width:0}
+.fn-ins-block>.eyebrow b{display:inline-grid;place-items:center;min-width:18px;height:18px;margin-left:6px;padding:0 5px;border-radius:9px;background:rgb(127 127 127 / .14);font-size:10px}
+.fn-ins-prices{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}
+.fn-ins-prices li{border:1px solid var(--line);border-left-width:4px;border-radius:10px;padding:10px 12px;display:grid;gap:3px;color:inherit}
+.fn-ins-prices li.tone-pos{border-left-color:var(--s3)}
+.fn-ins-prices li.tone-neg{border-left-color:var(--s2)}
+.fn-ins-prices strong{font-size:16px}
+.fn-ins-prices em{font-style:normal;font-size:11px;font-weight:600;color:var(--muted)}
+.fn-ins-prices q{font-size:12px;color:var(--muted);line-height:1.45}
+.fn-ins-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.fn-ins-list li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font-size:13px;line-height:1.5}
+.fn-ins-list small{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);white-space:nowrap}
+.fn-ins-worries .fn-ins-list li{border-left:3px solid var(--s2)}
+.fn-ins-asks .fn-ins-list li{border-left:3px solid var(--s1)}
+.fn-ins-promises .fn-ins-list li{border-left:3px solid var(--s3)}
+.fn-ins-tags{display:flex;flex-wrap:wrap;gap:6px}
+.fn-ins-tags span{padding:4px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px}
+.fn-ins-profile{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:8px;margin:0}
+.fn-ins-profile div{border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.fn-ins-profile dt{font-size:11px;color:var(--muted)}
+.fn-ins-profile dd{margin:2px 0 0;font-weight:600;font-size:13px}
+@media (max-width:520px){.fn-ins-list li{grid-template-columns:1fr;gap:2px}}
+
+/* The same insights in the PDF. */
+.report-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:6px 0 4px}
+.report-kpi{border:1px solid #dfe5df;border-radius:8px;padding:8px 10px;break-inside:avoid}
+.report-kpi span{display:block;font-size:10.5px;color:#5d6861!important}
+.report-kpi b{display:block;font-size:14px;margin-top:2px}
+.report-print .report-kpi.intent-yes{background:#e9f7f0;border-color:#9fd8bd}
+.report-print .report-kpi.intent-maybe{background:#fdf5e2;border-color:#ecd18f}
+.report-print .report-kpi.intent-no{background:#fdeee7;border-color:#f1b79c}
+.report-tag{display:inline-block;padding:1px 8px;margin:0 6px 4px 0;border:1px solid #dfe5df;border-radius:999px;font-size:11px;background:#f7f9f6}
+.report-print .report-tag.tone-pos{background:#e9f7f0;border-color:#9fd8bd;color:#14613f!important}
+.report-print .report-tag.tone-neg{background:#fdeee7;border-color:#f1b79c;color:#9a3a12!important}
+.report-table-tight tbody th{width:28%}
+.report-qa td:first-child{color:#5d6861!important;width:38%}
+.report-card-meta{margin:4px 0 0;font-size:11.5px}
+.report-insights h3{margin-top:16px}
+.report-table tr{break-inside:avoid}
+@media (max-width:640px){.report-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media print{.report-overlay,.report-print,.report-print *{animation:none!important;transition:none!important}.report-print *{-webkit-print-color-adjust:exact;print-color-adjust:exact}.report-appendix{break-before:page}.report-insights{break-inside:auto}.report-section{break-inside:auto}.report-print h2,.report-print h3{break-after:avoid}}

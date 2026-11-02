@@ -36,8 +36,25 @@ const RULES: Rule[] = [
   // ---- praise and intent to use ------------------------------------------------------------------------------
   rule("useful", "useful|usefull|यूसफुल|यूजफुल|यूज़फुल|यूसफूल|यूसपुल|यूजपुल|यूज़पुल|यूसफ़ुल|यूजफूल|उपयोगी|helpful|मददगार|काम का|काम की चीज़|काम की चीज|काम आएगा|काम आजाएगा|काम आ जाएगा|काम आयेगा|काम आ सकता है", 0.6, "praise", { topic: "Features" }),
   rule("strong praise", "excellent|awesome|amazing|brilliant|fantastic|बेहतरीन|शानदार|ज़बरदस्त|जबरदस्त|कमाल|लाजवाब|मस्त|वाह", 0.85, "praise"),
-  rule("praise", "great|good idea|nice idea|nice|बढ़िया|बढिया|नाइस|अच्छा आइडिया|अच्छा आईडिया|अच्छा लगा|अच्छी लगी|अच्छा लग रहा|बहुत अच्छा|बहुत अच्छी|सही है|सही रहेगा|सही लगता|पसंद आया|पसंद आई|पसंद है|i like it|like it|love it|loved it|love", 0.55, "praise"),
-  rule("good", "works well|working well|सही चीज़|सही चीज|अच्छा है|अच्छी है", 0.4, "praise"),
+  rule("praise", "great|good idea|nice idea|nice|बढ़िया|बढिया|नाइस|अच्छा आइडिया|अच्छा आईडिया|अच्छा लगा|अच्छी लगी|अच्छा लग रहा|बहुत अच्छा|बहुत अच्छी|सही है|सही रहेगा|सही लगता|पसंद आया|पसंद आई|पसंद है|i like it|like it|liked it|i like this|i like the idea|love", 0.55, "praise"),
+  rule("good", "works well|working well|सही चीज़|सही चीज|अच्छा है|अच्छी है|idea is good|idea is nice|it's good|it is good|looks good|sounds good|seems good|looks helpful|looks useful|sounds useful|accha hai|acha hai|achha hai|achchha hai|अच्छा तो है|आइडिया अच्छा|idea accha|idea acha|idea achha", 0.4, "praise"),
+  // ---- added in the nlp-engine pass: love, life-saving, eager, not bad ------------------------------------------
+  rule("love", "love it|loved it|love this|i love|absolutely love|really like it|really liked it|really like this|बहुत पसंद आया|बहुत पसंद आई|बहुत पसंद है|दिल से पसंद|bahut pasand aaya|bahut pasand aayi|bahut pasand hai|dil se pasand|perfect|परफेक्ट|perfect hai", 0.8, "praise"),
+  rule("life saver", "life saver|lifesaver|life-saver|game changer|game-changer|gamechanger|save lives|saves lives|save a life|save many lives|can save lives|जान बचा सकता|जान बचा सकती|जान बचाएगा|जान बचाएगी|जान बचाने|जान बच सकती|जान बच सकता|जान बच जाएगी|जिंदगी बचा|ज़िंदगी बचा|jaan bacha|jaan bach sakti|jaan bach sakta|jaan bachayega|jaan bachane|zindagi bacha|much needed|बहुत काम की|बहुत काम का|bahut kaam ki|bahut kaam ka|kaam ki cheez hai", 0.8, "praise", { topic: "Features" }),
+  rule("eager", "can't wait|cannot wait|cant wait|बेसब्री|इंतज़ार रहेगा|इंतजार रहेगा|intezaar rahega|when can i get|कब मिलेगा|kab milega|kab launch|कब लॉन्च", 0.7, "praise"),
+  rule("not bad", "not bad|not too bad|not that bad|बुरा नहीं|बुरा नही|bura nahi|bura nahin|खराब नहीं|kharab nahi", 0.35, "praise"),
+  rule("fan", "big fan|huge fan|i'm a fan|i am a fan|fan of this|fan ho gaya|फैन हो गया|first class|फर्स्ट क्लास|उम्दा|umda|क्या बात है|kya baat hai|kya baat|top class|world class|वर्ल्ड क्लास|hats off|हैट्स ऑफ|well done|वेल डन|बहुत खूब|bahut khoob|without a doubt|no doubt about it|बेशक|beshak", 0.75, "praise"),
+  rule("wow", "wow|wah|waah|arre wah|kya cheez|क्या चीज़ बनाई|क्या चीज बनाई|kya cheez banayi|हर गाड़ी में होनी चाहिए|हर गाड़ी में होना चाहिए|har gaadi mein honi chahiye|har gadi me honi chahiye|every car should have|every vehicle should have|should be in every car|everyone should have", 0.75, "praise"),
+  rule("not now", "abhi nahi|abhi zaroorat nahi|abhi jarurat nahi|abhi need nahi|अभी नहीं|अभी जरूरत नहीं|अभी ज़रूरत नहीं|not right now|not now|maybe later|baad mein dekhenge|बाद में देखेंगे|later on maybe", -0.2, "reject"),
+  rule("sarcasm", "yeah right|as if anyone|as if someone|as if people|haan haan zaroor|हां हां ज़रूर|हाँ हाँ ज़रूर|doesn't make sense|does not make sense|makes no sense|no sense|koi sense nahi|कोई सेंस नहीं|समझ से बाहर", -0.55, "reject"),
+  // Strong English praise (mirror of "strong reject (en)").
+  rule("strong praise (en)", "thrilled|ecstatic|overjoyed|delighted|spectacular|groundbreaking|ground-breaking|genius|revolutionary|masterpiece|phenomenal|magnificent|glorious|marvelous|marvellous|fabulous|incredible|breathtaking|flawless|flawlessly|stellar|top-tier|top tier|world-class|state-of-the-art|cutting-edge|visionary|inspiring|inspired|triumph|triumphant|dazzling|immaculate|pristine|bravo|guardian angel|peace of mind|priceless|blown away|i'm sold|i am sold|supportive|biggest champion|biggest supporter|loyal supporter|biggest fan|ecstatic customer|unwavering faith|full faith|complete faith|total faith|full confidence|confidence in your|so impressed|highly impressed|kudos|remarkable|beautifully", 0.85, "praise"),
+  // Product qualities: only next to a word for the product, like "product faults (en)".
+  rule("product qualities (en)", "reliable|robust|efficient|effective|smart|intelligent|advanced|seamless|seamlessly|innovative|clever|vigilant|responsive|accurate", 0.6, "praise", { needsProduct: true }),
+  rule("buy now", "let me buy|want to buy|i want one|where can i buy|take my money|buy it immediately|install it immediately|get it right now|right this very second", 0.8, "praise"),
+  // "I'd gladly pay a premium just to keep this away from me" is a rejection, whatever "pay" says.
+  rule("keep away", "keep it away|keep this away|far away from me|stay away from|get rid of", -0.6, "reject"),
+  rule("decent","decent|decent idea|fair idea|okay idea|ok idea|ठीक ठाक|theek thaak|thik thak|चल जाएगा|chal jayega", 0.3, "praise"),
   rule("needed", "जरूरी|ज़रूरी|necessary|needed|need this|इसकी जरूरत|इसकी ज़रूरत|जरूरत है इसकी", 0.5, "praise", { topic: "Features" }),
   rule("would use", "इस्तेमाल करूंगा|इस्तेमाल करूँगा|इस्तेमाल करूंगी|यूज करूंगा|यूज़ करूँगा|use करूंगा|use करूँगा|will use|would use|i would install|i will install|लगवाऊंगा|लगवा लूंगा|ले लूंगा|खरीदूंगा|खरीद लूंगा|would buy|will buy|i will take", 0.7, "praise"),
   rule("would pay", "पैसे दूंगा|पैसे दे दूंगा|पे करूंगा|pay करूंगा|will pay|would pay|ready to pay|देने को तैयार", 0.6, "praise", { topic: "Pricing" }),
@@ -46,7 +63,31 @@ const RULES: Rule[] = [
   rule("interesting", "interesting|इंटरेस्टिंग|दिलचस्प", 0.35, "praise"),
   rule("easy", "easy to use|user friendly|simple to use|आसान|इजी|सिंपल", 0.6, "praise", { topic: "UX" }),
   // ---- rejection ---------------------------------------------------------------------------------------------
-  rule("useless", "useless|बेकार|फालतू|bekar|time waste|waste of time|वेस्ट ऑफ", -0.75, "reject"),
+  rule("useless", "useless|बेकार|फालतू|bekar|time waste|waste of time|वेस्ट ऑफ", -0.8, "reject"),
+  // ---- added in the nlp-engine pass: the strongest rejections, dislike, "not for me", "don't want" ---------------
+  rule("strong reject", "worst|terrible|horrible|pathetic|garbage|worthless|waste of money|total waste|complete waste|ridiculous|absurd|stupid|dumb|disgusting|पैसे की बर्बादी|पैसों की बर्बादी|पैसा बर्बाद|समय की बर्बादी|टाइम की बर्बादी|वक्त की बर्बादी|बर्बादी है|घटिया|बेहूदा|बेवकूफी|बेकार की चीज|फालतू की चीज|ghatiya|bakwaas|bakwass|bekaar|bekaar hai|faltu|faaltu|paise ki barbadi|paison ki barbadi|time ki barbadi|barbadi hai|paisa barbaad|bewakoofi", -0.85, "reject"),
+  rule("dislike", "dislike|don't like it|do not like it|dont like it|didn't like|did not like|don't like this|not impressed|disappointing|disappointed|पसंद नहीं|पसंद नही|pasand nahi|pasand nahin|अच्छा नहीं लगा|अच्छा नही लगा|अच्छी नहीं लगी|accha nahi laga|acha nahi laga|achha nahi laga|निराशाजनक|मज़ा नहीं आया|मजा नहीं आया", -0.65, "reject"),
+  rule("not for me", "not for me|of no use|no use to me|no use for me|किसी काम का नहीं|किसी काम की नहीं|किसी काम का नही|मेरे काम का नहीं|मेरे काम की नहीं|मेरे किसी काम|kisi kaam ka nahi|kisi kaam ki nahi|mere kaam ka nahi|mere kaam ki nahi|koi kaam ka nahi|कोई काम का नहीं", -0.7, "reject"),
+  rule("don't want", "don't want|do not want|dont want|नहीं चाहिए|नही चाहिए|nahi chahiye|nahin chahiye|no thanks|no thank you|नहीं लेना|nahi lena", -0.6, "reject"),
+  // Strong English words that are always an opinion (nobody calls a road "idiotic" or "fraudulent").
+  rule("strong reject (en)", "appalled|appalling|atrocious|disastrous|catastrophic|idiotic|moronic|dreadful|awful|abysmal|abysmally|hideous|repulsive|repulsed|disgusted|horrified|horrendous|outraged|outrageous|delusional|fraudulent|fatally flawed|incompetent|amateurish|pitiful|shameful|embarrassment|insulting|offensive|creepy|madness|epic failure|hater|i reject it|reject it|i reject|vehemently opposed|strongly opposed|totally against|lack of faith|no faith|zero faith|untrustworthy|unacceptable|lousy|crap|crappy|it sucks|this sucks|trash|filthy|wretched|terribly|horribly|miserable|laughable", -0.85, "reject"),
+  // Words that can be about the road or an accident too ("brake failure", "reckless drivers", "it was a nightmare"):
+  // only counted with a word for the product right next to them.
+  rule("product faults (en)", "broken|flawed|defective|faulty|unreliable|buggy|bug-ridden|fragile|obsolete|inefficient|reckless|dangerous|hazardous|disaster|catastrophe|nightmare|failure|fail|invasive|intrusive|spy|terrifying|scary|annoying|irritating|inferior", -0.7, "reject", { needsProduct: true }),
+  // Strong Hindi rejections (always an opinion) and words that can also be about roads or accidents (only next to the product).
+  rule("strong reject (hi)", "फ्रॉड|फ्रॉड है|घिनौना|घिनौनी|झूठा दावा|झूठे दावे|कचरा|रद्दी|स्कैम|बेवकूफ बनाने|बेवकूफ बना रहे|उल्लू बनाने|पैसे लूटने|पैसा लूटने|पैसे लूट|पैसा डुबाने|पैसे डुबाने|नामुमकिन|सिरदर्द|सिर दर्द|बंद कर दो|बंद कर दीजिए|पिट जाएगा|पिट जाएगी|डूब जाएगा|डूब जाएगी|शून्य प्रतिशत|ज़ीरो प्रतिशत|जीरो प्रतिशत|zero percent|शून्य विश्वास|रत्ती भर भी भरोसा नहीं|बेहद खराब|सबसे खराब|सबसे बेकार|सबसे रद्दी|kachra|raddi|ghinona|jhootha|jhutha|namumkin|sirdard|band kar do|pit jayega|doob jayega|ullu bana|bewakoof bana|paise loot|scam hai|fraud hai", -0.85, "reject"),
+  rule("product faults (hi)", "भयानक|भयंकर|खतरनाक|खतरा|फेल|फ़ेल|झूठा|झूठी|बेकार सा|घटिया सा|bhayanak|khatarnak|khatra|fail hai", -0.7, "reject", { needsProduct: true }),
+  rule("won't recommend", "सलाह नहीं दूंगा|सलाह नहीं दूंगी|सलाह नहीं दूँगा|सलाह नहीं देंगे|रिकमेंड नहीं|recommend नहीं|won't recommend|wouldn't recommend|would not recommend|will not recommend|never recommend|किसी को नहीं बताऊंगा|kisi ko recommend nahi|recommend nahi karunga|salah nahi dunga", -0.75, "reject"),
+  rule("would not install (hi)", "कभी न लगाऊं|कभी ना लगाऊं|न लगाऊं|ना लगाऊं|कभी नहीं लगाऊं|कभी न लगवाऊं|न लगवाऊं|कभी न लूं|न खरीदूं|kabhi na lagaun|kabhi na lagwaun|na lagaun", -0.75, "reject"),
+  // Strong Hindi praise (mirror of "strong reject (hi)").
+  rule("strong praise (hi)", "अद्भुत|क्रांतिकारी|वरदान|पूरा समर्थन|समर्थन करता हूं|समर्थन करती हूं|100% समर्थन|अतुलनीय|मानसिक शांति|मास्टरपीस|सर्वश्रेष्ठ|सर्वश्रेठ|गेम-चेंजर|गेम चेंजर|गेमचेंजर|जादू कर|अटूट विश्वास|अटूट भरोसा|पूरा भरोसा है|सही रास्ते पर|अभूतपूर्व|बेजोड़|इतिहास रच|जानें बचाने|जानें बचाएगा|लाखों जानें|निशब्द|रोंगटे खड़े|वफादार कस्टमर|वफादार ग्राहक|बेताब हूं|प्रेरित करूंगा|प्रेरित करूंगी|सबको सलाह दूंगा|recommend करूंगा|अनिवार्य होना चाहिए|अनिवार्य कर देना चाहिए|लगवाने के लिए तैयार|लगवाने को तैयार|लगवाने के लिए पूरी तरह तैयार|खरीदने के लिए तैयार|खुशी-खुशी|खुशी खुशी|उत्साहित हूं|बहुत खुशी|adbhut|krantikari|vardaan|sarvashreshth|lajawab|jadoo|atoot vishwas|khushi khushi|lagwane ke liye taiyaar", 0.85, "praise"),
+  rule("product qualities (hi)", "एडवांस|सटीक|तेज़|भरोसेमंद|विश्वसनीय|कारगर|असरदार|स्मार्ट|बढ़िया काम|advance|bharosemand", 0.6, "praise", { needsProduct: true }),
+  rule("no problem", "दिक्कत नहीं|कोई दिक्कत नहीं|रत्ती भर भी दिक्कत नहीं|परेशानी नहीं|कोई परेशानी नहीं|बड़ी बात नहीं|कोई बड़ी बात नहीं|छोटी सी बात|no problem|not a problem|no issue|no issues|koi dikkat nahi|dikkat nahi|koi problem nahi|problem nahi", 0.4, "praise"),
+  rule("junk","junk|a joke|complete joke|total joke|joke hai|मज़ाक है|मजाक है|time pass|timepass|टाइम पास|टाइमपास|gimmick|गिमिक|dikhawa|दिखावा", -0.8, "reject"),
+  rule("unnecessary", "unnecessary|not a fan|not really a fan|nobody needs|no one needs|no chance|कोई मतलब नहीं|कोई मतलब नही|koi matlab nahi|कोई जरूरत नहीं|kya zaroorat|क्या ज़रूरत|क्या जरूरत|not worth it|not worth|वर्थ नहीं|worth nahi", -0.6, "reject"),
+  rule("meh", "nothing special|nothing great|nothing new|so so|so-so|कुछ खास नहीं|कुछ ख़ास नहीं|kuch khaas nahi|kuch khas nahi|कुछ नया नहीं|kuch naya nahi", -0.25, "reject"),
+  rule("rip-off", "rip-off|ripoff|rip off|लूट|loot hai|loot|not a penny|not one penny|डाका|लूट है", -0.75, "price", { topic: "Pricing" }),
+  rule("no way", "no way|not a single rupee|not one rupee|एक पैसा नहीं|एक रुपया नहीं|एक भी पैसा नहीं|ek paisa nahi|ek rupaya nahi|ek bhi paisa nahi|मुफ्त में भी नहीं|फ्री में भी नहीं|free mein bhi nahi|free me bhi nahi|even for free|not even for free", -0.75, "price", { topic: "Pricing" }),
   rule("will not work", "flop|फ्लॉप|नहीं चलेगा|नहीं चल पाएगा|काम नहीं करेगा|काम नहीं आएगा|काम नहीं करेगी|will not work|won't work|wont work|doesn't work|does not work|not going to work", -0.6, "reject", { topic: "Features" }),
   rule("would not use", "इस्तेमाल नहीं करूंगा|यूज नहीं करूंगा|नहीं लूंगा|नहीं खरीदूंगा|नहीं लगवाऊंगा|will not use|won't use|wouldn't use|would not use|not going to use|never use", -0.7, "reject"),
   rule("price too high", "too expensive|बहुत महंगा|महंगा|महंगी|expensive|costly|कौन देगा|कोई नहीं देगा|कुछ नहीं देगा|नहीं दूंगा|पैसे नहीं दूंगा|won't pay|will not pay|would not pay|not pay|too much", -0.5, "price", { weight: 0.5, topic: "Pricing" }),
@@ -58,7 +99,7 @@ const RULES: Rule[] = [
   // "the roads are bad", "लोग परेशान हैं" are about the problem, not about the product, so these only count right next to a word for the product.
   rule("bad", "bad|poor|slow|खराब|धीमा|निराश|frustrating|frustrated|annoying|परेशान|hate|नफरत", -0.6, "reject", { needsProduct: true }),
   // ---- more ways of saying it: Hindi, Hinglish typed in English letters, English --------------------------------
-  rule("very good", "bahut badhiya|bahut badhia|bahut accha|bahut acha|bahut achha|बहुत बढ़िया|बहुत ही अच्छा|बहुत ही बढ़िया|ekdum mast|एकदम मस्त|zabardast|jabardast|ज़बरदस्त|best idea|great idea|superb|outstanding|wonderful|really good|very good|really nice|very nice|really useful|very useful|बहुत उपयोगी|बहुत यूसफुल|बहुत यूज़फुल|बहुत जरूरी|बहुत ज़रूरी|bahut zaroori|bahut jaruri", 0.8, "praise"),
+  rule("very good", "super|super idea|super hai|kamaal|kamal ka|kamaal ka|kamaal hai|lajawab|lajawaab|shandar|shaandar|mast hai|बहुत बढ़िया है|excellent idea|great concept|great product|bahut badhiya|bahut badhia|bahut accha|bahut acha|bahut achha|बहुत बढ़िया|बहुत ही अच्छा|बहुत ही बढ़िया|ekdum mast|एकदम मस्त|zabardast|jabardast|ज़बरदस्त|best idea|great idea|superb|outstanding|wonderful|really good|very good|really nice|very nice|really useful|very useful|बहुत उपयोगी|बहुत यूसफुल|बहुत यूज़फुल|बहुत जरूरी|बहुत ज़रूरी|bahut zaroori|bahut jaruri", 0.8, "praise"),
   rule("nice", "accha idea|acha idea|achha idea|badhiya|badiya|badhia|bढ़िया|sahi hai|bilkul sahi|makes sense|मेक्स सेंस|मेकस सेंस|सही बात है|सही कह रहे|समझ में आता है|समझ आता है|impressive|impressed|इम्प्रेस|इंप्रेस|प्रभावित|pasand aaya|pasand aayi|pasand hai|पसंद आई", 0.5, "praise"),
   rule("useful (typed)", "kaam ka hai|kaam ki cheez|kaam aayega|kaam aaega|kaam aa sakta|useful hai|faydemand|फायदेमंद|फ़ायदेमंद|लाभदायक|beneficial|बेनिफिशियल|बेनिफीचल|valuable|worth it|worth the money|worth paying|paisa vasool|पैसा वसूल|helps a lot|bahut help|काफी मदद|बहुत मदद|बड़ी मदद", 0.6, "praise", { topic: "Features" }),
   rule("needed (typed)", "zaroorat hai|jarurat hai|ज़रूरत है|जरूरत है|जरुरत है|need of the hour|समय की मांग|वक्त की जरूरत|must have|must-have|should be there|होना चाहिए ही|aaj ki zaroorat|इसकी सख्त जरूरत", 0.5, "praise", { topic: "Features" }),
@@ -72,7 +113,7 @@ const RULES: Rule[] = [
   rule("not interested", "not interested|interested nahi|इंटरेस्टेड नहीं|इंटरेस्टेड नही|दिलचस्पी नहीं|दिलचस्पी नही|रुचि नहीं|रुचि नही|interest nahi|no interest", -0.65, "reject"),
   rule("no need", "don't need|do not need|no need|dont need|not needed|जरूरत नहीं|ज़रूरत नहीं|जरूरत नही|ज़रूरत नही|जरुरत नहीं|zaroorat nahi|jarurat nahi|ज़रूरी नहीं|जरूरी नहीं|जरूरी नही", -0.6, "reject"),
   rule("no point", "kya fayda|क्या फायदा|क्या फ़ायदा|kya faida|no point|pointless|कोई फायदा नहीं|कोई फ़ायदा नहीं|कोई फायदा नही|no benefit|बिना मतलब|बेमतलब|बे-मतलब|faida nahi|fayda nahi", -0.6, "reject"),
-  rule("bad idea", "bad idea|बुरा आइडिया|खराब आइडिया|गलत आइडिया|silly idea|stupid idea|rubbish|nonsense|bakwas|बकवास|scam|fraud|धोखा|cheating|धंधा है|दुकानदारी", -0.75, "reject"),
+  rule("bad idea", "bad idea|बुरा आइडिया|खराब आइडिया|गलत आइडिया|silly idea|stupid idea|rubbish|nonsense|bakwas|बकवास|scam|fraud|धोखा|cheating|धंधा है|दुकानदारी", -0.8, "reject"),
   rule("will not work (typed)", "nahi chalega|nahi chalegi|nahi chalenge|kaam nahi karega|kaam nahi karegi|flop hoga|fail ho jayega|fail hoga|नहीं चलेगी|नहीं चलेंगे|काम नहीं कर पाएगा|काम नहीं कर पाएगी|काम नहीं करेंगे|कारगर नहीं|कारगर नही|असरदार नहीं|practical nahi|practical नहीं|प्रैक्टिकल नहीं|not practical|impractical|unrealistic|अनरियलिस्टिक|मुमकिन नहीं|संभव नहीं|possible nahi|not possible", -0.6, "reject", { topic: "Features" }),
   rule("would not use (typed)", "use nahi karunga|use nahi karungi|nahi lunga|nahi lungi|nahi lagwaunga|nahi khareedunga|नहीं लगवाऊंगी|नहीं खरीदूंगी|नहीं लूंगी|यूज नहीं करूंगी|नहीं करवाऊंगा|i'd not use|i would never|i will never use|i won't buy|i won't install|i will not buy|i will not install", -0.7, "reject"),
   rule("no trust (typed)", "bharosa nahi|vishwas nahi|trust nahi|भरोसा नही|विश्वास नही|ट्रस्ट नही|trust issues|trust issue hai|कौन भरोसा करेगा|who will trust|can't trust|cannot trust|cant trust", -0.5, "reject"),
@@ -87,10 +128,11 @@ const RULES: Rule[] = [
 
 const NEGATOR = new RegExp(`${WORD}(?:नहीं|नही|मत|not|no|nobody|no one|never|dont|don't|doesnt|doesn't|isnt|isn't|cant|can't|cannot|wont|won't|nahi|nahin)${WORD_END}`, "u");
 const QUESTION_WORD = new RegExp(`${WORD}(?:क्या|कितना|कितनी|कितने|kya|kitna|kitni|how|what|do you|would you|is it|are you)${WORD_END}`, "u");
+const INTENSIFIER = new RegExp(`${WORD}(?:very|really|totally|completely|absolutely|extremely|highly|truly|so|super|utterly|incredibly|phenomenally|wonderfully|exceptionally|tremendously|deeply|profoundly|thoroughly|horribly|terribly|absolute|total|complete|utter|pure|most|बहुत|बहुत ही|बिल्कुल|बिलकुल|एकदम|सच में|सचमुच|बेहद|पूरी तरह|सबसे|bahut|bohot|bilkul|ekdum|sach mein|sach me|ekdam|sabse)${WORD_END}`, "u");
 const BOUNDARY = /[.!?।\n,;]/;
 /** Words that start a new clause: a "not" before them does not belong to what comes after them. */
 const CLAUSE_WORD = /(?:^|\s)(?:लेकिन|मगर|पर|but|however|though|क्योंकि|because|और|and)(?=\s|$)/gu;
-const PRODUCT_WORD = new RegExp(`${WORD}(?:trata|तराता|ट्राटा|ट्रेटा|तरता|त्राता|app|एप|ऐप|अप्लिकेशन|application|device|डिवाइस|सेंसर|sensor|product|प्रोडक्ट|idea|आइडिया|आईडिया|solution|सोल्यूशन|सॉल्यूशन|dashboard|report|feature|फीचर|इसका|इसकी|इसमें|इसे|यह|ये|this|it)${WORD_END}`, "u");
+const PRODUCT_WORD = new RegExp(`${WORD}(?:trata|सिस्टम|तकनीक|कॉन्सेप्ट|प्रोजेक्ट|प्रोडक्ट|डिवाइस|दावा|concept|system|software|technology|tech|startup|company|hardware|engineering|unit|तराता|ट्राटा|ट्रेटा|तरता|त्राता|app|एप|ऐप|अप्लिकेशन|application|device|डिवाइस|सेंसर|sensor|product|प्रोडक्ट|idea|आइडिया|आईडिया|solution|सोल्यूशन|सॉल्यूशन|dashboard|report|feature|फीचर|इसका|इसकी|इसमें|इसे|यह|ये|this|it)${WORD_END}`, "u");
 
 function clauseBefore(text: string, start: number) {
   const slice = text.slice(Math.max(0, start - 80), start);
@@ -119,10 +161,13 @@ export function findCues(raw: string): Cue[] {
 export function findCuesNormalized(text: string): Cue[] {
   const found: Cue[] = [];
   const taken: Array<[number, number]> = [];
-  // Longer, more specific rules claim their words first (so "not good" is one cue, "good" inside it is not another one).
-  const order = [...RULES].sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
-  for (const item of order) {
-    for (const match of text.matchAll(item.re)) {
+  // Longer, more specific phrases claim their words first ("nobody will use" is one cue, "will use" inside it is not
+  // another one); between phrases of the same length the stronger rule wins.
+  const candidates: Array<{ item: Rule; match: RegExpMatchArray }> = [];
+  for (const item of RULES) for (const match of text.matchAll(item.re)) candidates.push({ item, match });
+  candidates.sort((a, b) => b.match[0].length - a.match[0].length || Math.abs(b.item.value) - Math.abs(a.item.value));
+  for (const { item, match } of candidates) {
+    {
       const start = match.index!;
       const end = start + match[0].length;
       if (taken.some(([from, to]) => start < to && end > from)) continue;
@@ -142,6 +187,8 @@ export function findCuesNormalized(text: string): Cue[] {
         // "नहीं चलेगा" etc. already contain the negation. Only a negation OUTSIDE the phrase flips it ("not bad").
         if (!NEGATOR.test(match[0])) value = Math.abs(value) * 0.4;
       }
+      // "really useful", "बिल्कुल बेकार", "ekdum faltu": an intensifier right before an un-negated phrase makes it count more.
+      if (!negated && item.kind !== "doubt" && INTENSIFIER.test(beforeWords.slice(-2).join(" "))) value = Math.sign(value) * Math.min(0.95, Math.abs(value) * 1.2);
       taken.push([start, end]);
       found.push({ text: match[0], value, weight: item.weight ?? 1, kind: value < 0 && item.kind === "praise" ? "reject" : item.kind, topic: item.topic, start, end });
     }
