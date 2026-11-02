@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type PointerEvent } from "react";
+import { useId, useState, type PointerEvent } from "react";
 import { signed } from "@/lib/customers";
 
 /** Sentiment radar: every axis runs from -1 (centre) to +1 (outer ring). The filled shape is the main series; dashed is the comparison. */
@@ -16,7 +16,7 @@ export function Radar({ labels, series }: { labels: string[]; series: RadarSerie
     <svg viewBox="0 0 320 320" role="img" aria-label={series.map((item) => item.name).join(", ")}>
       {rings.map((level) => <polygon key={level} className={level === 0.5 ? "fn-ring fn-ring-zero" : "fn-ring"} points={labels.map((_, index) => at(index, level)).join(" ")} />)}
       {labels.map((_, index) => <line key={index} className="fn-axis" x1={center} y1={center} x2={center + radius * Math.cos(angle(index))} y2={center + radius * Math.sin(angle(index))} />)}
-      {series.map((item) => <polygon key={item.name} points={item.values.map((value, index) => point(index, value)).join(" ")} fill={item.dashed ? "none" : item.color ?? "var(--s1)"} fillOpacity={item.dashed ? 0 : 0.22} stroke={item.dashed ? "var(--muted)" : item.color ?? "var(--s1)"} strokeWidth={item.dashed ? 1.6 : 2.2} strokeDasharray={item.dashed ? "5 4" : undefined} strokeLinejoin="round" />)}
+      {series.map((item) => <polygon key={item.name} className={item.dashed ? undefined : "fn-radar-shape"} points={item.values.map((value, index) => point(index, value)).join(" ")} fill={item.dashed ? "none" : item.color ?? "var(--s1)"} fillOpacity={item.dashed ? 0 : 0.22} stroke={item.dashed ? "var(--muted)" : item.color ?? "var(--s1)"} strokeWidth={item.dashed ? 1.6 : 2.2} strokeDasharray={item.dashed ? "5 4" : undefined} strokeLinejoin="round" />)}
       {labels.map((label, index) => {
         const x = center + (radius + 30) * Math.cos(angle(index));
         const y = center + (radius + 30) * Math.sin(angle(index));
@@ -31,6 +31,7 @@ export function Radar({ labels, series }: { labels: string[]; series: RadarSerie
 /** Sentiment over time. Hover or touch moves a marker along the line and shows the value for that customer. */
 export function AreaLine({ points, label }: { points: Array<{ label: string; value: number }>; label: string }) {
   const [hover, setHover] = useState<number | null>(null);
+  const gradientId = `fn-area-${useId().replace(/:/g, "")}`;
   const width = 600, height = 230, left = 40, right = 14, top = 14, bottom = 30;
   const innerWidth = width - left - right, innerHeight = height - top - bottom;
   const x = (index: number) => points.length === 1 ? left + innerWidth / 2 : left + (index * innerWidth) / (points.length - 1);
@@ -52,8 +53,14 @@ export function AreaLine({ points, label }: { points: Array<{ label: string; val
         <line className={level === 0 ? "fn-grid-line fn-grid-zero" : "fn-grid-line"} x1={left} x2={width - right} y1={y(level)} y2={y(level)} />
         <text className="fn-axis-text" x={left - 8} y={y(level) + 4} textAnchor="end">{level > 0 ? `+${level}` : level}</text>
       </g>)}
-      {points.length > 0 && <path className="fn-area-fill" d={area} />}
-      {points.length > 0 && <path className="fn-area-line" d={line} fill="none" />}
+      <defs>
+        <linearGradient id={gradientId} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" style={{ stopColor: "var(--s1)", stopOpacity: 0.38 }} />
+          <stop offset="100%" style={{ stopColor: "var(--s1)", stopOpacity: 0 }} />
+        </linearGradient>
+      </defs>
+      {points.length > 0 && <path className="fn-area-fill" d={area} style={{ fill: `url(#${gradientId})` }} />}
+      {points.length > 0 && <path key={line} className="fn-area-line" d={line} fill="none" pathLength={1} />}
       {hover !== null && points[hover] && <>
         <line className="fn-grid-line" x1={x(hover)} x2={x(hover)} y1={top} y2={y(-1)} />
         <circle className="fn-area-dot" cx={x(hover)} cy={y(points[hover].value)} r={5} />
@@ -77,7 +84,7 @@ export function Donut({ parts, centre, label }: { parts: Array<{ label: string; 
       <circle cx="80" cy="80" r={radius} fill="none" stroke="var(--line)" strokeWidth="20" />
       {total > 0 && parts.map((part) => {
         const length = (part.value / total) * circumference;
-        const segment = <circle key={part.label} cx="80" cy="80" r={radius} fill="none" stroke={part.color} strokeWidth="20" strokeDasharray={`${Math.max(0, length - 2)} ${circumference}`} strokeDashoffset={-offset} transform="rotate(-90 80 80)"><title>{`${part.label}: ${part.value}`}</title></circle>;
+        const segment = <circle key={part.label} className="fn-donut-seg" cx="80" cy="80" r={radius} fill="none" stroke={part.color} strokeWidth="20" strokeDasharray={`${Math.max(0, length - 2)} ${circumference}`} strokeDashoffset={-offset} transform="rotate(-90 80 80)"><title>{`${part.label}: ${part.value}`}</title></circle>;
         offset += length;
         return segment;
       })}

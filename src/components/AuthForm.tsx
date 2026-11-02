@@ -5,6 +5,7 @@ import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { useI18n } from "@/components/I18nProvider";
 import type { DictKey } from "@/lib/i18n";
 import { setOrgNotice } from "@/lib/org-notice";
+import { applyPalette, isPalette } from "@/lib/palette";
 
 type Mode = "personal" | "join" | "create";
 type Props = { mode: "login" | "register"; googleEnabled: boolean; next: string; urlError?: string; initialTab?: "personal" | "institution"; initialMode?: Mode };
@@ -59,7 +60,10 @@ export function AuthForm({ mode, googleEnabled, next, urlError, initialTab = "pe
         }),
       });
       if (response.ok) {
-        const done = await response.json().catch(() => ({})) as { org?: boolean; businessFailed?: boolean };
+        const done = await response.json().catch(() => ({})) as { org?: boolean; businessFailed?: boolean; preferences?: { palette?: unknown; theme?: unknown } };
+        // Put the account's saved look in place before the next page paints, so it opens in the right theme straight away.
+        if (isPalette(done.preferences?.palette)) applyPalette(done.preferences.palette);
+        if (done.preferences?.theme === "light" || done.preferences?.theme === "dark") { try { window.localStorage.setItem("fieldnotes-theme", done.preferences.theme); } catch { /* storage blocked */ } }
         // The next page opens on the Business code screen with a short message ("your code is ready" / "you joined").
         if (creating) setOrgNotice(done.businessFailed ? "create_failed" : "created");
         else if (joining && done.org) setOrgNotice("joined");

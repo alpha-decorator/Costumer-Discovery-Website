@@ -7,6 +7,8 @@ import { Icon } from "@/components/Icon";
 import { useAuth } from "@/components/AuthProvider";
 import { useI18n } from "@/components/I18nProvider";
 import { useWorkspace } from "@/components/WorkspaceProvider";
+import { ThemePicker } from "@/components/ThemePicker";
+import { CITIES } from "@/lib/cities";
 
 const NAV = [
   { href: "/", icon: "home", label: "discover" },
@@ -52,6 +54,7 @@ export function AppShell({ title, intro, actions, fab = true, children }: { titl
         <div className="breadcrumb"><span>{workspaceName || t.studioWorkspace}</span><Icon name="chevron" size={14} /><strong>{current ? t[current.label] : title}</strong></div>
         <div className="top-actions">
           <button className="language-toggle" onClick={() => setLang(lang === "en" ? "hi" : "en")} aria-label={t.switchLanguage}><Icon name="globe" size={16} /><span>{lang === "en" ? "EN" : "हि"}</span></button>
+          <ThemePicker />
           <button className="icon-button" onClick={() => setTheme(theme === "light" ? "dark" : "light")} aria-label={theme === "light" ? t.switchToDark : t.switchToLight} title={theme === "light" ? t.switchToDark : t.switchToLight}><Icon name={theme === "light" ? "moon" : "sun"} size={17} /></button>
           <Link className="top-avatar" href="/settings" aria-label={t.profileSettings}>{userInitials}</Link>
           <button className="icon-button signout-button" aria-label={t.signOut} title={t.signOut} onClick={signOut}><Icon name="logout" size={17} /></button>
@@ -70,6 +73,7 @@ export function AppShell({ title, intro, actions, fab = true, children }: { titl
       </div>
     </div>
     {fab && <Link className="fn-fab" href="/upload" aria-label={t.addNotes}><Icon name="upload" size={18} /><span>{L("Upload", "अपलोड")}</span></Link>}
+    <datalist id="fn-cities">{CITIES.map((city) => <option key={city.name} value={city.name} />)}</datalist>
     <nav className="fn-tabbar" aria-label={t.workspace}>
       {NAV.map((item) => <Link key={item.href} href={item.href} className={`fn-tab${isActive(item.href) ? " active" : ""}`} aria-current={isActive(item.href) ? "page" : undefined}><Icon name={item.icon} size={20} /><span>{t[item.label]}</span></Link>)}
     </nav>

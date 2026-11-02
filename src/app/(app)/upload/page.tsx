@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createWorker, OEM } from "tesseract.js";
 import { AppShell } from "@/components/AppShell";
+import { DemographicsFields } from "@/components/DemographicsFields";
+import { cleanDemographics, type Demographics } from "@/lib/demographics";
 import { EngineUploader } from "@/components/EngineUploader";
 import { Icon } from "@/components/Icon";
 import { useI18n } from "@/components/I18nProvider";
@@ -15,8 +17,8 @@ import { analyzeNotesWithRules } from "@/lib/nlp-analysis";
 
 type Language = Customer["language"];
 type AudioLanguageChoice = "auto" | "english" | "hindi";
-type UploadDraft = { name: string; company: string; tier: Tier | "" };
-const BLANK_DRAFT: UploadDraft = { name: "", company: "", tier: "" };
+type UploadDraft = { name: string; company: string; city: string; tier: Tier | ""; profile: Demographics };
+const BLANK_DRAFT: UploadDraft = { name: "", company: "", city: "", tier: "", profile: {} };
 // Audio upload is paused for now. Set to true to bring the audio tab back (the engine code stays in place).
 const AUDIO_INPUT_ENABLED = false;
 
@@ -63,7 +65,7 @@ export default function UploadPage() {
   }, []);
   useEffect(() => {
     const existing = targetRecordId ? uploaded.find((record) => record.id === targetRecordId) : undefined;
-    if (existing) setUploadDraft((draft) => draft.name || draft.tier ? draft : { name: existing.name, company: existing.company, tier: existing.tier });
+    if (existing) setUploadDraft((draft) => draft.name || draft.tier ? draft : { name: existing.name, company: existing.company, city: existing.city ?? "", tier: existing.tier, profile: existing.demographics ?? {} });
   }, [targetRecordId, uploaded]);
 
   useEffect(() => {
@@ -120,6 +122,8 @@ export default function UploadPage() {
             name: draft.name.trim() || pending.audioName.replace(/\.[^.]+$/, "") || tRef.current.defaultCustomerName,
             initials: (draft.name.trim() || pending.audioName || "NC").split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase(),
             company: draft.company.trim() || "Independent",
+            city: draft.city.trim() || undefined,
+            demographics: cleanDemographics(draft.profile),
             tier: draft.tier as Tier,
             date: new Intl.DateTimeFormat(langRef.current === "hi" ? "hi-IN" : "en-US", { month: "short", day: "2-digit", year: "numeric" }).format(new Date()),
             sentiment,
@@ -240,7 +244,7 @@ export default function UploadPage() {
     setAudioError("");
     setModelProgress(null);
     const existing = targetRecordId ? uploaded.find((record) => record.id === targetRecordId) : undefined;
-    pendingUploadRef.current = { id: targetRecordId || `CD-${Date.now()}`, draft: existing ? { name: existing.name, company: existing.company, tier: existing.tier } : uploadDraft, audioName: audioFile.name, persisted: Boolean(existing), lastRecord: existing };
+    pendingUploadRef.current = { id: targetRecordId || `CD-${Date.now()}`, draft: existing ? { name: existing.name, company: existing.company, city: existing.city ?? "", tier: existing.tier, profile: existing.demographics ?? {} } : uploadDraft, audioName: audioFile.name, persisted: Boolean(existing), lastRecord: existing };
     try {
       const audioContext = new AudioContext();
       const decoded = await audioContext.decodeAudioData(audioBytes.slice(0));
@@ -289,7 +293,7 @@ export default function UploadPage() {
     const read = analyzeNotesWithRules(cleaned, { lang: language === "hi" ? "hi" : "en", meta: { asrEngine: sourceType === "images" ? "ocr" : "text", asrModel: "", warnings: [] } });
     const record: Customer = {
       id, name: displayName, initials: displayName.trim().split(/\s+/).slice(0, 2).map((part) => part[0] || "").join("").toUpperCase(),
-      company, tier, date: savedDate,
+      company, city: uploadDraft.city.trim() || undefined, demographics: cleanDemographics(uploadDraft.profile), tier, date: savedDate,
       sentiment: read.sentiment, transcript: cleaned, language: read.language as Language, topics: read.topics,
       keyPoints: read.keyPoints, analysisEngine: read.analysisEngine, sourceType, imageNames, audioName: sourceType === "images" ? imageNames.join(", ") : undefined, transcriptionStatus: "complete",
       analysis: read.analysis,
@@ -383,6 +387,13 @@ export default function UploadPage() {
         {noteMode === "audio" && <div className="upload-form-grid"><label><span>{t.audioLanguage}</span><select value={audioLanguage} onChange={(event) => setAudioLanguage(event.target.value as AudioLanguageChoice)} disabled={detailsLocked || !AUDIO_INPUT_ENABLED}><option value="auto">{t.autoDetect}</option><option value="english">{t.english}</option><option value="hindi">{t.hindi}</option></select></label></div>}
       </section>
 
+      <section className="fn-card fn-profile-card" aria-labelledby="up-profile">
+        <span className="eyebrow">{L("CUSTOMER PROFILE", "ग्राहक प्रोफ़ाइल")}</span>
+        <h3 id="up-profile">{L("Age, region and background", "उम्र, क्षेत्र और पृष्ठभूमि")}</h3>
+        <p className="tier-help">{L("Optional. These details build the demographics and the India map on the dashboard; they are not used to score the interview.", "वैकल्पिक। इन्हीं से डैशबोर्ड पर ग्राहक-जानकारी और भारत का नक्शा बनते हैं; इंटरव्यू के स्कोर पर इनका असर नहीं होता।")}</p>
+        <DemographicsFields value={uploadDraft.profile} onChange={(profile) => setUploadDraft((draft) => ({ ...draft, profile }))} city={uploadDraft.city} onCityChange={(city) => setUploadDraft((draft) => ({ ...draft, city }))} lang={language} disabled={detailsLocked} />
+      </section>
+
       <section className="fn-card" aria-labelledby="up-files">
         <h3 id="up-files">{t.upStepFiles}</h3>
         <div className="note-mode-picker" role="tablist" aria-label={t.modePickerAria}>
@@ -391,7 +402,7 @@ export default function UploadPage() {
           <button type="button" role="tab" aria-selected={noteMode === "text"} className={noteMode === "text" ? "selected" : ""} onClick={() => setNoteMode("text")}>{t.modeText}<small>{t.modeTextSub}</small></button>
         </div>
         {noteMode === "audio" && (AUDIO_INPUT_ENABLED && engineHealth?.online ? <EngineUploader
-          health={engineHealth} tier={uploadDraft.tier} canStart={tierOk} actionsHost={actionsHost} onDoneChange={setEngineDone} company={uploadDraft.company} singleName={uploadDraft.name} language={engineLanguage}
+          health={engineHealth} tier={uploadDraft.tier} canStart={tierOk} actionsHost={actionsHost} onDoneChange={setEngineDone} company={uploadDraft.company} city={uploadDraft.city} demographics={uploadDraft.profile} singleName={uploadDraft.name} language={engineLanguage}
           existingAudioNames={uploaded.filter((record) => record.id !== targetRecordId).map((record) => record.audioName).filter((name): name is string => Boolean(name))}
           today={new Intl.DateTimeFormat(language === "hi" ? "hi-IN" : "en-US", { month: "short", day: "2-digit", year: "numeric" }).format(new Date())}
           replaceId={targetRecordId ?? undefined} onBusyChange={setEngineBusy}

@@ -1,0 +1,73 @@
+/* ==========================================================================
+   Customer demographics: the simple India map, the profile bars, and the profile fields on the upload and
+   customer screens. Uses the theme tokens from premium.css/themes.css (--a, --s1, --s2, --mid, --ink, --muted, --line),
+   so every theme colours it in its own way.
+   ========================================================================== */
+
+/* Dashboard card: map on the left, states on the right. */
+.fn-demo-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;align-items:start;margin-top:6px}
+.fn-demo-map{min-width:0}
+.fn-demo-side{min-width:0}
+.fn-demo-side h3{margin:4px 0 14px;font-size:13px;font-weight:700;color:var(--ink)}
+.fn-legend .fn-legend-note{color:var(--muted);opacity:.85}
+
+/* The map */
+.fn-india{position:relative;max-width:520px;margin:0 auto}
+.fn-india svg{display:block;width:100%;height:auto;max-height:480px;overflow:visible}
+.fn-india-land{fill:rgb(var(--a) / .09);stroke:rgb(var(--a) / .55);stroke-width:1.1;stroke-linejoin:round}
+.fn-india-dot{cursor:pointer;outline:none}
+.fn-india-dot circle{fill:var(--mid);fill-opacity:.88;stroke:#fff;stroke-width:1.5;transition:fill-opacity .15s}
+.fn-india-dot .halo{fill-opacity:.16;stroke:none;transition:fill-opacity .15s}
+.fn-india-dot.pos circle{fill:var(--s1)}
+.fn-india-dot.neg circle{fill:var(--s2)}
+.fn-india-dot:hover .halo,.fn-india-dot.on .halo,.fn-india-dot:focus-visible .halo{fill-opacity:.38}
+.fn-app[data-theme="dark"] .fn-india-dot circle{stroke:rgba(0,0,0,.55)}
+.fn-app[data-theme="dark"] .fn-india-land{fill:rgb(var(--a) / .14);stroke:rgb(var(--a) / .7)}
+.fn-india-tip{position:absolute;z-index:2;transform:translate(-50%,calc(-100% - 16px));pointer-events:none;display:grid;gap:2px;white-space:nowrap;
+  padding:7px 10px;border-radius:8px;background:#14121c;color:#fff;font-size:12px;box-shadow:0 8px 24px -8px rgba(0,0,0,.45)}
+.fn-india-tip span{opacity:.75;font-variant-numeric:tabular-nums}
+
+/* Bars with a count and the group's average opinion */
+.fn-profile-bars li{grid-template-columns:minmax(84px,150px) minmax(0,1fr) 28px 46px}
+.fn-profile-bars li>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fn-profile-bars em{font-style:normal;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;font-size:12px}
+.fn-unplaced{margin:12px 0 0}
+
+/* Upload: the customer profile card */
+.fn-profile-card .tier-help{margin:4px 0 0}
+.fn-profile-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+/* Customer screen: profile shown as small labelled chips, and edited in a fieldset */
+.fn-profile-chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px;padding:0}
+.fn-profile-chips div{display:flex;gap:6px;align-items:baseline;padding:5px 11px;border:1px solid var(--line);border-radius:999px;font-size:12px}
+.fn-profile-chips dt{color:var(--muted)}
+.fn-profile-chips dd{margin:0;color:var(--ink);font-weight:600}
+.fn-profile-edit{border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px;margin:0;min-width:0}
+.fn-profile-edit legend{padding:0 6px;font-weight:700;font-size:12.5px;color:var(--ink)}
+.fn-profile-edit .upload-form-grid{margin-top:4px;grid-template-columns:repeat(2,minmax(0,1fr))}
+
+@media (max-width:900px){
+  .fn-demo-layout{grid-template-columns:1fr}
+  .fn-profile-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:520px){
+  .fn-profile-grid,.fn-profile-edit .upload-form-grid{grid-template-columns:1fr}
+  .fn-profile-bars li{grid-template-columns:minmax(70px,100px) minmax(0,1fr) 24px 42px}
+}
+.fn-demo-side h3.fn-demo-sub{margin-top:24px}
+
+/* Customer screen: the edit form, in three parts (details, location & profile, conversation) */
+.fn-edit-block{border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px;margin:0;min-width:0}
+.fn-edit-block>legend{padding:0 6px;font-weight:700;font-size:12.5px;color:var(--ink)}
+.fn-edit-block .upload-form-grid{margin-top:4px}
+.fn-edit-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fn-edit-conversation{min-height:220px;margin-top:4px}
+.fn-edit-note{display:flex;justify-content:space-between;gap:12px;margin:8px 0 0;font-size:12px;color:var(--muted);line-height:1.5}
+.fn-edit-note span{flex:none;font-variant-numeric:tabular-nums}
+.fn-edit-advanced{display:grid;gap:12px}
+.fn-edit-advanced summary{cursor:pointer;font-weight:600;font-size:12.5px;color:var(--ink)}
+.fn-edit-advanced[open] summary{margin-bottom:4px}
+.fn-edit-advanced>label{display:grid;gap:6px;font-size:12px;font-weight:600;color:var(--muted)}
+.fn-row-actions{display:inline-flex;align-items:center;gap:14px}
+.fn-row-edit{gap:5px}
+@media (max-width:520px){.fn-edit-grid{grid-template-columns:1fr}.fn-row-edit{font-size:0;gap:0}}

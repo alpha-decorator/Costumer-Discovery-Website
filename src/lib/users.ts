@@ -5,7 +5,11 @@ export type User = {
   id: string; email: string; name: string;
   passwordHash: string | null; googleSub: string | null; emailVerified: boolean;
   failedAttempts: number; lockedUntil: number;
+  /** The look the person last chose (colour theme and light/dark), restored whenever they sign in. Null until they choose. */
+  preferences: Preferences;
 };
+
+export type Preferences = { palette: string | null; theme: "light" | "dark" | null };
 
 export class EmailTakenError extends Error {
   constructor() { super("An account with this email already exists."); }
@@ -24,6 +28,9 @@ function sqliteDb() {
     failed_attempts INTEGER NOT NULL DEFAULT 0, locked_until INTEGER NOT NULL DEFAULT 0,
     created_at INTEGER NOT NULL
   )`);
+  const columns = db.prepare("PRAGMA table_info(users)").all() as Array<{ name: string }>;
+  if (!columns.some((column) => column.name === "palette")) db.exec("ALTER TABLE users ADD COLUMN palette TEXT");
+  if (!columns.some((column) => column.name === "theme")) db.exec("ALTER TABLE users ADD COLUMN theme TEXT");
   return db;
 }
 
@@ -36,6 +43,8 @@ async function pg() {
       failed_attempts INTEGER NOT NULL DEFAULT 0, locked_until BIGINT NOT NULL DEFAULT 0,
       created_at BIGINT NOT NULL
     )`;
+    await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS palette TEXT`;
+    await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS theme TEXT`;
   })().catch((error) => { postgresReady = undefined; throw error; });
   await postgresReady;
   return sql;
@@ -49,6 +58,10 @@ function fromRow(row: Record<string, unknown> | undefined | null): User | null {
     googleSub: row.google_sub == null ? null : String(row.google_sub),
     emailVerified: Number(row.email_verified) === 1,
     failedAttempts: Number(row.failed_attempts), lockedUntil: Number(row.locked_until),
+    preferences: {
+      palette: typeof row.palette === "string" && /^[a-z]{1,20}$/.test(row.palette) ? row.palette : null,
+      theme: row.theme === "light" || row.theme === "dark" ? row.theme : null,
+    },
   };
 }
 
@@ -145,5 +158,27 @@ export async function clearFailedLogins(user: User) {
   }
   const db = sqliteDb();
   try { db.prepare("UPDATE users SET failed_attempts = 0, locked_until = 0 WHERE id = ?").run(user.id); }
+  finally { db.close(); }
+}
+
+export async function getPreferences(userId: string): Promise<Preferences> {
+  if (usingPostgres()) {
+    const sql = await pg();
+    return fromRow((await sql`SELECT * FROM users WHERE id = ${userId}` as Record<string, unknown>[])[0])?.preferences ?? { palette: null, theme: null };
+  }
+  const db = sqliteDb();
+  try { return fromRow(db.prepare("SELECT * FROM users WHERE id = ?").get(userId) as Record<string, unknown> | undefined)?.preferences ?? { palette: null, theme: null }; }
+  finally { db.close(); }
+}
+
+/** Saves the person's colour theme and light/dark choice in the users table (SQLite in data/ locally, Postgres when deployed). */
+export async function savePreferences(userId: string, preferences: { palette: string; theme: "light" | "dark" }) {
+  if (usingPostgres()) {
+    const sql = await pg();
+    await sql`UPDATE users SET palette = ${preferences.palette}, theme = ${preferences.theme} WHERE id = ${userId}`;
+    return;
+  }
+  const db = sqliteDb();
+  try { db.prepare("UPDATE users SET palette = ?, theme = ? WHERE id = ?").run(preferences.palette, preferences.theme, userId); }
   finally { db.close(); }
 }

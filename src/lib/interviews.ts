@@ -2,10 +2,13 @@ import { renameSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { DatabaseSync } from "node:sqlite";
 import { dataDir, openSqlite, postgres, usingPostgres } from "./db";
+import { cleanDemographics, demographicsProblem, parseDemographics, type Demographics } from "./demographics";
 import { ANALYSIS_CSV_HEADERS, analysisCsvColumns, analysisProblem, isValidAnalysis, type TrataAnalysis } from "./trata";
 
 export type Interview = {
-  id: string; name: string; initials: string; company: string; tier: "Expert" | "Public" | "Newbie";
+  id: string; name: string; initials: string; company: string; /** City where the interview happened; places it on the map. */ city?: string; tier: "Expert" | "Public" | "Newbie";
+  /** Who the customer is (age, gender, state, occupation…), entered on the upload form. */
+  demographics?: Demographics;
   date: string; sentiment: number; transcript: string; language: "en" | "hi" | "mixed";
   topics: { UX: number; Pricing: number; Features: number }; keyPoints: string[]; audioName?: string;
   sourceType?: "audio" | "images" | "text"; imageNames?: string[];
@@ -36,6 +39,8 @@ function database() {
   if (!columns.some((column) => column.name === "user_id")) db.exec("ALTER TABLE interviews ADD COLUMN user_id TEXT");
   if (!columns.some((column) => column.name === "analysis_json")) db.exec("ALTER TABLE interviews ADD COLUMN analysis_json TEXT");
   if (!columns.some((column) => column.name === "uploaded_by")) db.exec("ALTER TABLE interviews ADD COLUMN uploaded_by TEXT");
+  if (!columns.some((column) => column.name === "city")) db.exec("ALTER TABLE interviews ADD COLUMN city TEXT");
+  if (!columns.some((column) => column.name === "demographics_json")) db.exec("ALTER TABLE interviews ADD COLUMN demographics_json TEXT");
   // Same table as orgs.ts; created here too because every interview query reads it.
   db.exec("CREATE TABLE IF NOT EXISTS memberships (user_id TEXT PRIMARY KEY, org_id TEXT NOT NULL, role TEXT NOT NULL, created_at BIGINT NOT NULL)");
   db.exec("CREATE INDEX IF NOT EXISTS interviews_user_idx ON interviews (user_id)");
@@ -58,6 +63,8 @@ async function initializePostgres() {
   await sql`ALTER TABLE interviews ADD COLUMN IF NOT EXISTS user_id TEXT`;
   await sql`ALTER TABLE interviews ADD COLUMN IF NOT EXISTS analysis_json TEXT`;
   await sql`ALTER TABLE interviews ADD COLUMN IF NOT EXISTS uploaded_by TEXT`;
+  await sql`ALTER TABLE interviews ADD COLUMN IF NOT EXISTS city TEXT`;
+  await sql`ALTER TABLE interviews ADD COLUMN IF NOT EXISTS demographics_json TEXT`;
   await sql`CREATE TABLE IF NOT EXISTS memberships (user_id TEXT PRIMARY KEY, org_id TEXT NOT NULL, role TEXT NOT NULL, created_at BIGINT NOT NULL)`;
   await sql`CREATE INDEX IF NOT EXISTS interviews_user_idx ON interviews (user_id)`;
   return sql;
@@ -71,6 +78,8 @@ function parseAnalysis(value: unknown): TrataAnalysis | undefined {
 function fromRow(row: Record<string, unknown>): Interview {
   return {
     id: String(row.id), name: String(row.name), initials: String(row.initials), company: String(row.company),
+    city: row.city == null || row.city === "" ? undefined : String(row.city),
+    demographics: parseDemographics(row.demographics_json),
     tier: row.tier as Interview["tier"], date: String(row.date), sentiment: Number(row.sentiment),
     transcript: String(row.transcript), language: row.language as Interview["language"],
     topics: JSON.parse(String(row.topics_json)), keyPoints: JSON.parse(String(row.key_points_json)),
@@ -90,11 +99,14 @@ function csvCell(value: unknown) {
   return `"${text.replaceAll('"', '""')}"`;
 }
 
+const DEMO_KEYS = ["age", "gender", "state", "area", "occupation", "income", "education", "vehicle"] as const;
+const demoJson = (record: Interview) => { const clean = cleanDemographics(record.demographics); return clean ? JSON.stringify(clean) : null; };
+
 function toCsv(records: Interview[]) {
-  const headers = ["id", "date", "name", "company", "tier", "language", "sentiment", "topic_ux", "topic_pricing", "topic_features", "transcript", "key_points", "audio_name", "transcription_status", "source_type", "image_names", "analysis_engine", ...ANALYSIS_CSV_HEADERS];
+  const headers = ["id", "date", "name", "company", "city", "age", "gender", "state", "area", "occupation", "income", "education", "vehicle", "tier", "language", "sentiment", "topic_ux", "topic_pricing", "topic_features", "transcript", "key_points", "audio_name", "transcription_status", "source_type", "image_names", "analysis_engine", ...ANALYSIS_CSV_HEADERS];
   const rows = records.map((record) => {
     const extra = analysisCsvColumns(record.analysis);
-    return [record.id, record.date, record.name, record.company, record.tier, record.language, record.sentiment,
+    return [record.id, record.date, record.name, record.company, record.city ?? "", ...DEMO_KEYS.map((key) => record.demographics?.[key] ?? ""), record.tier, record.language, record.sentiment,
       record.topics.UX, record.topics.Pricing, record.topics.Features, record.transcript, JSON.stringify(record.keyPoints), record.audioName ?? "", record.transcriptionStatus ?? "complete", record.sourceType ?? "audio", JSON.stringify(record.imageNames ?? []), record.analysisEngine ?? "lexical-fallback",
       ...ANALYSIS_CSV_HEADERS.map((header) => extra[header])].map(csvCell).join(",");
   });
@@ -133,15 +145,15 @@ export async function saveInterview(record: Interview, userId: string, uploadedB
   const uploader = userId.startsWith("org:") ? uploadedBy : null;
   if (usingPostgres()) {
     const sql = await initializePostgres();
-    await sql`INSERT INTO interviews (id,user_id,uploaded_by,name,initials,company,tier,date,sentiment,transcript,language,topics_json,key_points_json,audio_name,transcription_status,source_type,image_names_json,analysis_engine,analysis_json)
-      VALUES (${record.id},${userId},${uploader},${record.name},${record.initials},${record.company},${record.tier},${record.date},${record.sentiment},${record.transcript},${record.language},${JSON.stringify(record.topics)},${JSON.stringify(record.keyPoints)},${record.audioName ?? null},${record.transcriptionStatus ?? "complete"},${record.sourceType ?? "audio"},${JSON.stringify(record.imageNames ?? [])},${record.analysisEngine ?? "lexical-fallback"},${record.analysis ? JSON.stringify(record.analysis) : null})`;
+    await sql`INSERT INTO interviews (id,user_id,uploaded_by,name,initials,company,city,demographics_json,tier,date,sentiment,transcript,language,topics_json,key_points_json,audio_name,transcription_status,source_type,image_names_json,analysis_engine,analysis_json)
+      VALUES (${record.id},${userId},${uploader},${record.name},${record.initials},${record.company},${record.city ?? null},${demoJson(record)},${record.tier},${record.date},${record.sentiment},${record.transcript},${record.language},${JSON.stringify(record.topics)},${JSON.stringify(record.keyPoints)},${record.audioName ?? null},${record.transcriptionStatus ?? "complete"},${record.sourceType ?? "audio"},${JSON.stringify(record.imageNames ?? [])},${record.analysisEngine ?? "lexical-fallback"},${record.analysis ? JSON.stringify(record.analysis) : null})`;
     return record;
   }
   const db = database();
   try {
-    db.prepare(`INSERT INTO interviews (id,user_id,uploaded_by,name,initials,company,tier,date,sentiment,transcript,language,topics_json,key_points_json,audio_name,transcription_status,source_type,image_names_json,analysis_engine,analysis_json)
-      VALUES (@id,@user_id,@uploaded_by,@name,@initials,@company,@tier,@date,@sentiment,@transcript,@language,@topics_json,@key_points_json,@audio_name,@transcription_status,@source_type,@image_names_json,@analysis_engine,@analysis_json)`).run({
-      id: record.id, user_id: userId, uploaded_by: uploader, name: record.name, initials: record.initials, company: record.company, tier: record.tier,
+    db.prepare(`INSERT INTO interviews (id,user_id,uploaded_by,name,initials,company,city,demographics_json,tier,date,sentiment,transcript,language,topics_json,key_points_json,audio_name,transcription_status,source_type,image_names_json,analysis_engine,analysis_json)
+      VALUES (@id,@user_id,@uploaded_by,@name,@initials,@company,@city,@demographics_json,@tier,@date,@sentiment,@transcript,@language,@topics_json,@key_points_json,@audio_name,@transcription_status,@source_type,@image_names_json,@analysis_engine,@analysis_json)`).run({
+      id: record.id, user_id: userId, uploaded_by: uploader, name: record.name, initials: record.initials, company: record.company, city: record.city ?? null, demographics_json: demoJson(record), tier: record.tier,
       date: record.date, sentiment: record.sentiment, transcript: record.transcript, language: record.language,
       topics_json: JSON.stringify(record.topics), key_points_json: JSON.stringify(record.keyPoints), audio_name: record.audioName ?? null,
       transcription_status: record.transcriptionStatus ?? "complete",
@@ -155,16 +167,16 @@ export async function saveInterview(record: Interview, userId: string, uploadedB
 export async function updateInterview(id: string, record: Interview, userId: string, orgId: string | null) {
   if (usingPostgres()) {
     const sql = await initializePostgres();
-    const updated = await sql`UPDATE interviews SET name=${record.name}, initials=${record.initials}, company=${record.company}, tier=${record.tier}, date=${record.date}, sentiment=${record.sentiment}, transcript=${record.transcript}, language=${record.language}, topics_json=${JSON.stringify(record.topics)}, key_points_json=${JSON.stringify(record.keyPoints)}, audio_name=${record.audioName ?? null}, transcription_status=${record.transcriptionStatus ?? "complete"}, source_type=${record.sourceType ?? "audio"}, image_names_json=${JSON.stringify(record.imageNames ?? [])}, analysis_engine=${record.analysisEngine ?? "lexical-fallback"}, analysis_json=${record.analysis ? JSON.stringify(record.analysis) : null} WHERE id=${id} AND user_id=${userId} AND (uploaded_by IS NULL OR uploaded_by IN (SELECT user_id FROM memberships WHERE org_id = ${orgId})) RETURNING id`;
+    const updated = await sql`UPDATE interviews SET name=${record.name}, initials=${record.initials}, company=${record.company}, city=${record.city ?? null}, demographics_json=${demoJson(record)}, tier=${record.tier}, date=${record.date}, sentiment=${record.sentiment}, transcript=${record.transcript}, language=${record.language}, topics_json=${JSON.stringify(record.topics)}, key_points_json=${JSON.stringify(record.keyPoints)}, audio_name=${record.audioName ?? null}, transcription_status=${record.transcriptionStatus ?? "complete"}, source_type=${record.sourceType ?? "audio"}, image_names_json=${JSON.stringify(record.imageNames ?? [])}, analysis_engine=${record.analysisEngine ?? "lexical-fallback"}, analysis_json=${record.analysis ? JSON.stringify(record.analysis) : null} WHERE id=${id} AND user_id=${userId} AND (uploaded_by IS NULL OR uploaded_by IN (SELECT user_id FROM memberships WHERE org_id = ${orgId})) RETURNING id`;
     if (!Array.isArray(updated) || updated.length === 0) return null;
     return record;
   }
   const db = database();
   try {
-    const result = db.prepare(`UPDATE interviews SET name=@name, initials=@initials, company=@company, tier=@tier,
+    const result = db.prepare(`UPDATE interviews SET name=@name, initials=@initials, company=@company, city=@city, demographics_json=@demographics_json, tier=@tier,
       date=@date, sentiment=@sentiment, transcript=@transcript, language=@language, topics_json=@topics_json,
       key_points_json=@key_points_json, audio_name=@audio_name, transcription_status=@transcription_status, source_type=@source_type, image_names_json=@image_names_json, analysis_engine=@analysis_engine, analysis_json=@analysis_json WHERE id=@id AND user_id=@user_id AND ${VISIBLE_IN_ORG}`).run({
-      id: record.id, user_id: userId, name: record.name, initials: record.initials, company: record.company, tier: record.tier,
+      id: record.id, user_id: userId, name: record.name, initials: record.initials, company: record.company, city: record.city ?? null, demographics_json: demoJson(record), tier: record.tier,
       date: record.date, sentiment: record.sentiment, transcript: record.transcript, language: record.language,
       topics_json: JSON.stringify(record.topics), key_points_json: JSON.stringify(record.keyPoints), audio_name: record.audioName ?? null,
       transcription_status: record.transcriptionStatus ?? "complete",
@@ -238,7 +250,7 @@ export function interviewProblem(value: unknown): string | null {
   const isScore = (score: unknown) => typeof score === "number" && Number.isFinite(score) && score >= -1 && score <= 1;
   const checks: [string, boolean][] = [
     ["id", typeof record.id === "string"], ["name", typeof record.name === "string"], ["initials", typeof record.initials === "string"],
-    ["company", typeof record.company === "string"], ["tier", ["Expert", "Public", "Newbie"].includes(String(record.tier))],
+    ["company", typeof record.company === "string"], ["city", record.city === undefined || (typeof record.city === "string" && record.city.length <= 80)], ["tier", ["Expert", "Public", "Newbie"].includes(String(record.tier))],
     ["date", typeof record.date === "string"], ["sentiment", isScore(record.sentiment)], ["transcript", typeof record.transcript === "string"],
     ["language", ["en", "hi", "mixed"].includes(String(record.language))],
     ["topics", !!record.topics && [record.topics.UX, record.topics.Pricing, record.topics.Features].every(isScore)],
@@ -250,6 +262,8 @@ export function interviewProblem(value: unknown): string | null {
   ];
   const failed = checks.find(([, ok]) => !ok);
   if (failed) return `${failed[0]} is missing or invalid`;
+  const demographics = demographicsProblem(record.demographics);
+  if (demographics) return demographics;
   if (record.analysis !== undefined) { const problem = analysisProblem(record.analysis); if (problem) return `analysis: ${problem}`; }
   return null;
 }

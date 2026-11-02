@@ -1,0 +1,313 @@
+/* ==========================================================================
+   Theme personalities. premium.css sets the colours; this file gives each theme its own
+   typography, shapes, ornaments, sidebar, buttons, background art and motion.
+   Art lives in public/themes/ (generated SVGs, faded through --art-o).
+   Selectors start with html[data-palette] .fn-app so they win over the shared rules.
+   ========================================================================== */
+
+/* ---------- Shared hooks ---------- */
+:root{--num:var(--mono);--r-card:18px;--r-btn:12px;--art:none;--art-o:.12;--art-o-d:.16}
+.app-shell.fn-app::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:var(--art);opacity:var(--art-o);transition:opacity .5s}
+.app-shell.fn-app[data-theme="dark"]::after{opacity:var(--art-o-d)}
+.fn-main::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
+.fn-sidebar{isolation:isolate}
+.fn-sidebar::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none}
+.fn-sidebar .profile-copy span{color:var(--muted)}
+.fn-head h1,.fn-card h2,.auth-card h1,.fn-brand-name,.brand-name,.fn-report-card-head h2,.fn-scope h2,.tr-who h2,.org-card h3,.seg h2{font-family:var(--display)}
+.fn-kpi strong,.fn-donut-total,.tr-score{font-family:var(--num)}
+.fn-card,.fn-kpi,.org-card,.seg,.tr-board,.report-view,.settings-view{border-radius:var(--r-card)}
+.button-primary,.button-secondary{border-radius:var(--r-btn)}
+.auth-page::after{background:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1.3px) 0 0/22px 22px}
+.auth-page .auth-art{display:none}
+.fn-theme-name small{display:block;font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:400;color:var(--muted);margin-top:1px}
+
+/* ==========================================================================
+   ROYAL PURPLE: velvet, gold leaf and serif type.
+   ========================================================================== */
+html[data-palette="royal"]{
+  --display:'Cormorant Garamond','Noto Sans Devanagari',Georgia,serif;--num:'Cormorant Garamond',Georgia,serif;
+  --gold:#c9a227;--gold-hi:#ecd27a;--r-card:14px;--r-btn:10px;
+  --art:url("/themes/royal-flourish.svg") top right/560px no-repeat,url("/themes/royal-damask.svg") 0 0/140px;--art-o:.11;--art-o-d:.13;
+}
+html[data-palette="royal"] .fn-app .fn-sidebar{--ink:#f7f0ff;--muted:#cbb8ee;--deep:#ecd27a;--glass-strong:rgba(255,255,255,.07);background:linear-gradient(180deg,#2a0b5c 0%,#43128a 55%,#2a0b5c 100%);border-right:1px solid rgba(201,162,39,.45);box-shadow:6px 0 40px -20px rgba(46,16,101,.7)}
+html[data-palette="royal"] .fn-app .fn-sidebar::before{background:url("/themes/royal-damask.svg") 0 0/110px;opacity:.13}
+html[data-palette="royal"] .fn-app .brand-mark{background:linear-gradient(135deg,#f3dc8a,#b8860b);color:#2a0b5c;box-shadow:0 6px 18px -6px rgba(201,162,39,.8)}
+html[data-palette="royal"] .fn-app .brand-mark span{color:#5b21b6}
+html[data-palette="royal"] .fn-app .fn-sidebar .fn-brand-name{font-size:24px;font-weight:700;letter-spacing:.2px;color:#fff}
+html[data-palette="royal"] .fn-app .fn-sidebar .brand-dot{color:var(--gold-hi)}
+html[data-palette="royal"] .fn-app .fn-nav-item{border-radius:8px;letter-spacing:.2px}
+html[data-palette="royal"] .fn-app .fn-nav-item:hover{background:rgba(255,255,255,.07);color:#fff}
+html[data-palette="royal"] .fn-app .fn-nav-item.active{background:linear-gradient(90deg,rgba(201,162,39,.32),rgba(201,162,39,.04));color:#fff;box-shadow:inset 3px 0 0 var(--gold-hi);font-weight:600}
+html[data-palette="royal"] .fn-app .fn-workspace{border-color:rgba(201,162,39,.4)}
+html[data-palette="royal"] .fn-app .fn-sidebar .profile{border-top-color:rgba(201,162,39,.3)}
+html[data-palette="royal"] .fn-app .fn-topbar{border-bottom:1px solid rgba(201,162,39,.3)}
+html[data-palette="royal"] .fn-app .fn-head .eyebrow{color:#a8851c;font-weight:700;letter-spacing:2.6px}
+html[data-palette="royal"] .fn-app .fn-head .eyebrow::before{content:"✦  "}
+html[data-palette="royal"] .fn-app .fn-head h1{font-size:46px;font-weight:700;letter-spacing:-.4px;line-height:1.05;background:linear-gradient(120deg,#2a0b5c 0%,#6d28d9 55%,#a8851c 100%);-webkit-background-clip:text;background-clip:text}
+html[data-palette="royal"] .fn-app .fn-head>div:first-child::after{content:"";display:block;width:220px;height:16px;margin-top:10px;background:url("/themes/royal-divider.svg") no-repeat}
+html[data-palette="royal"] .fn-app .fn-card,html[data-palette="royal"] .fn-app .fn-kpi{border:1px solid rgba(201,162,39,.38);position:relative}
+html[data-palette="royal"] .fn-app .fn-card::before{content:"";position:absolute;inset:9px;pointer-events:none;opacity:.75;background:
+  linear-gradient(var(--gold),var(--gold)) top left/22px 1.5px no-repeat,linear-gradient(var(--gold),var(--gold)) top left/1.5px 22px no-repeat,
+  linear-gradient(var(--gold),var(--gold)) bottom right/22px 1.5px no-repeat,linear-gradient(var(--gold),var(--gold)) bottom right/1.5px 22px no-repeat}
+html[data-palette="royal"] .fn-app .fn-card h2{font-size:21px;font-weight:700;letter-spacing:.1px}
+html[data-palette="royal"] .fn-app .fn-kpi::before{height:2px;background:linear-gradient(90deg,transparent,var(--gold) 30%,var(--gold-hi) 50%,var(--gold) 70%,transparent)}
+html[data-palette="royal"] .fn-app .fn-kpi::after{background:radial-gradient(circle,rgba(124,58,237,.2),transparent 70%)}
+html[data-palette="royal"] .fn-app .fn-kpi>span{color:#a8851c;letter-spacing:1.6px}
+html[data-palette="royal"] .fn-app .fn-kpi strong{font-size:46px;font-weight:700;letter-spacing:-.5px;line-height:1;font-variant-numeric:lining-nums tabular-nums}
+html[data-palette="royal"] .fn-app .fn-donut-total,html[data-palette="royal"] .fn-app .point-sentiment{font-variant-numeric:lining-nums}
+html[data-palette="royal"] .fn-app .button-primary,html[data-palette="royal"] .fn-app .fn-fab{background:linear-gradient(135deg,#4c1d95,#7e22ce);color:#fff8e1;box-shadow:inset 0 0 0 1px rgba(236,210,122,.65),0 10px 24px -10px rgba(76,29,149,.8);letter-spacing:.3px}
+html[data-palette="royal"] .fn-app .fn-fab::before{border-color:rgba(201,162,39,.6)}
+html[data-palette="royal"] .fn-app .button-secondary{border-color:rgba(201,162,39,.5);color:#4c1d95}
+html[data-palette="royal"] .fn-app .fn-chips{border:1px solid rgba(201,162,39,.35)}
+html[data-palette="royal"] .fn-app .fn-chips button.on{background:linear-gradient(135deg,#4c1d95,#7e22ce);box-shadow:inset 0 0 0 1px rgba(236,210,122,.7),0 6px 16px -6px rgba(76,29,149,.7);color:#fff8e1}
+html[data-palette="royal"] .fn-app .top-avatar,html[data-palette="royal"] .fn-app .avatar-maya{background:linear-gradient(135deg,#f3dc8a,#b8860b);color:#2a0b5c}
+html[data-palette="royal"] .fn-app .fn-theme-menu{border:1px solid rgba(201,162,39,.4)}
+html[data-palette="royal"] .fn-app[data-theme="dark"] .fn-card,html[data-palette="royal"] .fn-app[data-theme="dark"] .fn-kpi{border-color:rgba(201,162,39,.3)}
+html[data-palette="royal"] .fn-app[data-theme="dark"] .fn-head h1{background:linear-gradient(120deg,#fff7e0 0%,#ecd27a 50%,#d8b4fe 100%);-webkit-background-clip:text;background-clip:text}
+html[data-palette="royal"] .fn-app[data-theme="dark"] .fn-head .eyebrow,html[data-palette="royal"] .fn-app[data-theme="dark"] .fn-kpi>span{color:var(--gold-hi)}
+html[data-palette="royal"] .fn-app[data-theme="dark"] .button-secondary{color:var(--gold-hi);border-color:rgba(201,162,39,.45)}
+html[data-palette="royal"] .auth-page::after{background:url("/themes/royal-flourish.svg") top right/520px no-repeat,url("/themes/royal-damask.svg") 0 0/140px;opacity:.16}
+html[data-palette="royal"] .auth-card{border:1px solid rgba(201,162,39,.55);border-radius:16px}
+html[data-palette="royal"] .auth-card h1{font-size:38px;font-weight:700;letter-spacing:-.2px}
+html[data-palette="royal"] .auth-card .brand-mark{background:linear-gradient(135deg,#f3dc8a,#b8860b);color:#2a0b5c}
+html[data-palette="royal"] .auth-card .button-primary{background:linear-gradient(135deg,#4c1d95,#7e22ce);box-shadow:inset 0 0 0 1px rgba(236,210,122,.65),0 10px 24px -10px rgba(76,29,149,.8)}
+
+/* ==========================================================================
+   JUNGLE: forest canopy, leaf shapes, rounded friendly type.
+   ========================================================================== */
+html[data-palette="jungle"]{
+  --display:'Outfit','Noto Sans Devanagari',sans-serif;--num:'Outfit',sans-serif;--r-card:28px 28px 28px 10px;--r-btn:999px;
+  --art:url("/themes/jungle-leaves.svg") center/cover no-repeat;--art-o:.17;--art-o-d:.22;
+}
+html[data-palette="jungle"] .fn-app .fn-sidebar{--ink:#ecfdf5;--muted:#a3d4b4;--deep:#bef264;--glass-strong:rgba(255,255,255,.08);background:linear-gradient(170deg,#052e16 0%,#14532d 60%,#0b3d22 100%);border-right:0;box-shadow:8px 0 40px -24px rgba(5,46,22,.9)}
+html[data-palette="jungle"] .fn-app .fn-sidebar::before{background:url("/themes/jungle-leaves.svg") left bottom/900px auto no-repeat;opacity:.25}
+html[data-palette="jungle"] .fn-app .brand-mark{background:linear-gradient(135deg,#bef264,#22c55e);color:#052e16;border-radius:50% 50% 50% 8px}
+html[data-palette="jungle"] .fn-app .brand-mark span{color:#065f46}
+html[data-palette="jungle"] .fn-app .fn-sidebar .fn-brand-name{color:#fff;font-weight:700}
+html[data-palette="jungle"] .fn-app .fn-nav-item{border-radius:999px}
+html[data-palette="jungle"] .fn-app .fn-nav-item:hover{background:rgba(190,242,100,.12);color:#fff}
+html[data-palette="jungle"] .fn-app .fn-nav-item.active{background:#bef264;color:#052e16;box-shadow:0 8px 20px -8px rgba(190,242,100,.7)}
+html[data-palette="jungle"] .fn-app .fn-workspace{border-color:rgba(190,242,100,.25);border-radius:999px}
+html[data-palette="jungle"] .fn-app .fn-sidebar .profile{border-top-color:rgba(190,242,100,.2)}
+html[data-palette="jungle"] .fn-app .fn-head h1{font-size:40px;font-weight:700;letter-spacing:-1.4px;background:linear-gradient(120deg,#052e16 0%,#15803d 55%,#65a30d 100%);-webkit-background-clip:text;background-clip:text}
+html[data-palette="jungle"] .fn-app .eyebrow::before,html[data-palette="jungle"] .fn-app .fn-card h2::before{content:"";display:inline-block;width:10px;height:10px;margin-right:8px;border-radius:0 100% 0 100%;background:linear-gradient(135deg,#84cc16,#16a34a);vertical-align:-1px}
+html[data-palette="jungle"] .fn-app .fn-card,html[data-palette="jungle"] .fn-app .fn-kpi{background:rgba(255,255,255,.72);border:1px solid rgba(22,163,74,.18)}
+html[data-palette="jungle"] .fn-app .fn-card h2{font-size:17px;font-weight:600;color:#14532d}
+html[data-palette="jungle"] .fn-app .fn-kpi::before{display:none}
+html[data-palette="jungle"] .fn-app .fn-kpi::after{width:120px;height:120px;right:-30px;top:-34px;border-radius:0 100% 0 100%;background:linear-gradient(135deg,rgba(132,204,22,.35),rgba(22,163,74,.08));transform:rotate(12deg)}
+html[data-palette="jungle"] .fn-app .fn-kpi:hover::after{transform:rotate(-4deg) scale(1.1)}
+html[data-palette="jungle"] .fn-app .fn-kpi strong{font-size:38px;font-weight:700;letter-spacing:-1px}
+html[data-palette="jungle"] .fn-app .fn-chips button.on{background:linear-gradient(135deg,#16a34a,#0d9488)}
+html[data-palette="jungle"] .fn-app .customer-point:hover{border-radius:20px 20px 20px 6px}
+html[data-palette="jungle"] .fn-app .fn-fab{border-radius:28px 28px 28px 8px}
+html[data-palette="jungle"] .fn-app[data-theme="dark"] .fn-card,html[data-palette="jungle"] .fn-app[data-theme="dark"] .fn-kpi{background:rgba(10,40,24,.62);border-color:rgba(132,204,22,.16)}
+html[data-palette="jungle"] .fn-app[data-theme="dark"] .fn-card h2{color:#d9f99d}
+html[data-palette="jungle"] .fn-app[data-theme="dark"] .fn-head h1{background:linear-gradient(120deg,#f0fdf4 0%,#86efac 55%,#bef264 100%);-webkit-background-clip:text;background-clip:text}
+html[data-palette="jungle"] .auth-page::after{background:url("/themes/jungle-leaves.svg") center/cover no-repeat;opacity:.4}
+html[data-palette="jungle"] .auth-card{border-radius:32px 32px 32px 12px}
+html[data-palette="jungle"] .auth-card h1{font-size:30px;font-weight:700}
+html[data-palette="jungle"] .auth-card .button-primary,html[data-palette="jungle"] .auth-card .google-button{border-radius:999px}
+
+/* ==========================================================================
+   OCEAN BLUE: deep water, drifting waves, caustic light.
+   ========================================================================== */
+html[data-palette="ocean"]{
+  --display:'Sora','Noto Sans Devanagari',sans-serif;--num:'Sora',sans-serif;--r-card:24px;--r-btn:999px;
+  --art:url("/themes/ocean-caustics.svg") 0 0/320px;--art-o:.13;--art-o-d:.07;
+}
+html[data-palette="ocean"] .fn-app .fn-main::before{background:url("/themes/ocean-waves.svg") 0 100%/1600px 240px repeat-x;opacity:.32;animation:fn-wave 60s linear infinite}
+html[data-palette="ocean"] .fn-app[data-theme="dark"] .fn-main::before{opacity:.2}
+html[data-palette="ocean"] .fn-app .fn-sidebar{background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(224,242,254,.6))}
+html[data-palette="ocean"] .fn-app .fn-sidebar::before{top:auto;height:160px;background:url("/themes/ocean-waves.svg") 0 100%/800px 150px repeat-x;opacity:.45;animation:fn-wave 30s linear infinite}
+html[data-palette="ocean"] .fn-app .fn-nav-item{border-radius:999px}
+html[data-palette="ocean"] .fn-app .fn-head h1{font-size:36px;font-weight:700;letter-spacing:-1.4px;background:linear-gradient(120deg,#0c1e45 0%,#1d4ed8 50%,#06b6d4 100%);-webkit-background-clip:text;background-clip:text}
+html[data-palette="ocean"] .fn-app .fn-card,html[data-palette="ocean"] .fn-app .fn-kpi{border:1px solid rgba(56,189,248,.28);background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(240,249,255,.62))}
+html[data-palette="ocean"] .fn-app .fn-card{position:relative}
+html[data-palette="ocean"] .fn-app .fn-card::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.55) 0%,transparent 28%)}
+html[data-palette="ocean"] .fn-app .fn-card h2{font-weight:600;letter-spacing:-.4px}
+html[data-palette="ocean"] .fn-app .fn-kpi::before{height:4px;background:linear-gradient(90deg,#2563eb,#06b6d4,#2563eb);background-size:200% 100%;animation:fn-flow 6s linear infinite}
+html[data-palette="ocean"] .fn-app .fn-kpi::after{width:100%;height:100%;inset:0;right:auto;top:auto;border-radius:0;background:
+  radial-gradient(circle at 82% 78%,rgba(56,189,248,.28) 0 7px,transparent 8px),radial-gradient(circle at 90% 55%,rgba(56,189,248,.22) 0 4px,transparent 5px),
+  radial-gradient(circle at 74% 40%,rgba(56,189,248,.18) 0 3px,transparent 4px),radial-gradient(circle at 94% 25%,rgba(56,189,248,.2) 0 5px,transparent 6px);animation:fn-bubbles 7s ease-in-out infinite}
+html[data-palette="ocean"] .fn-app .fn-kpi strong{font-size:34px;font-weight:700;letter-spacing:-1.4px}
+html[data-palette="ocean"] .fn-app[data-theme="dark"] .fn-card,html[data-palette="ocean"] .fn-app[data-theme="dark"] .fn-kpi{background:linear-gradient(180deg,rgba(16,40,78,.7),rgba(8,24,52,.6));border-color:rgba(56,189,248,.18)}
+html[data-palette="ocean"] .fn-app[data-theme="dark"] .fn-card::before{background:linear-gradient(115deg,rgba(125,211,252,.08) 0%,transparent 30%)}
+html[data-palette="ocean"] .fn-app[data-theme="dark"] .fn-sidebar{background:linear-gradient(180deg,rgba(8,24,52,.75),rgba(6,16,31,.8))}
+html[data-palette="ocean"] .fn-app[data-theme="dark"] .fn-head h1{background:linear-gradient(120deg,#e0f2fe 0%,#7dd3fc 50%,#22d3ee 100%);-webkit-background-clip:text;background-clip:text}
+html[data-palette="ocean"] .auth-page::after{background:url("/themes/ocean-waves.svg") 0 100%/1600px 300px repeat-x;opacity:.35;animation:fn-wave 60s linear infinite}
+html[data-palette="ocean"] .auth-card h1{font-size:28px;font-weight:700;letter-spacing:-1px}
+html[data-palette="ocean"] .auth-card .button-primary,html[data-palette="ocean"] .auth-card .google-button{border-radius:999px}
+
+/* ==========================================================================
+   RED LAVA: obsidian, molten edges, embers, angular type and buttons.
+   ========================================================================== */
+html[data-palette="lava"]{
+  --display:'Space Grotesk','Noto Sans Devanagari',sans-serif;--num:'Space Grotesk',sans-serif;--r-card:8px;--r-btn:0;
+  --art:url("/themes/lava-cracks.svg") center/cover no-repeat;--art-o:.1;--art-o-d:.2;
+  --slant:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);
+}
+html[data-palette="lava"] .fn-app .fn-main::before{opacity:.55;background:
+  radial-gradient(circle,rgba(251,146,60,.9) 0 1.5px,transparent 2.5px) 0 0/190px 260px,
+  radial-gradient(circle,rgba(250,204,21,.8) 0 1px,transparent 2px) 60px 90px/240px 320px,
+  radial-gradient(circle,rgba(239,68,68,.8) 0 1.5px,transparent 2.5px) 120px 30px/300px 380px;animation:fn-embers 16s linear infinite}
+html[data-palette="lava"] .fn-app:not([data-theme="dark"]) .fn-main::before{opacity:.25}
+html[data-palette="lava"] .fn-app .fn-sidebar{--ink:#fff1ec;--muted:#d1a197;--deep:#fdba74;--glass-strong:rgba(255,255,255,.05);background:linear-gradient(180deg,#160605 0%,#250a07 60%,#120403 100%);border-right:0;box-shadow:inset -1px 0 0 rgba(249,115,22,.55),10px 0 40px -20px rgba(239,68,68,.45)}
+html[data-palette="lava"] .fn-app .fn-sidebar::before{background:url("/themes/lava-cracks.svg") center/cover no-repeat;opacity:.18}
+html[data-palette="lava"] .fn-app .brand-mark{border-radius:4px;clip-path:polygon(0 0,100% 0,100% 72%,72% 100%,0 100%)}
+html[data-palette="lava"] .fn-app .fn-sidebar .fn-brand-name{color:#fff;text-transform:uppercase;letter-spacing:1.5px;font-size:16px}
+html[data-palette="lava"] .fn-app .fn-nav-item{border-radius:2px;text-transform:uppercase;font-size:11.5px;letter-spacing:1.2px;font-family:'Space Grotesk',sans-serif}
+html[data-palette="lava"] .fn-app .fn-nav-item:hover{background:rgba(249,115,22,.12);color:#fff}
+html[data-palette="lava"] .fn-app .fn-nav-item.active{clip-path:var(--slant);background:linear-gradient(90deg,#dc2626,#f97316);color:#fff;box-shadow:none}
+html[data-palette="lava"] .fn-app .fn-workspace{border-radius:4px;border-color:rgba(249,115,22,.3)}
+html[data-palette="lava"] .fn-app .fn-head .eyebrow{color:#f97316;font-family:var(--mono);letter-spacing:2px}
+html[data-palette="lava"] .fn-app .fn-head h1{font-size:40px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;background:linear-gradient(100deg,#7f1d1d 0%,#dc2626 40%,#f97316 70%,#f59e0b 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;animation:fn-flow 8s linear infinite}
+html[data-palette="lava"] .fn-app .fn-card h2{text-transform:uppercase;letter-spacing:1.6px;font-size:13px;font-weight:700}
+html[data-palette="lava"] .fn-app .fn-card,html[data-palette="lava"] .fn-app .fn-kpi{position:relative;overflow:hidden;border:1px solid rgba(249,115,22,.22)}
+html[data-palette="lava"] .fn-app .fn-card::after,html[data-palette="lava"] .fn-app .fn-kpi::before{content:"";position:absolute;left:0;right:0;bottom:0;top:auto;height:2px;background:linear-gradient(90deg,transparent,#dc2626,#f97316,#fbbf24,#f97316,#dc2626,transparent);background-size:200% 100%;animation:fn-flow 4s linear infinite;box-shadow:0 0 12px rgba(249,115,22,.9)}
+html[data-palette="lava"] .fn-app .fn-kpi::after{background:radial-gradient(circle,rgba(239,68,68,.3),transparent 70%);top:auto;bottom:-90px}
+html[data-palette="lava"] .fn-app .fn-kpi>span{font-family:var(--mono);letter-spacing:1.5px}
+html[data-palette="lava"] .fn-app .fn-kpi strong{font-size:40px;font-weight:700;letter-spacing:-1px}
+html[data-palette="lava"] .fn-app .button-primary,html[data-palette="lava"] .fn-app .fn-chips button.on{clip-path:var(--slant);border-radius:0;background:linear-gradient(90deg,#b91c1c,#ea580c 60%,#f59e0b);text-transform:uppercase;letter-spacing:1.2px;font-family:'Space Grotesk',sans-serif;font-weight:700;box-shadow:none;padding-left:20px;padding-right:20px}
+html[data-palette="lava"] .fn-app .button-secondary{border-radius:2px;text-transform:uppercase;letter-spacing:1px;font-size:11px}
+html[data-palette="lava"] .fn-app .fn-chips{border-radius:4px}
+html[data-palette="lava"] .fn-app .fn-chips button{border-radius:2px;text-transform:uppercase;letter-spacing:1px;font-size:11px}
+html[data-palette="lava"] .fn-app .fn-fab{border-radius:2px;clip-path:var(--slant);background:linear-gradient(90deg,#b91c1c,#ea580c 60%,#f59e0b);text-transform:uppercase;letter-spacing:1.2px;padding-left:24px;padding-right:24px}
+html[data-palette="lava"] .fn-app .fn-fab::before{display:none}
+html[data-palette="lava"] .fn-app[data-theme="dark"] .fn-card,html[data-palette="lava"] .fn-app[data-theme="dark"] .fn-kpi{background:linear-gradient(180deg,rgba(30,10,8,.78),rgba(18,6,5,.8));border-color:rgba(249,115,22,.18)}
+html[data-palette="lava"] .fn-app[data-theme="dark"] .fn-head h1{background:linear-gradient(100deg,#fde68a 0%,#f97316 35%,#ef4444 65%,#fde68a 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text}
+html[data-palette="lava"] .fn-app[data-theme="dark"] .fn-kpi strong{text-shadow:0 0 18px rgba(249,115,22,.55)}
+html[data-palette="lava"] .auth-page::after{background:url("/themes/lava-cracks.svg") center/cover no-repeat;opacity:.35}
+html[data-palette="lava"] .auth-card{border-radius:6px;border:1px solid rgba(249,115,22,.4)}
+html[data-palette="lava"] .auth-card h1{text-transform:uppercase;letter-spacing:.5px;font-size:28px}
+html[data-palette="lava"] .auth-card .button-primary{clip-path:var(--slant);border-radius:0;text-transform:uppercase;letter-spacing:1.2px;background:linear-gradient(90deg,#b91c1c,#ea580c 60%,#f59e0b)}
+
+/* ==========================================================================
+   GRAPHITE ROSE: editorial luxury, brushed metal, hairlines, light numerals.
+   ========================================================================== */
+html[data-palette="graphite"]{
+  --display:'Inter Tight','Noto Sans Devanagari',sans-serif;--num:'Inter Tight',sans-serif;--r-card:6px;--r-btn:4px;
+  --art:url("/themes/graphite-topo.svg") center/cover no-repeat;--art-o:.2;--art-o-d:.13;
+}
+html[data-palette="graphite"] .fn-app::before{background:radial-gradient(900px 600px at 85% -10%,rgba(225,29,72,.07),transparent 60%),var(--bg)}
+html[data-palette="graphite"] .fn-app[data-theme="dark"]::before{background:radial-gradient(900px 600px at 85% -10%,rgba(225,29,72,.12),transparent 60%),var(--bg-d)}
+html[data-palette="graphite"] .fn-app .fn-sidebar{--ink:#fafafa;--muted:#a1a1aa;--deep:#fda4af;--glass-strong:rgba(255,255,255,.04);background:repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px),linear-gradient(180deg,#27272a 0%,#18181b 100%);border-right:1px solid #000;box-shadow:inset -1px 0 0 rgba(255,255,255,.06)}
+html[data-palette="graphite"] .fn-app .brand-mark{background:linear-gradient(145deg,#52525b,#18181b);color:#fff;border-radius:6px;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 4px 10px rgba(0,0,0,.4)}
+html[data-palette="graphite"] .fn-app .brand-mark span{color:#fb7185}
+html[data-palette="graphite"] .fn-app .fn-sidebar .fn-brand-name{color:#fff;font-weight:600;letter-spacing:-.4px}
+html[data-palette="graphite"] .fn-app .brand-dot{color:#e11d48}
+html[data-palette="graphite"] .fn-app .fn-nav-item{border-radius:4px;font-size:12.5px}
+html[data-palette="graphite"] .fn-app .fn-nav-item:hover{background:rgba(255,255,255,.05);color:#fff;transform:none}
+html[data-palette="graphite"] .fn-app .fn-nav-item.active{background:rgba(255,255,255,.07);color:#fff;box-shadow:inset 2px 0 0 #e11d48;font-weight:600}
+html[data-palette="graphite"] .fn-app .fn-workspace{border-radius:4px;border-color:rgba(255,255,255,.1);box-shadow:none}
+html[data-palette="graphite"] .fn-app .fn-sidebar .profile{border-top-color:rgba(255,255,255,.08)}
+html[data-palette="graphite"] .fn-app .fn-topbar{background:rgba(250,250,250,.75);border-bottom:1px solid #e4e4e7;box-shadow:none}
+html[data-palette="graphite"] .fn-app .eyebrow{letter-spacing:3px;font-size:9.5px;font-weight:600}
+html[data-palette="graphite"] .fn-app .fn-head h1{font-size:44px;font-weight:600;letter-spacing:-2px;background:none;color:var(--ink);-webkit-text-fill-color:currentColor}
+html[data-palette="graphite"] .fn-app .fn-head h1::after{content:".";color:#e11d48}
+html[data-palette="graphite"] .fn-app .fn-card,html[data-palette="graphite"] .fn-app .fn-kpi{background:rgba(255,255,255,.88);backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid #e4e4e7;box-shadow:0 1px 0 rgba(0,0,0,.03),0 24px 40px -32px rgba(0,0,0,.3)}
+html[data-palette="graphite"] .fn-app .fn-card:hover,html[data-palette="graphite"] .fn-app .fn-kpi:hover{border-color:rgba(225,29,72,.35);transform:none}
+html[data-palette="graphite"] .fn-app .fn-card h2{font-weight:600;font-size:14px;letter-spacing:-.2px}
+html[data-palette="graphite"] .fn-app .fn-kpi::before{width:36px;height:2px;inset:0 auto auto 18px;background:#e11d48}
+html[data-palette="graphite"] .fn-app .fn-kpi::after{display:none}
+html[data-palette="graphite"] .fn-app .fn-kpi>span{letter-spacing:2.4px;font-size:9.5px}
+html[data-palette="graphite"] .fn-app .fn-kpi strong{font-size:46px;font-weight:300;letter-spacing:-2.5px;line-height:1}
+html[data-palette="graphite"] .fn-app .button-primary,html[data-palette="graphite"] .fn-app .fn-fab{background:#18181b;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 10px 20px -12px rgba(0,0,0,.6)}
+html[data-palette="graphite"] .fn-app .button-primary:hover,html[data-palette="graphite"] .fn-app .fn-fab:hover{background:#e11d48}
+html[data-palette="graphite"] .fn-app .fn-fab{border-radius:4px}
+html[data-palette="graphite"] .fn-app .fn-fab::before{display:none}
+html[data-palette="graphite"] .fn-app .button-secondary{background:#fff;border-color:#d4d4d8;color:#18181b;box-shadow:none}
+html[data-palette="graphite"] .fn-app .fn-chips{background:transparent;border:0;box-shadow:none;backdrop-filter:none;padding:0;gap:4px;border-bottom:1px solid #e4e4e7;border-radius:0}
+html[data-palette="graphite"] .fn-app .fn-chips button{border-radius:0;padding:10px 14px;border-bottom:2px solid transparent;margin-bottom:-1px}
+html[data-palette="graphite"] .fn-app .fn-chips button.on{background:transparent;color:var(--ink);box-shadow:none;border-bottom-color:#e11d48;font-weight:600}
+html[data-palette="graphite"] .fn-app .fn-chips button.on b{background:#18181b;color:#fff}
+html[data-palette="graphite"] .fn-app .top-avatar,html[data-palette="graphite"] .fn-app .avatar-maya{background:#18181b;color:#fff;box-shadow:0 0 0 2px #fff,0 0 0 3px #e11d48}
+html[data-palette="graphite"] .fn-app[data-theme="dark"] .fn-topbar{background:rgba(12,12,14,.7);border-bottom-color:#27272a}
+html[data-palette="graphite"] .fn-app[data-theme="dark"] .fn-card,html[data-palette="graphite"] .fn-app[data-theme="dark"] .fn-kpi{background:rgba(24,24,27,.9);border-color:#27272a;box-shadow:0 30px 50px -30px rgba(0,0,0,.8)}
+html[data-palette="graphite"] .fn-app[data-theme="dark"] .fn-chips{border-bottom-color:#27272a}
+html[data-palette="graphite"] .fn-app[data-theme="dark"] .fn-chips button.on b{background:#fafafa;color:#18181b}
+html[data-palette="graphite"] .fn-app[data-theme="dark"] .button-primary{background:#fafafa;color:#18181b}
+html[data-palette="graphite"] .fn-app[data-theme="dark"] .button-primary:hover{background:#e11d48;color:#fff}
+html[data-palette="graphite"] .fn-app[data-theme="dark"] .button-secondary{background:transparent;border-color:#3f3f46;color:#fafafa}
+html[data-palette="graphite"] .fn-app[data-theme="dark"] .top-avatar{box-shadow:0 0 0 2px #0c0c0e,0 0 0 3px #e11d48}
+html[data-palette="graphite"] .auth-page::after{background:url("/themes/graphite-topo.svg") center/cover no-repeat;opacity:.25;filter:invert(1)}
+html[data-palette="graphite"] .auth-page::before{background:radial-gradient(40% 40% at 80% 20%,rgba(225,29,72,.4),transparent 70%),radial-gradient(50% 50% at 20% 80%,rgba(82,82,91,.6),transparent 70%),#0c0c0e}
+html[data-palette="graphite"] .auth-card{border-radius:8px;background:rgba(250,250,250,.94)}
+html[data-palette="graphite"] .auth-card h1{font-size:32px;font-weight:600;letter-spacing:-1.4px}
+html[data-palette="graphite"] .auth-card .button-primary{background:#18181b;border-radius:4px;box-shadow:none}
+html[data-palette="graphite"] .auth-card .button-primary:hover{background:#e11d48}
+html[data-palette="graphite"] .auth-card .brand-mark{background:linear-gradient(145deg,#52525b,#18181b);border-radius:6px}
+
+/* ==========================================================================
+   NEON BLUE: cyber HUD, glowing lines, scanlines, synthwave horizon.
+   ========================================================================== */
+html[data-palette="neon"]{
+  --display:'Orbitron','Noto Sans Devanagari',sans-serif;--num:var(--mono);--r-card:4px;--r-btn:3px;
+  --art:url("/themes/neon-grid.svg") center bottom/cover no-repeat;--art-o:.14;--art-o-d:.42;
+  --cy:#22d3ee;
+}
+html[data-palette="neon"] .fn-app .fn-main::before{background:repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px);opacity:1}
+html[data-palette="neon"] .fn-app:not([data-theme="dark"]) .fn-main::before{background:repeating-linear-gradient(0deg,rgba(3,105,161,.035) 0 1px,transparent 1px 3px)}
+html[data-palette="neon"] .fn-app .fn-sidebar{background:rgba(3,8,20,.82);--ink:#e0f7ff;--muted:#7fa3c4;--deep:#22d3ee;--glass-strong:rgba(34,211,238,.06);border-right:1px solid rgba(34,211,238,.35);box-shadow:0 0 30px -10px rgba(34,211,238,.5)}
+html[data-palette="neon"] .fn-app .brand-mark{border-radius:3px;background:transparent;color:var(--cy);box-shadow:0 0 0 1px var(--cy),0 0 16px rgba(34,211,238,.7),inset 0 0 10px rgba(34,211,238,.4);text-shadow:0 0 8px var(--cy)}
+html[data-palette="neon"] .fn-app .brand-mark::after{display:none}
+html[data-palette="neon"] .fn-app .fn-sidebar .fn-brand-name{color:#fff;font-size:15px;letter-spacing:2px;text-transform:uppercase;text-shadow:0 0 12px rgba(34,211,238,.6)}
+html[data-palette="neon"] .fn-app .fn-nav-item{border-radius:3px;font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:1px;border:1px solid transparent}
+html[data-palette="neon"] .fn-app .fn-nav-item:hover{background:rgba(34,211,238,.06);color:var(--cy);border-color:rgba(34,211,238,.25)}
+html[data-palette="neon"] .fn-app .fn-nav-item.active{background:rgba(34,211,238,.1);color:var(--cy);border-color:var(--cy);box-shadow:0 0 14px -2px rgba(34,211,238,.6),inset 0 0 12px -4px rgba(34,211,238,.5);text-shadow:0 0 8px var(--cy)}
+html[data-palette="neon"] .fn-app .fn-workspace{border-radius:3px;border-color:rgba(34,211,238,.3);box-shadow:none}
+html[data-palette="neon"] .fn-app .fn-sidebar .profile{border-top-color:rgba(34,211,238,.2)}
+html[data-palette="neon"] .fn-app .fn-topbar{border-bottom:1px solid rgba(34,211,238,.3)}
+html[data-palette="neon"] .fn-app .eyebrow{font-family:var(--mono);color:var(--deep);letter-spacing:2px}
+html[data-palette="neon"] .fn-app .fn-head .eyebrow::before{content:"// "}
+html[data-palette="neon"] .fn-app .fn-head h1{font-size:30px;font-weight:800;letter-spacing:3px;text-transform:uppercase;background:linear-gradient(90deg,#0369a1,#0891b2 50%,#7c3aed);-webkit-background-clip:text;background-clip:text}
+html[data-palette="neon"] .fn-app .fn-card h2{font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700}
+html[data-palette="neon"] .fn-app .fn-card-sub,html[data-palette="neon"] .fn-app .fn-kpi>span,html[data-palette="neon"] .fn-app .fn-kpi small{font-family:var(--mono);font-size:10.5px}
+html[data-palette="neon"] .fn-app .fn-card,html[data-palette="neon"] .fn-app .fn-kpi{position:relative;border:1px solid rgba(8,145,178,.35);box-shadow:0 0 22px -12px rgba(8,145,178,.6)}
+html[data-palette="neon"] .fn-app .fn-card::before,html[data-palette="neon"] .fn-app .fn-kpi::before{content:"";position:absolute;inset:-1px;height:auto;pointer-events:none;opacity:1;background:
+  linear-gradient(var(--cy),var(--cy)) top left/14px 2px no-repeat,linear-gradient(var(--cy),var(--cy)) top left/2px 14px no-repeat,
+  linear-gradient(var(--cy),var(--cy)) top right/14px 2px no-repeat,linear-gradient(var(--cy),var(--cy)) top right/2px 14px no-repeat,
+  linear-gradient(var(--cy),var(--cy)) bottom left/14px 2px no-repeat,linear-gradient(var(--cy),var(--cy)) bottom left/2px 14px no-repeat,
+  linear-gradient(var(--cy),var(--cy)) bottom right/14px 2px no-repeat,linear-gradient(var(--cy),var(--cy)) bottom right/2px 14px no-repeat;
+  filter:drop-shadow(0 0 4px var(--cy))}
+html[data-palette="neon"] .fn-app .fn-kpi::after{width:100%;height:40%;inset:auto 0 0 0;border-radius:0;background:linear-gradient(0deg,rgba(34,211,238,.12),transparent)}
+html[data-palette="neon"] .fn-app .fn-kpi strong{font-size:34px;letter-spacing:-1px}
+html[data-palette="neon"] .fn-app .button-primary,html[data-palette="neon"] .fn-app .fn-fab{background:rgba(34,211,238,.08);color:#0e7490;border:1px solid var(--cy);font-family:var(--mono);text-transform:uppercase;letter-spacing:1.2px;box-shadow:0 0 16px -4px rgba(34,211,238,.7),inset 0 0 12px -4px rgba(34,211,238,.6)}
+html[data-palette="neon"] .fn-app .button-primary:hover,html[data-palette="neon"] .fn-app .fn-fab:hover{background:var(--cy);color:#03121f;box-shadow:0 0 28px rgba(34,211,238,.9)}
+html[data-palette="neon"] .fn-app .fn-fab{border-radius:3px}
+html[data-palette="neon"] .fn-app .fn-fab::before{border-radius:3px;border-color:rgba(34,211,238,.6)}
+html[data-palette="neon"] .fn-app .button-secondary{border-radius:3px;border-color:rgba(168,85,247,.5);color:#7c3aed;font-family:var(--mono);text-transform:uppercase;font-size:11px;letter-spacing:1px}
+html[data-palette="neon"] .fn-app .fn-chips{border-radius:4px;border:1px solid rgba(34,211,238,.3)}
+html[data-palette="neon"] .fn-app .fn-chips button{border-radius:2px;font-family:var(--mono);text-transform:uppercase;font-size:11px;letter-spacing:1px}
+html[data-palette="neon"] .fn-app .fn-chips button.on{background:rgba(34,211,238,.12);color:#0e7490;box-shadow:inset 0 0 0 1px var(--cy),0 0 14px -4px var(--cy)}
+html[data-palette="neon"] .fn-app .fn-chips button.on b{background:rgba(34,211,238,.2);color:inherit}
+html[data-palette="neon"] .fn-app .top-avatar,html[data-palette="neon"] .fn-app .avatar-maya{border-radius:3px;background:transparent;color:var(--cy);box-shadow:0 0 0 1px var(--cy),0 0 12px rgba(34,211,238,.6)}
+html[data-palette="neon"] .fn-app[data-theme="dark"] .fn-head h1{background:none;color:#e0fbff;-webkit-text-fill-color:currentColor;text-shadow:0 0 8px rgba(34,211,238,.9),0 0 24px rgba(34,211,238,.5)}
+html[data-palette="neon"] .fn-app[data-theme="dark"] .fn-card,html[data-palette="neon"] .fn-app[data-theme="dark"] .fn-kpi{background:rgba(4,12,28,.72);border-color:rgba(34,211,238,.28);box-shadow:0 0 26px -10px rgba(34,211,238,.55),inset 0 0 40px -30px rgba(34,211,238,.8)}
+html[data-palette="neon"] .fn-app[data-theme="dark"] .fn-card h2{color:#e0fbff;text-shadow:0 0 10px rgba(34,211,238,.6)}
+html[data-palette="neon"] .fn-app[data-theme="dark"] .button-primary,html[data-palette="neon"] .fn-app[data-theme="dark"] .fn-fab,html[data-palette="neon"] .fn-app[data-theme="dark"] .fn-chips button.on{color:var(--cy);text-shadow:0 0 8px var(--cy)}
+html[data-palette="neon"] .fn-app[data-theme="dark"] .button-primary:hover,html[data-palette="neon"] .fn-app[data-theme="dark"] .fn-fab:hover{color:#03121f;text-shadow:none}
+html[data-palette="neon"] .fn-app[data-theme="dark"] .button-secondary{color:#d8b4fe;border-color:rgba(168,85,247,.55);box-shadow:0 0 12px -4px rgba(168,85,247,.6)}
+html[data-palette="neon"] .auth-page::after{background:url("/themes/neon-grid.svg") center bottom/cover no-repeat;opacity:.6}
+html[data-palette="neon"] .auth-page::before{background:radial-gradient(40% 40% at 50% 30%,rgba(124,58,237,.45),transparent 70%),radial-gradient(40% 40% at 20% 20%,rgba(34,211,238,.35),transparent 70%),#03060f;animation:none;filter:none}
+html[data-palette="neon"] .auth-card{border-radius:4px;background:rgba(4,12,28,.82);border:1px solid rgba(34,211,238,.5);box-shadow:0 0 40px -10px rgba(34,211,238,.6);--ink:#e0fbff;--muted:#86a3c2}
+html[data-palette="neon"] .auth-card h1{text-transform:uppercase;letter-spacing:3px;font-size:24px;text-shadow:0 0 12px rgba(34,211,238,.8)}
+html[data-palette="neon"] .auth-card input{background:rgba(255,255,255,.04)!important;color:#e0fbff;border-color:rgba(34,211,238,.3)!important}
+html[data-palette="neon"] .auth-card .auth-tabs{background:rgba(34,211,238,.08)}
+html[data-palette="neon"] .auth-card .auth-tabs button.on{background:rgba(34,211,238,.15);color:var(--cy)}
+html[data-palette="neon"] .auth-card .button-primary{border-radius:3px;background:rgba(34,211,238,.1);color:var(--cy);border:1px solid var(--cy);font-family:var(--mono);text-transform:uppercase;letter-spacing:1.5px;box-shadow:0 0 16px -4px var(--cy)}
+html[data-palette="neon"] .auth-card .brand-mark{background:transparent;color:var(--cy);box-shadow:0 0 0 1px var(--cy),0 0 14px rgba(34,211,238,.7)}
+html[data-palette="neon"] .auth-card .brand-name,html[data-palette="neon"] .auth-card .auth-switch,html[data-palette="neon"] .auth-card .auth-form label>span{color:#cfefff}
+html[data-palette="neon"] .auth-card .google-button{background:transparent;color:#e0fbff;border-color:rgba(34,211,238,.35)}
+
+/* ---------- Theme motion ---------- */
+@keyframes fn-wave{to{background-position-x:-1600px}}
+@keyframes fn-flow{to{background-position-x:-200%}}
+@keyframes fn-embers{from{background-position:0 0,60px 90px,120px 30px}to{background-position:40px -520px,20px -550px,160px -730px}}
+@keyframes fn-bubbles{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+@media (max-width:760px){
+  html[data-palette="royal"] .fn-app .fn-head h1{font-size:34px}
+  html[data-palette="royal"] .fn-app .fn-kpi strong,html[data-palette="graphite"] .fn-app .fn-kpi strong{font-size:34px}
+  html[data-palette="graphite"] .fn-app .fn-head h1,html[data-palette="jungle"] .fn-app .fn-head h1,html[data-palette="lava"] .fn-app .fn-head h1{font-size:30px}
+  html[data-palette="neon"] .fn-app .fn-head h1{font-size:22px;letter-spacing:2px}
+}

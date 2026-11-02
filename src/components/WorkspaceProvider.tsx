@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { useI18n } from "@/components/I18nProvider";
 import { SAMPLE_CUSTOMERS, type Customer, type TierFilter } from "@/lib/customers";
 import type { OrgView } from "@/lib/org-view";
+import { applyPalette, currentPalette, isPalette, type PaletteId } from "@/lib/palette";
 
 const HIDDEN_SAMPLES_KEY = "fieldnotes-hidden-samples";
 
@@ -23,6 +24,9 @@ type WorkspaceValue = {
   toggleSelected: (id: string) => void;
   theme: "light" | "dark";
   setTheme: (theme: "light" | "dark") => void;
+  /** Colour theme (see palette.ts). Saved with light/dark to the person's account, so it follows them to every sign-in. */
+  palette: PaletteId;
+  setPalette: (palette: PaletteId) => void;
   workspaceInfo: WorkspaceInfo;
   applyOrgView: (view: OrgView) => void;
   isSaved: (customer: Customer) => boolean;
@@ -48,6 +52,9 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
   const [tierFilter, setTierFilter] = useState<TierFilter>("All");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [palette, setPaletteState] = useState<PaletteId>("royal");
+  const prefsReady = useRef(false);
+  const setPalette = useCallback((id: PaletteId) => { applyPalette(id); setPaletteState(id); }, []);
   const [workspaceInfo, setWorkspaceInfo] = useState<WorkspaceInfo>(null);
 
   useEffect(() => { tRef.current = t; }, [t]);
@@ -58,6 +65,30 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     try { const saved = JSON.parse(window.localStorage.getItem(HIDDEN_SAMPLES_KEY) ?? "[]") as unknown; if (Array.isArray(saved)) setHiddenSamples(saved.filter((id): id is string => typeof id === "string")); } catch { /* storage unavailable: samples simply stay visible */ }
   }, []);
   useEffect(() => { window.localStorage.setItem("fieldnotes-theme", theme); }, [theme]);
+
+  // The account's saved look wins over this browser's. An account that has never chosen one takes this browser's choice.
+  useEffect(() => {
+    setPaletteState(currentPalette());
+    let cancelled = false;
+    fetch("/api/preferences").then(async (response) => {
+      if (!response.ok || cancelled) return;
+      const saved = await response.json() as { palette?: unknown; theme?: unknown };
+      if (isPalette(saved.palette)) { applyPalette(saved.palette); setPaletteState(saved.palette); }
+      if (saved.theme === "light" || saved.theme === "dark") setTheme(saved.theme);
+      if (!isPalette(saved.palette) || (saved.theme !== "light" && saved.theme !== "dark")) {
+        const localTheme = window.localStorage.getItem("fieldnotes-theme") === "dark" ? "dark" : "light";
+        void fetch("/api/preferences", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ palette: isPalette(saved.palette) ? saved.palette : currentPalette(), theme: saved.theme === "light" || saved.theme === "dark" ? saved.theme : localTheme }) }).catch(() => {});
+      }
+    }).catch(() => { /* offline: keep this browser's look */ }).finally(() => { if (!cancelled) prefsReady.current = true; });
+    return () => { cancelled = true; };
+  }, []);
+  useEffect(() => {
+    if (!prefsReady.current) return;
+    const timer = window.setTimeout(() => {
+      void fetch("/api/preferences", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ palette, theme }) }).catch(() => {});
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [palette, theme]);
 
   useEffect(() => {
     fetch("/api/interviews").then(async (response) => {
@@ -129,8 +160,8 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<WorkspaceValue>(() => ({
     loaded, recordsError, uploaded, customers, tierFilter, setTierFilter, selectedIds, setSelectedIds, toggleSelected,
-    theme, setTheme, workspaceInfo, applyOrgView, isSaved, upsertRecord, saveEdit, removeCustomer,
-  }), [loaded, recordsError, uploaded, customers, tierFilter, selectedIds, toggleSelected, theme, workspaceInfo, applyOrgView, isSaved, upsertRecord, saveEdit, removeCustomer]);
+    theme, setTheme, palette, setPalette, workspaceInfo, applyOrgView, isSaved, upsertRecord, saveEdit, removeCustomer,
+  }), [loaded, recordsError, uploaded, customers, tierFilter, selectedIds, toggleSelected, theme, palette, setPalette, workspaceInfo, applyOrgView, isSaved, upsertRecord, saveEdit, removeCustomer]);
 
   return <WorkspaceContext.Provider value={value}>{children}</WorkspaceContext.Provider>;
 }

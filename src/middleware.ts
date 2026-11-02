@@ -25,4 +25,4 @@ export async function middleware(request: NextRequest) {
 
 // Static assets (including the speech and OCR models in /public) skip the check. So does /api/engine/jobs: audio uploads stream through it, and
 // those routes check the session themselves (requireUser) so the request body is never buffered or cut off by the middleware layer.
-export const config = { matcher: ["/((?!_next/static|_next/image|favicon.svg|models/|ocr/|api/engine/jobs).*)"] };
+export const config = { matcher: ["/((?!_next/static|_next/image|favicon.svg|models/|ocr/|themes/|api/engine/jobs).*)"] };

@@ -1,0 +1,100 @@
+/**
+ * Indian cities the map can place, with approximate coordinates (city centre) and common spellings,
+ * including Hindi and older names. A typed city that is not here is listed under "not on the map".
+ */
+export type City = { name: string; lat: number; lon: number; aliases?: string[] };
+
+export const CITIES: City[] = [
+  { name: "Delhi", lat: 28.61, lon: 77.21, aliases: ["new delhi", "दिल्ली", "नई दिल्ली", "ncr"] },
+  { name: "Mumbai", lat: 19.08, lon: 72.88, aliases: ["bombay", "मुंबई", "navi mumbai"] },
+  { name: "Bengaluru", lat: 12.97, lon: 77.59, aliases: ["bangalore", "बेंगलुरु", "बैंगलोर"] },
+  { name: "Hyderabad", lat: 17.39, lon: 78.49, aliases: ["हैदराबाद", "secunderabad"] },
+  { name: "Chennai", lat: 13.08, lon: 80.27, aliases: ["madras", "चेन्नई"] },
+  { name: "Kolkata", lat: 22.57, lon: 88.36, aliases: ["calcutta", "कोलकाता", "howrah"] },
+  { name: "Pune", lat: 18.52, lon: 73.86, aliases: ["पुणे", "poona"] },
+  { name: "Ahmedabad", lat: 23.02, lon: 72.57, aliases: ["अहमदाबाद"] },
+  { name: "Jaipur", lat: 26.91, lon: 75.79, aliases: ["जयपुर"] },
+  { name: "Lucknow", lat: 26.85, lon: 80.95, aliases: ["लखनऊ"] },
+  { name: "Kanpur", lat: 26.45, lon: 80.33, aliases: ["कानपुर"] },
+  { name: "Nagpur", lat: 21.15, lon: 79.09, aliases: ["नागपुर"] },
+  { name: "Indore", lat: 22.72, lon: 75.86, aliases: ["इंदौर"] },
+  { name: "Bhopal", lat: 23.26, lon: 77.41, aliases: ["भोपाल"] },
+  { name: "Patna", lat: 25.59, lon: 85.14, aliases: ["पटना"] },
+  { name: "Surat", lat: 21.17, lon: 72.83, aliases: ["सूरत"] },
+  { name: "Vadodara", lat: 22.31, lon: 73.18, aliases: ["baroda", "वडोदरा"] },
+  { name: "Rajkot", lat: 22.30, lon: 70.80, aliases: ["राजकोट"] },
+  { name: "Chandigarh", lat: 30.73, lon: 76.78, aliases: ["चंडीगढ़", "mohali", "panchkula"] },
+  { name: "Ludhiana", lat: 30.90, lon: 75.86, aliases: ["लुधियाना"] },
+  { name: "Amritsar", lat: 31.63, lon: 74.87, aliases: ["अमृतसर"] },
+  { name: "Gurugram", lat: 28.46, lon: 77.03, aliases: ["gurgaon", "गुरुग्राम", "गुड़गांव"] },
+  { name: "Noida", lat: 28.54, lon: 77.39, aliases: ["नोएडा", "greater noida"] },
+  { name: "Ghaziabad", lat: 28.67, lon: 77.45, aliases: ["गाज़ियाबाद", "गाजियाबाद"] },
+  { name: "Faridabad", lat: 28.41, lon: 77.32, aliases: ["फ़रीदाबाद", "फरीदाबाद"] },
+  { name: "Agra", lat: 27.18, lon: 78.01, aliases: ["आगरा"] },
+  { name: "Varanasi", lat: 25.32, lon: 82.97, aliases: ["banaras", "benares", "वाराणसी", "बनारस"] },
+  { name: "Prayagraj", lat: 25.44, lon: 81.85, aliases: ["allahabad", "प्रयागराज", "इलाहाबाद"] },
+  { name: "Meerut", lat: 28.98, lon: 77.71, aliases: ["मेरठ"] },
+  { name: "Dehradun", lat: 30.32, lon: 78.03, aliases: ["देहरादून"] },
+  { name: "Shimla", lat: 31.10, lon: 77.17, aliases: ["शिमला"] },
+  { name: "Srinagar", lat: 34.08, lon: 74.80, aliases: ["श्रीनगर"] },
+  { name: "Jammu", lat: 32.73, lon: 74.86, aliases: ["जम्मू"] },
+  { name: "Leh", lat: 34.15, lon: 77.58, aliases: ["लेह"] },
+  { name: "Jodhpur", lat: 26.24, lon: 73.02, aliases: ["जोधपुर"] },
+  { name: "Udaipur", lat: 24.58, lon: 73.71, aliases: ["उदयपुर"] },
+  { name: "Kota", lat: 25.18, lon: 75.83, aliases: ["कोटा"] },
+  { name: "Ajmer", lat: 26.45, lon: 74.64, aliases: ["अजमेर"] },
+  { name: "Bikaner", lat: 28.02, lon: 73.31, aliases: ["बीकानेर"] },
+  { name: "Gwalior", lat: 26.22, lon: 78.18, aliases: ["ग्वालियर"] },
+  { name: "Jabalpur", lat: 23.18, lon: 79.99, aliases: ["जबलपुर"] },
+  { name: "Raipur", lat: 21.25, lon: 81.63, aliases: ["रायपुर"] },
+  { name: "Ranchi", lat: 23.34, lon: 85.31, aliases: ["रांची"] },
+  { name: "Jamshedpur", lat: 22.80, lon: 86.20, aliases: ["जमशेदपुर"] },
+  { name: "Bhubaneswar", lat: 20.30, lon: 85.82, aliases: ["भुवनेश्वर"] },
+  { name: "Cuttack", lat: 20.46, lon: 85.88, aliases: ["कटक"] },
+  { name: "Guwahati", lat: 26.14, lon: 91.74, aliases: ["गुवाहाटी"] },
+  { name: "Shillong", lat: 25.58, lon: 91.89, aliases: ["शिलांग"] },
+  { name: "Imphal", lat: 24.82, lon: 93.94, aliases: ["इंफाल"] },
+  { name: "Agartala", lat: 23.83, lon: 91.28, aliases: ["अगरतला"] },
+  { name: "Siliguri", lat: 26.73, lon: 88.40, aliases: ["सिलीगुड़ी"] },
+  { name: "Gangtok", lat: 27.33, lon: 88.61, aliases: ["गंगटोक"] },
+  { name: "Visakhapatnam", lat: 17.69, lon: 83.22, aliases: ["vizag", "विशाखापत्तनम"] },
+  { name: "Vijayawada", lat: 16.51, lon: 80.65, aliases: ["विजयवाड़ा"] },
+  { name: "Warangal", lat: 17.97, lon: 79.59, aliases: ["वारंगल"] },
+  { name: "Coimbatore", lat: 11.02, lon: 76.96, aliases: ["कोयंबटूर"] },
+  { name: "Madurai", lat: 9.93, lon: 78.12, aliases: ["मदुरै"] },
+  { name: "Tiruchirappalli", lat: 10.79, lon: 78.70, aliases: ["trichy", "तिरुचिरापल्ली"] },
+  { name: "Puducherry", lat: 11.94, lon: 79.81, aliases: ["pondicherry", "पुडुचेरी"] },
+  { name: "Kochi", lat: 9.93, lon: 76.27, aliases: ["cochin", "ernakulam", "कोच्चि"] },
+  { name: "Thiruvananthapuram", lat: 8.52, lon: 76.94, aliases: ["trivandrum", "तिरुवनंतपुरम"] },
+  { name: "Kozhikode", lat: 11.26, lon: 75.78, aliases: ["calicut", "कोझिकोड"] },
+  { name: "Mysuru", lat: 12.30, lon: 76.64, aliases: ["mysore", "मैसूर"] },
+  { name: "Mangaluru", lat: 12.91, lon: 74.86, aliases: ["mangalore", "मंगलुरु"] },
+  { name: "Hubballi", lat: 15.36, lon: 75.12, aliases: ["hubli", "dharwad", "हुबली"] },
+  { name: "Belagavi", lat: 15.85, lon: 74.50, aliases: ["belgaum", "बेलगाम"] },
+  { name: "Goa", lat: 15.50, lon: 73.83, aliases: ["panaji", "panjim", "गोवा", "margao"] },
+  { name: "Nashik", lat: 20.00, lon: 73.79, aliases: ["nasik", "नासिक"] },
+  { name: "Aurangabad", lat: 19.88, lon: 75.34, aliases: ["chhatrapati sambhajinagar", "औरंगाबाद"] },
+  { name: "Kolhapur", lat: 16.70, lon: 74.24, aliases: ["कोल्हापुर"] },
+  { name: "Solapur", lat: 17.66, lon: 75.91, aliases: ["सोलापुर"] },
+  { name: "Gorakhpur", lat: 26.76, lon: 83.37, aliases: ["गोरखपुर"] },
+  { name: "Bareilly", lat: 28.37, lon: 79.43, aliases: ["बरेली"] },
+  { name: "Aligarh", lat: 27.88, lon: 78.08, aliases: ["अलीगढ़"] },
+  { name: "Mathura", lat: 27.49, lon: 77.67, aliases: ["मथुरा", "vrindavan"] },
+  { name: "Haridwar", lat: 29.95, lon: 78.16, aliases: ["हरिद्वार", "rishikesh"] },
+  { name: "Panipat", lat: 29.39, lon: 76.97, aliases: ["पानीपत"] },
+  { name: "Rohtak", lat: 28.90, lon: 76.61, aliases: ["रोहतक"] },
+  { name: "Hisar", lat: 29.15, lon: 75.72, aliases: ["हिसार"] },
+  { name: "Port Blair", lat: 11.62, lon: 92.73, aliases: ["sri vijaya puram", "पोर्ट ब्लेयर"] },
+];
+
+const normal = (text: string) => text.normalize("NFC").toLowerCase().replace(/[.,]/g, " ").replace(/\s+/g, " ").trim();
+const INDEX = new Map<string, City>();
+for (const city of CITIES) for (const key of [city.name, ...(city.aliases ?? [])]) INDEX.set(normal(key), city);
+
+/** Finds a city from what was typed ("Jaipur", "jaipur, rajasthan", "जयपुर"). The first part before a comma wins. */
+export function findCity(typed: string | undefined): City | null {
+  if (!typed) return null;
+  const text = normal(typed);
+  if (!text) return null;
+  return INDEX.get(text) ?? INDEX.get(normal(text.split(/[,/-]/)[0])) ?? null;
+}

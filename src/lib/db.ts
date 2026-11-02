@@ -19,6 +19,8 @@ export function postgres() {
 }
 
 export function openSqlite() {
+  // Vercel's filesystem is read-only, so the SQLite file cannot be created there. Say what is missing instead of a raw filesystem error.
+  if (process.env.VERCEL) throw new Error("DATABASE_URL is not set. Add a Postgres database (for example Neon from the Vercel Marketplace) to this project and redeploy.");
   mkdirSync(dataDir, { recursive: true });
   const db = new DatabaseSync(sqlitePath);
   db.exec("PRAGMA journal_mode = WAL;");

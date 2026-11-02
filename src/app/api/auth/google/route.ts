@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { OAUTH_COOKIE, OAUTH_COOKIE_MAX_AGE, appOrigin, googleConfigured, packOAuthCookie, startGoogleSignIn } from "@/lib/auth/google";
 import { safeNext } from "@/lib/auth/redirect";
+import { assertSessionSecret } from "@/lib/auth/session";
 import { clientKey, recordCodeGuess, tooManyCodeGuesses } from "@/lib/auth/ratelimit";
 import { findOrgByCode, normalizeCode } from "@/lib/orgs";
 
@@ -12,6 +13,8 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const origin = appOrigin(url.origin);
   if (!googleConfigured()) return NextResponse.redirect(new URL("/login?error=google_unavailable", origin));
+  // Fail before the trip to Google if the session cannot be signed; the callback would otherwise fail after the person has signed in there.
+  try { assertSessionSecret(); } catch (error) { console.error("Google sign-in unavailable", error); return NextResponse.redirect(new URL("/login?error=google_failed", origin)); }
   // Institution sign-in: the business code travels in the (httpOnly) OAuth cookie and is checked again when Google sends the person back.
   const rawCode = url.searchParams.get("code");
   let orgCode = "";

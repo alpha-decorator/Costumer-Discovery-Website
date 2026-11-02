@@ -1,5 +1,6 @@
 "use client";
 
+import { cleanDemographics, type Demographics } from "@/lib/demographics";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useI18n } from "@/components/I18nProvider";
@@ -15,6 +16,8 @@ type Props = {
   /** "" until the person has chosen a customer type; nothing can be submitted before that. */
   tier: Interview["tier"] | "";
   company: string;
+  city?: string;
+  demographics?: Demographics;
   /** Used as the customer name only when a single file is chosen. */
   singleName: string;
   language: EngineLanguage;
@@ -37,15 +40,15 @@ const FINISHED: Status[] = ["done", "skipped"];
 const newId = () => `CD-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 
 /** Multi-file queue for the Trata engine. Two files are in flight at once, so the engine always has the next one ready. */
-export function EngineUploader({ health, tier, company, singleName, language, existingAudioNames, today, replaceId, onSaved, onBusyChange, onDoneChange, actionsHost, canStart = true }: Props) {
+export function EngineUploader({ health, tier, company, city = "", demographics, singleName, language, existingAudioNames, today, replaceId, onSaved, onBusyChange, onDoneChange, actionsHost, canStart = true }: Props) {
   const { t, lang } = useI18n();
   const [items, setItems] = useState<Item[]>([]);
   const [running, setRunning] = useState(false);
   const itemsRef = useRef<Item[]>([]);
   const stopRef = useRef(false);
   const controllers = useRef(new Map<string, AbortController>());
-  const latest = useRef({ tier, company, singleName, language, today, replaceId, onSaved, t, lang });
-  latest.current = { tier, company, singleName, language, today, replaceId, onSaved, t, lang };
+  const latest = useRef({ tier, company, city, demographics, singleName, language, today, replaceId, onSaved, t, lang });
+  latest.current = { tier, company, city, demographics, singleName, language, today, replaceId, onSaved, t, lang };
 
   const commit = (next: Item[]) => { itemsRef.current = next; setItems(next); };
   const patch = (id: string, changes: Partial<Item>) => commit(itemsRef.current.map((item) => item.id === id ? { ...item, ...changes } : item));
@@ -94,7 +97,7 @@ export function EngineUploader({ health, tier, company, singleName, language, ex
       const name = typedName || (!many && now.singleName.trim()) || nameFromFile(item.file.name) || latest.current.t.defaultCustomerName;
       patch(item.id, { name });
       const targetId = now.replaceId && !many ? now.replaceId : undefined;
-      const record = recordFromResult(finished.result!, { id: targetId ?? newId(), name, company: now.company.trim() || "Independent", tier: now.tier, date: now.today, audioName: item.file.name, sourceType: "audio" }, now.lang);
+      const record = recordFromResult(finished.result!, { id: targetId ?? newId(), name, company: now.company.trim() || "Independent", city: now.city.trim() || undefined, demographics: cleanDemographics(now.demographics), tier: now.tier, date: now.today, audioName: item.file.name, sourceType: "audio" }, now.lang);
       const response = await fetch(targetId ? `/api/interviews/${encodeURIComponent(targetId)}` : "/api/interviews", { method: targetId ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(record) });
       if (response.status === 401) { window.location.assign("/login"); return; }
       const saved = await response.json() as Interview & { error?: string; detail?: string };

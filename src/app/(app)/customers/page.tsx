@@ -18,6 +18,7 @@ export default function CustomersPage() {
   const L = (en: string, hi: string) => lang === "hi" ? hi : en;
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
+  const [editing, setEditing] = useState(false);
   const [reportFor, setReportFor] = useState<Customer | null>(null);
   const [pdfScope, setPdfScope] = useState<ReportScope | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Customer | null>(null);
@@ -36,7 +37,7 @@ export default function CustomersPage() {
   const active = openId ? customers.find((customer) => customer.id === openId) ?? null : null;
   const allVisibleSelected = visible.length > 0 && visible.every((customer) => selectedIds.includes(customer.id));
   const toggleVisible = () => setSelectedIds(allVisibleSelected ? selectedIds.filter((id) => !visible.some((customer) => customer.id === id)) : [...new Set([...selectedIds, ...visible.map((customer) => customer.id)])]);
-  const closeDetail = () => setOpenId(null);
+  const closeDetail = () => { setOpenId(null); setEditing(false); };
 
   const confirmDelete = async () => {
     if (!deleteTarget || deleting) return;
@@ -83,7 +84,7 @@ export default function CustomersPage() {
               <td className="date-cell fn-hide-sm">{customer.date}</td>
               <td><span className={`score ${customer.sentiment >= 0.6 ? "score-positive" : "score-mixed"}`}><i />{signed(customer.sentiment)}</span></td>
               <td className="fn-hide-sm"><span className="fn-keyword">{customer.keyPoints[0]}</span></td>
-              <td><button className="row-action" onClick={() => setOpenId(customer.id)}>{t.view}<Icon name="chevron" size={14} /></button></td>
+              <td><span className="fn-row-actions">{isSaved(customer) && <button className="row-action fn-row-edit" onClick={() => { setEditing(true); setOpenId(customer.id); }} aria-label={`${L("Edit", "बदलें")} ${customer.name}`}><Icon name="pencil" size={14} />{L("Edit", "बदलें")}</button>}<button className="row-action" onClick={() => { setEditing(false); setOpenId(customer.id); }}>{t.view}<Icon name="chevron" size={14} /></button></span></td>
             </tr>)}
           </tbody>
         </table>
@@ -92,7 +93,7 @@ export default function CustomersPage() {
       </div>
     </section>
 
-    {active && <CustomerDetail customer={active} group={customers.filter((customer) => tierFilter === "All" || customer.tier === tierFilter)} onClose={closeDetail} onReport={(customer) => { setReportFor(customer); closeDetail(); }} onPdf={(customer) => setPdfScope({ kind: "customer", title: customer.name, customers, customer })} onAskDelete={(customer) => { setDeleteError(""); setDeleteTarget(customer); }} />}
+    {active && <CustomerDetail key={`${active.id}-${editing}`} startEditing={editing} customer={active} group={customers.filter((customer) => tierFilter === "All" || customer.tier === tierFilter)} onClose={closeDetail} onReport={(customer) => { setReportFor(customer); closeDetail(); }} onPdf={(customer) => setPdfScope({ kind: "customer", title: customer.name, customers, customer })} onAskDelete={(customer) => { setDeleteError(""); setDeleteTarget(customer); }} />}
     {pdfScope && <DetailedReport scope={pdfScope} onClose={() => setPdfScope(null)} />}
     {reportFor && <TrataReport customer={reportFor} onClose={() => setReportFor(null)} onManage={() => { setOpenId(reportFor.id); setReportFor(null); }} />}
 

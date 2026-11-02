@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyAgainstDummy, verifyPassword } from "@/lib/auth/password";
 import { attachSession, isSameOrigin } from "@/lib/auth/server";
+import { assertSessionSecret } from "@/lib/auth/session";
 import { clientKey, recordCodeGuess, tooManyCodeGuesses } from "@/lib/auth/ratelimit";
 import { AlreadyInOrgError, findOrgByCode, joinOrg, normalizeCode } from "@/lib/orgs";
 import { validateLogin } from "@/lib/auth/validate";
@@ -22,6 +23,8 @@ export async function POST(request: Request) {
   const code = wantsOrg ? normalizeCode(rawCode) : null;
   if (wantsOrg && !code) return NextResponse.json({ error: "invalid_code" }, { status: 400 });
   try {
+    // Without a usable AUTH_SECRET the session cannot be signed, so fail here with the reason logged rather than after the password check.
+    assertSessionSecret();
     const user = await findUserByEmail(email);
     if (user && user.lockedUntil > Date.now()) return NextResponse.json({ error: "too_many_attempts" }, { status: 429 });
     // Accounts created with Google have no password; they and unknown emails get the same slow check and the same answer.
@@ -44,7 +47,7 @@ export async function POST(request: Request) {
       orgId = org.id;
     }
     await clearFailedLogins(user);
-    return await attachSession(NextResponse.json({ ok: true, org: orgId !== null }), { id: user.id, email: user.email, name: user.name, org: orgId });
+    return await attachSession(NextResponse.json({ ok: true, org: orgId !== null, preferences: user.preferences }), { id: user.id, email: user.email, name: user.name, org: orgId });
   } catch (error) {
     console.error("Unable to sign in", error);
     return NextResponse.json({ error: "server_error" }, { status: 500 });

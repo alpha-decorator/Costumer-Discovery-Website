@@ -11,6 +11,35 @@ import { useWorkspace } from "@/components/WorkspaceProvider";
 import { Icon } from "@/components/Icon";
 import { TIERS, TOPICS, dateValue, initialsColor, signed, summarize, tierColor, type Tier, type TierFilter } from "@/lib/customers";
 import { peekOrgNotice } from "@/lib/org-notice";
+import { findCity } from "@/lib/cities";
+import { IndiaMap, type MapPoint } from "@/components/IndiaMap";
+import { AGE_GROUPS, AREAS, EDUCATIONS, GENDERS, INCOMES, OCCUPATIONS, STATES, VEHICLES, ageGroup, stateLabel, stateOf } from "@/lib/demographics";
+import type { Customer } from "@/lib/customers";
+
+type Bucket = { key: string; label: string; count: number; sentiment: number };
+
+/** Counts interviews per answer, with the average opinion of each group, in the order of the choices. Unanswered ones are left out. */
+function tally(list: Customer[], pick: (customer: Customer) => string | undefined, order: Array<{ key: string; label: string }>): Bucket[] {
+  const sums = new Map<string, { count: number; total: number }>();
+  for (const customer of list) {
+    const key = pick(customer);
+    if (!key) continue;
+    const entry = sums.get(key) ?? { count: 0, total: 0 };
+    entry.count += 1; entry.total += customer.sentiment;
+    sums.set(key, entry);
+  }
+  return order.filter((item) => sums.has(item.key)).map((item) => { const entry = sums.get(item.key)!; return { ...item, count: entry.count, sentiment: entry.total / entry.count }; });
+}
+
+/** Horizontal bars: how many customers gave each answer, and what that group thinks of Trata on average. */
+function ProfileBars({ rows, empty }: { rows: Bucket[]; empty: string }) {
+  if (!rows.length) return <p className="no-points">{empty}</p>;
+  const max = Math.max(1, ...rows.map((row) => row.count));
+  const tone = (score: number) => score > 0.15 ? "tone-pos" : score < -0.15 ? "tone-neg" : "tone-neu";
+  return <ul className="fn-hbars fn-profile-bars">
+    {rows.map((row) => <li key={row.key}><span title={row.label}>{row.label}</span><span className="fn-hbar-track" aria-hidden="true"><i style={{ width: `${(row.count / max) * 100}%`, background: "var(--s1)" }} /></span><b>{row.count}</b><em className={tone(row.sentiment)}>{signed(row.sentiment)}</em></li>)}
+  </ul>;
+}
 
 export default function HomePage() {
   const { lang, t } = useI18n();
@@ -38,6 +67,36 @@ export default function HomePage() {
   const choose = (value: TierFilter) => { setTierFilter(value); setSelectedIds([]); };
   const verdictKey = stats.verdict;
   const [report, setReport] = useState<ReportScope | null>(null);
+  // Places on the map: the interview's city when it is a known one, otherwise the centre of its state.
+  const { mapPoints, byState, profiled, unplaced } = useMemo(() => {
+    const places = new Map<string, MapPoint & { total: number }>();
+    let missing = 0;
+    for (const customer of inView) {
+      const city = findCity(customer.city);
+      const stateName = city ? undefined : customer.demographics?.state;
+      const state = stateName ? STATES.find((item) => item.name === stateName) : undefined;
+      const spot = city ? { key: `c:${city.name}`, label: city.name, lat: city.lat, lon: city.lon } : state ? { key: `s:${state.name}`, label: stateLabel(state.name, lang), lat: state.lat, lon: state.lon } : null;
+      if (!spot) { missing += 1; continue; }
+      const entry = places.get(spot.key) ?? { ...spot, count: 0, sentiment: 0, total: 0 };
+      entry.count += 1; entry.total += customer.sentiment; entry.sentiment = entry.total / entry.count;
+      places.set(spot.key, entry);
+    }
+    const states = tally(inView, (customer) => stateOf(customer.demographics, customer.city), STATES.map((state) => ({ key: state.name, label: stateLabel(state.name, lang) }))).sort((a, b) => b.count - a.count);
+    return { mapPoints: [...places.values()], byState: states, profiled: inView.filter((customer) => customer.demographics || customer.city).length, unplaced: missing };
+  }, [inView, lang]);
+  const profileCharts = useMemo(() => {
+    const H = (en: string, hi: string) => lang === "hi" ? hi : en;
+    const choices = (list: readonly { value: string; en: string; hi: string }[]) => list.map((item) => ({ key: item.value, label: lang === "hi" ? item.hi : item.en }));
+    return [
+      { id: "age", title: H("Age group", "आयु वर्ग"), rows: tally(inView, (customer) => ageGroup(customer.demographics?.age), AGE_GROUPS.map((group) => ({ key: group.key, label: group.key }))) },
+      { id: "gender", title: H("Gender", "लिंग"), rows: tally(inView, (customer) => customer.demographics?.gender, choices(GENDERS)) },
+      { id: "occupation", title: H("Occupation", "पेशा"), rows: tally(inView, (customer) => customer.demographics?.occupation, choices(OCCUPATIONS)) },
+      { id: "income", title: H("Monthly household income", "मासिक घरेलू आय"), rows: tally(inView, (customer) => customer.demographics?.income, choices(INCOMES)) },
+      { id: "vehicle", title: H("Main way of travelling", "आने-जाने का मुख्य साधन"), rows: tally(inView, (customer) => customer.demographics?.vehicle, choices(VEHICLES)) },
+      { id: "area", title: H("Lives in", "रहते हैं"), rows: tally(inView, (customer) => customer.demographics?.area, choices(AREAS)) },
+    ];
+  }, [inView, lang]);
+  const educationRows = useMemo(() => tally(inView, (customer) => customer.demographics?.education, EDUCATIONS.map((item) => ({ key: item.value, label: lang === "hi" ? item.hi : item.en }))), [inView, lang]);
 
   const reportScope: ReportScope = tierFilter === "All"
     ? { kind: "overall", title: L("Overall insights", "सामान्य अंतर्दृष्टि"), customers }
@@ -55,6 +114,34 @@ export default function HomePage() {
       <article className="fn-kpi"><span>{t.customersCovered}</span><strong>{inView.length}</strong><small>{TIERS.map((tier) => `${tierName(tier)} ${inView.filter((customer) => customer.tier === tier).length}`).join(" · ")}</small></article>
     </section>
 
+    <section className="fn-card fn-demo-card" aria-labelledby="demo-title">
+      <div className="fn-row-head"><div>
+        <h2 id="demo-title">{L("Customer demographics", "ग्राहकों की जानकारी")}</h2>
+        <p className="fn-card-sub">{L(`Where customers are and who they are, from the profile filled in at upload. ${profiled} of ${inView.length} interviews have one.`, `ग्राहक कहाँ हैं और कौन हैं, अपलोड के समय भरी प्रोफ़ाइल से। ${inView.length} में से ${profiled} इंटरव्यू में यह है।`)}</p>
+      </div></div>
+      <div className="fn-demo-layout">
+        <div className="fn-demo-map">
+          <IndiaMap points={mapPoints} label={L("Map of India showing where customers were interviewed", "भारत का नक्शा: ग्राहकों से कहाँ बात हुई")} describe={(point) => `${point.count} ${point.count === 1 ? L("interview", "इंटरव्यू") : L("interviews", "इंटरव्यू")} · ${signed(point.sentiment)}`} />
+          <ul className="fn-legend"><li><i style={{ background: "var(--s1)" }} />{t.positive}</li><li><i style={{ background: "var(--mid)" }} />{t.neutral}</li><li><i style={{ background: "var(--s2)" }} />{t.negative}</li><li className="fn-legend-note">{L("Circle size = interviews", "गोले का आकार = इंटरव्यू")}</li></ul>
+        </div>
+        <div className="fn-demo-side">
+          <h3>{L("By state / region", "राज्य / क्षेत्र के अनुसार")}</h3>
+          <ProfileBars rows={byState.slice(0, 8)} empty={L("Add a city or state when uploading an interview (or edit an existing one) to see it on the map.", "इंटरव्यू अपलोड या संपादित करते समय शहर या राज्य जोड़ें, तब वह नक्शे पर दिखेगा।")} />
+          {unplaced > 0 && <p className="fn-card-sub fn-unplaced">{L(`${unplaced} interview${unplaced === 1 ? "" : "s"} without a city or state.`, `${unplaced} इंटरव्यू में शहर या राज्य नहीं है।`)}</p>}
+          <h3 className="fn-demo-sub">{L("Education", "शिक्षा")}</h3>
+          <ProfileBars rows={educationRows} empty={L("Not filled in yet.", "अभी भरा नहीं गया।")} />
+        </div>
+      </div>
+    </section>
+
+    <section className="fn-grid fn-demo-grid" aria-label={L("Customer profile breakdown", "ग्राहक प्रोफ़ाइल का विवरण")}>
+      {profileCharts.map((chart) => <article className="fn-card" key={chart.id}>
+        <h2>{chart.title}</h2>
+        <p className="fn-card-sub">{L("Customers · average opinion of Trata", "ग्राहक · Trata पर औसत राय")}</p>
+        <ProfileBars rows={chart.rows} empty={L("Not filled in yet.", "अभी भरा नहीं गया।")} />
+      </article>)}
+    </section>
+
     <section className="fn-grid">
       <article className="fn-card">
         <h2>{t.topicHeading}</h2>
@@ -69,7 +156,7 @@ export default function HomePage() {
       </article>
 
       <article className="fn-card fn-wide">
-        <h2>{L("Sentiment timeline & demographics", "भावना की समय-रेखा")}</h2>
+        <h2>{L("Sentiment timeline", "भावना की समय-रेखा")}</h2>
         <p className="fn-card-sub">{t.sentimentRange}</p>
         {timeline.length ? <AreaLine points={timeline.map((customer) => ({ label: customer.date, value: customer.sentiment }))} label={L("Sentiment over time", "समय के साथ भावना")} /> : <p className="no-points">{t.noSelection}</p>}
       </article>

@@ -82,12 +82,12 @@ export const initialsOf = (name: string) => name.trim().split(/\s+/).slice(0, 2)
 /** Filenames like "ramesh_kumar-transport.mp3" become a readable default customer name. */
 export const nameFromFile = (filename: string) => filename.replace(/\.[^.]+$/, "").replace(/[_\-.]+/g, " ").replace(/\s+/g, " ").trim();
 
-export function recordFromResult(result: EngineResult, fields: Pick<Interview, "id" | "name" | "company" | "tier" | "date"> & { audioName?: string; sourceType: "audio" | "text" | "images"; imageNames?: string[] }, lang: "en" | "hi" = "en"): Interview {
+export function recordFromResult(result: EngineResult, fields: Pick<Interview, "id" | "name" | "company" | "tier" | "date"> & { city?: string; demographics?: Interview["demographics"]; audioName?: string; sourceType: "audio" | "text" | "images"; imageNames?: string[] }, lang: "en" | "hi" = "en"): Interview {
   // Always the website's own rules, whatever the engine returned: a language model's answer (or a stale engine's) must not
   // change the score, so the same transcript gets the same score whether it was spoken or pasted.
   const read = analyzeNotesWithRules(result.transcript, { lang, meta: { ...result.meta, durationSec: result.durationSec ?? result.meta?.durationSec } });
   return {
-    id: fields.id, name: fields.name, initials: initialsOf(fields.name), company: fields.company, tier: fields.tier, date: fields.date,
+    id: fields.id, name: fields.name, initials: initialsOf(fields.name), company: fields.company, city: fields.city, demographics: fields.demographics, tier: fields.tier, date: fields.date,
     sentiment: read.sentiment, transcript: result.transcript, language: read.language, topics: read.topics, keyPoints: read.keyPoints,
     audioName: fields.audioName, sourceType: fields.sourceType, imageNames: fields.imageNames,
     analysisEngine: read.analysisEngine, transcriptionStatus: "complete", analysis: clampAnalysis(read.analysis),
